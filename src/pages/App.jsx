@@ -1,12 +1,9 @@
-
 import './App.css'
-
 function App() {
-
   return (
-    <div>
-      Inicialização do projeto
-    </div>
+      <div>
+        Teste
+      </div>
   )
 }
 

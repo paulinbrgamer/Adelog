@@ -1,0 +1,10 @@
+.App{
+    width: 100%;
+
+}
+.element{
+
+}
+.element:focus{
+    background-color: lightslategray;
+}
