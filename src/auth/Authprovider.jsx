@@ -23,7 +23,7 @@ export const AuthProvider = ({children})=>{
                 settoast(true)
                 setTimeout(() => {
                 settoast(false)
-                }, 1000)
+                }, 2000)
                 
             }
             
