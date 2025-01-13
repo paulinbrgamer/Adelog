@@ -11,7 +11,7 @@ export default function Login() {
     const {login} = useAuth()
     const [toast, settoast] = useState(false)
     const styleLogin = {
-        backgroundRepeat:'no-repeat',backgroundImage:'url("./public/background.PNG")',backgroundPosition:'bottom', display: 'flex', justifyContent: 'start', gap: '30px', alignItems: 'center', flexDirection: 'column', paddingTop: "20dvh",height:"80dvh" 
+        backgroundRepeat:'no-repeat',backgroundImage:'url("./public/background.PNG")',backgroundPosition:'bottom', display: 'flex', justifyContent: 'start', gap: '30px', alignItems: 'center', flexDirection: 'column', paddingTop: "20dvh",height:"80dvh",width:'100dvw',overflow:"hidden"
     }
     const handleLogin = (loginfunc,key,settoast)=>{
         loginfunc({'key':key},settoast)
