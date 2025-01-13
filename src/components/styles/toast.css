@@ -7,11 +7,11 @@
       transform: translatey(-100%);
     }
 
-    30% {
+    15% {
       opacity: 1;
       transform: translatey(0);
     }
-    60% {
+    85% {
       opacity: 1;
       transform: translatey(0);
     }
