@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState,useEffect } from 'react'
 import './App.css'
 import { CiLogin, CiUser } from "react-icons/ci";
 import { useAuth } from '../auth/Authprovider'
@@ -9,9 +9,20 @@ import { useNavigate  } from "react-router-dom";
 
 export default function Login() {
     const [acessKey, setacessKey] = useState('')
-    const {login,isLogged} = useAuth()
+    const {login,isLogged,setisLogged} = useAuth()
     const [toast, settoast] = useState(false)
     const navegate = useNavigate()
+
+    useEffect(() => {
+    const session = JSON.parse(localStorage.getItem('user'))
+    if(session){
+        setisLogged(true)
+        navegate('./home')
+    }
+    
+      
+    }, [])
+    
     const styleLogin = {
         backgroundRepeat:'no-repeat',backgroundImage:'url("./background.PNG")',backgroundPosition:'bottom', display: 'flex', justifyContent: 'start', gap: '30px', alignItems: 'center', flexDirection: 'column', paddingTop: "20dvh",height:"80dvh" 
     }
