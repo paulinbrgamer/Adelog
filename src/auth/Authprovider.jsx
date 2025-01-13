@@ -13,9 +13,21 @@ export const AuthProvider = ({children})=>{
             setUser({user:false})
         }
         else{
-            console.log(data);
+            
             
             if(data.length>0){
+            const storeId = data[0].store_id
+            const {data, error} = await supabase.from('stores').select('*').eq('id',storeId)
+            if(error){
+                console.log('Erro ao buscar os dados: ',error);
+                
+            }
+            else{
+                console.log(data);
+                
+            }
+
+            
             setUser(data[0])
             localStorage.setItem('user',JSON.stringify(data[0]))  
             }
