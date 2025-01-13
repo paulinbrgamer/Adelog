@@ -6,19 +6,25 @@ const AuthContext = createContext()
 export const AuthProvider = ({children})=>{
     const  [User, setUser] = useState(null)
 
-    const login = async(userData)=>{
+    const login = async(userData,settoast)=>{
         const {data,error} = await supabase.from('users').select('*').eq('key',`${userData.key}`)
         if (error){
             console.log('Erro ao buscar os dados: ',error);
             setUser({user:false})
         }
         else{
-            if(userData.length>0){
-              setUser(userData)
+            console.log(data);
+            
+            if(data.length>0){
+            setUser(data[0])
             localStorage.setItem('user',JSON.stringify(data[0]))  
             }
             else{
-                setUser('NF')
+                settoast(true)
+                setTimeout(() => {
+                settoast(false)
+                }, 1000)
+                
             }
             
         }
