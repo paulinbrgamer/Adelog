@@ -1,10 +1,23 @@
-import './App.css'
-import NavScreens from '../components/NavScreens'
+import NavOptions from '../components/NavOptions'
+import styled from 'styled-components'
 import IconButton from '../components/IconButton'
 import { useEffect, useState } from 'react'
 import { useAuth } from '../auth/Authprovider'
 import { useNavigate } from "react-router-dom";
 import { PackageSearch, User, Store } from 'lucide-react';
+
+const HomePage = styled.div`
+
+    background-repeat:no-repeat;
+    background-position:bottom;
+    display:flex;
+    justify-content:start;
+    gap:30px;
+    align-items:center;
+    flex-direction:column;
+    padding-top:20dvh;
+    height:80dvh;
+`
 function App() {
   const [currentRendering, setcurrentRendering] = useState('user')
   const { setisLogged } = useAuth()
@@ -20,8 +33,8 @@ function App() {
     set(value)
   }
   return (
-    <div className='App' >
-      <NavScreens>
+    <HomePage  >
+      <NavOptions>
           <IconButton onclick={()=>handleChangeScreen(setcurrentRendering,'user')}>
               <User size={26} strokeWidth={1} />
               <p>Conta</p>
@@ -36,8 +49,8 @@ function App() {
               <Store size={26} strokeWidth={1} />
               <p>Vender</p>
           </IconButton>
-      </NavScreens>
-    </div>
+      </NavOptions>
+    </HomePage>
   )
 }
 

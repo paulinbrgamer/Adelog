@@ -1,12 +1,25 @@
 import { useState,useEffect } from 'react'
-import './App.css'
 import { CiLogin, CiUser } from "react-icons/ci";
 import { useAuth } from '../auth/Authprovider'
 import Container from '../components/Container'
+import IconButton from '../components/IconButton'
 import InputText from '../components/InputText'
-import ErrorMensege from '../components/ErrorMensege';
+import Toast from '../components/Toast';
 import { useNavigate  } from "react-router-dom";
+import styled from 'styled-components';
+const LoginPage = styled.div`
 
+    background-repeat:no-repeat;
+    background-image:url(./background.PNG);
+    background-position:bottom;
+    display:flex;
+    justify-content:start;
+    gap:30px;
+    align-items:center;
+    flex-direction:column;
+    padding-top:20dvh;
+    height:80dvh;
+`
 export default function Login() {
     const [acessKey, setacessKey] = useState('')
     const {login,isLogged,setisLogged} = useAuth()
@@ -22,35 +35,30 @@ export default function Login() {
     
       
     }, [])
-    
-    const styleLogin = {
-        backgroundRepeat:'no-repeat',backgroundImage:'url("./background.PNG")',backgroundPosition:'bottom', display: 'flex', justifyContent: 'start', gap: '30px', alignItems: 'center', flexDirection: 'column', paddingTop: "20dvh",height:"80dvh" 
-    }
     const handleLogin = (loginfunc,key,settoast,navegate)=>{
         loginfunc({'key':key},settoast,navegate)
     }
     return (
-        <div className='App' style={styleLogin}>
+        <LoginPage>
 
-            {toast?<ErrorMensege message='Usuário não encontrado'/>:null}
+            {toast?<Toast color={'#e02323'} message='Usuário não encontrado'/>:null}
 
             <div style={{ textAlign: 'center' }}>
                 <h1>Adelog</h1>
                 <h3 style={{ color: 'grey' }}>Sistema de Gerenciamento</h3>
             </div>
 
-            <Container style={{alignItems:'center',justifyContent:'center'}}>
+            <Container just={'center'}>
 
                 <CiUser size={60} style={{ margin: '20px' }} />
 
-                <InputText onChange={setacessKey} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} label='Chave de Acesso' />
-
-                <button onClick={()=>handleLogin(login,acessKey,settoast,navegate)} style={{ border: 'none', backgroundColor: 'transparent' }}>
-                    <CiLogin style={{ margin: '10px' }} size={30} />
-                </button>
+                <InputText onChange={setacessKey} align='center' label='Chave de Acesso' />
+                <IconButton>
+                    <CiLogin onClick={()=>handleLogin(login,acessKey,settoast,navegate)}  size={30} />
+                </IconButton>
             </Container>
             
 
-        </div>
+        </LoginPage>
     )
 }
