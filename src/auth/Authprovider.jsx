@@ -23,7 +23,6 @@ export const AuthProvider = ({children})=>{
                 
             }
             else{
-                console.log(dataStore);
                 
             }
             navegate('/home')

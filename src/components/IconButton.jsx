@@ -1,9 +1,8 @@
 import React from 'react'
 
-export default function IconButton({icon,children,onclick}) {
+export default function IconButton({children,onclick}) {
   return (
-    <button onClick={onclick}>
-        {icon}
+    <button style={{backgroundColor:'white',border:"none",fontSize:'12pt'}} onClick={onclick}>
         {children}
     </button>
   )
