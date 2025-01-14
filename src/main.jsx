@@ -5,12 +5,12 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import Login from './pages/Login';
 import App from './pages/App'
 createRoot(document.getElementById('root')).render(
-  <AuthProvider>
-       <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/home" element={<App />} />
-    </Routes>
-  </BrowserRouter>
-  </AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/home" element={<App />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
 )

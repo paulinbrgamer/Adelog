@@ -5,6 +5,9 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../auth/Authprovider'
 import { useNavigate } from "react-router-dom";
 import { PackageSearch, User, Store } from 'lucide-react';
+import UserScreen from './UserScreen'
+import SellScreen from './SellScreen'
+import ProductsScreen from './ProductsScreen'
 
 const HomePage = styled.div`
 
@@ -21,19 +24,13 @@ const HomePage = styled.div`
 function App() {
   const [currentRendering, setcurrentRendering] = useState('user')
   const { setisLogged } = useAuth()
-  const navegate = useNavigate()
-  useEffect(() => {
-    const session = JSON.parse(localStorage.getItem('user'))
-    if (!session) {
-      setisLogged(false)
-      navegate('/')
-    }
-  })
+
   const handleChangeScreen = (set,value)=>{
     set(value)
   }
   return (
     <HomePage  >
+      {currentRendering==='user'?<UserScreen/>:currentRendering==='sell'?<SellScreen/>:<ProductsScreen/>}
       <NavOptions>
           <IconButton onclick={()=>handleChangeScreen(setcurrentRendering,'user')}>
               <User size={26} strokeWidth={1} />

@@ -1,11 +1,23 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import { supabase } from "../services/cliente";
-
+import { useNavigate } from "react-router-dom";
 const AuthContext = createContext()
 
 export const AuthProvider = ({children})=>{
     const  [User, setUser] = useState(null)
     const  [isLogged, setisLogged] = useState(false)
+    const navegate = useNavigate()
+    useEffect(() => {
+        const session = JSON.parse(localStorage.getItem('user'))
+        if (!session) {
+            setisLogged(false)
+            navegate('/')
+          }else{
+            setUser(session)
+            setisLogged(true)
+          }
+    }, [])
+    
     const login = async(userData,settoast,navegate)=>{
         const {data,error} = await supabase.from('users').select('*').eq('key',`${userData.key}`)
         if (error){

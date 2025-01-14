@@ -1,29 +1,30 @@
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 const Input = styled.input`
-  text-align:center;
+  text-align:${(props)=>props.$align};
   background-color:white;
-  font-size:14pt;
-  padding:8px;
+  font-size:12pt;
   width:95%;
+  padding:4px;
   border:none;
   border-bottom:1px solid black;
   outline:none;
   margin-bottom:10px;
 `
 const InputContaier = styled.div`
-display:flex;
-flex-direction:column;
-align-items:${(props)=>props.$align};
-justify-content: center;
+  display:flex;
+  width:95%;
+  flex-direction:column;
+  align-items:${(props)=>props.$align};
+  justify-content: center;
 
 `
-export default function InputText({align,label,onChange}) {
+export default function InputText({align,label,onChange,type,value}) {
 
   return (
     <InputContaier $align={align}>
         <strong>{label}</strong>
-        <Input onChange={(e)=>onChange(e.target.value)}   type="text" />
+        <Input   $align={align} onChange={(e)=>onChange(e.target.value)}   type={type} value={value}/>
     </InputContaier>
   )
 }
