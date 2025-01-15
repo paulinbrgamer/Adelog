@@ -11,13 +11,11 @@ import ProductsScreen from './ProductsScreen'
 
 const HomePage = styled.div`
     display:flex;
-    justify-content:start;
-    flex-direction:column;
+    justify-content:center;
     background-color: #f8f8f8;
-    gap:10dvh;
-    align-items:center;
+    gap:3dvh;
     flex-wrap: wrap;
-    height:100dvh;
+    flex:1;
 `
 function App() {
   const [currentRendering, setcurrentRendering] = useState('user')
