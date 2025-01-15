@@ -27,16 +27,15 @@ export default function UserScreen() {
     
     <Container just={'center'}>
         <UserContainer >
-          
         <UserRound size={50} strokeWidth={0.6}/>
-        <h3>Dados Pessoais</h3>
+
         <PermissionComponent style={{margin:10}}>
-          <p>Permissão : {User?.permission ||'loading'}</p>
+          <p style={{color:"orange"}}>Permissão : {User?.permission ||'loading'}</p>
         </PermissionComponent>
         </UserContainer>
         <InputText value={User?.name ||'loading'} type='text' align='start' label={'Nome:'}/>
         <InputText value={User?.email ||'loading'} type='email' align='start' label={'E-mail:'}/>
-        <InputText value={User?.key ||'loading'} type='text' align='start' label={'Chave:'}/>
+        <InputText value={User?.key ||'loading'} type='password' align='start' label={'Chave:'}/>
         <IconButton onclick={()=>logout()} >
           <LogOut  size={26} strokeWidth={1.4} style={{ transform: 'scaleX(-1)' }} color='#e02323'/>
           <p style={{fontWeight:'400',color:'#e02323'}}>Sair</p>

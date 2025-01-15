@@ -12,21 +12,23 @@ import ProductsScreen from './ProductsScreen'
 const HomePage = styled.div`
     display:flex;
     justify-content:start;
-    gap:30px;
-    align-items:center;
     flex-direction:column;
-    padding-top:20dvh;
-    height:80dvh;
+    background-color: #f8f8f8;
+    gap:10dvh;
+    align-items:center;
+    flex-wrap: wrap;
+    height:100dvh;
 `
 function App() {
   const [currentRendering, setcurrentRendering] = useState('user')
   const { setisLogged } = useAuth()
-
+  const title = {user:'Dados pessoais',products:'Produtos Cadastrados',sell:"Vender"}
   const handleChangeScreen = (set, value) => {
     set(value)
   }
   return (
     <HomePage  >
+      <h2 style={{padding:"10px"}}>{title[currentRendering]}</h2>
       {currentRendering === 'user' ? <UserScreen /> : currentRendering === 'sell' ? <SellScreen /> : <ProductsScreen />}
       <NavOptions>
         <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'user')}>

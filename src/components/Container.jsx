@@ -13,7 +13,7 @@ const fdInOut = keyframes`
 const StyledContainer = styled.div`
 background-color: white;
 width:90%;
-box-shadow:rgba(0, 0, 0, 0.24) 0px 3px 8px ;
+border: 1px solid #e9e9e9;
 display: flex;
 align-items: ${(props) => props.$just };
 flex-direction: column;
