@@ -1,5 +1,15 @@
 import React from 'react'
-import styled from 'styled-components'
+import {styled,keyframes} from 'styled-components'
+const fdInOut = keyframes`
+ 0% {
+      opacity: 0;
+      transform: translatey(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translatey(0px);
+    }
+`
 const StyledContainer = styled.div`
 background-color: white;
 width:90%;
@@ -10,6 +20,7 @@ flex-direction: column;
 padding: 10px;
 border-radius: 6px;
 opacity: 0.96;
+animation: ${fdInOut} 300ms ease;
 `
 export default function Container({children,just}) {
 

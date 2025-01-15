@@ -7,6 +7,7 @@ padding:10px;
 position:fixed;
 bottom:0px;
 width:100%;
+border-top: 1px solid lightgray;
 `
 export default function NavOptions({children}) {
 

@@ -10,7 +10,9 @@ import SellScreen from './SellScreen'
 import ProductsScreen from './ProductsScreen'
 
 const HomePage = styled.div`
-
+    background-repeat:no-repeat;
+    background-image:url(./background.PNG);
+    background-position:bottom;
     background-repeat:no-repeat;
     background-position:bottom;
     display:flex;
@@ -25,27 +27,27 @@ function App() {
   const [currentRendering, setcurrentRendering] = useState('user')
   const { setisLogged } = useAuth()
 
-  const handleChangeScreen = (set,value)=>{
+  const handleChangeScreen = (set, value) => {
     set(value)
   }
   return (
     <HomePage  >
-      {currentRendering==='user'?<UserScreen/>:currentRendering==='sell'?<SellScreen/>:<ProductsScreen/>}
+      {currentRendering === 'user' ? <UserScreen /> : currentRendering === 'sell' ? <SellScreen /> : <ProductsScreen />}
       <NavOptions>
-          <IconButton onclick={()=>handleChangeScreen(setcurrentRendering,'user')}>
-              <User size={26} strokeWidth={1} />
-              <p>Conta</p>
-          </IconButton>
+        <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'user')}>
+          <User size={26} strokeWidth={1} color={currentRendering=='user'?'orange':'black'} />
+          <p>Conta</p>
+        </IconButton>
 
-          <IconButton onclick={()=>handleChangeScreen(setcurrentRendering,'products')}>
-              <PackageSearch size={26} strokeWidth={1} />
-              <p>Produtos</p>
-          </IconButton>
+        <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'products')}>
+          <PackageSearch size={26} strokeWidth={1} color={currentRendering=='products'?'orange':'black'} />
+          <p>Produtos</p>
+        </IconButton>
 
-          <IconButton onclick={()=>handleChangeScreen(setcurrentRendering,'sell')}>
-              <Store size={26} strokeWidth={1} />
-              <p>Vender</p>
-          </IconButton>
+        <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'sell')}>
+          <Store size={26} strokeWidth={1} color={currentRendering=='sell'?'orange':'black'}/>
+          <p>Vender</p>
+        </IconButton>
       </NavOptions>
     </HomePage>
   )

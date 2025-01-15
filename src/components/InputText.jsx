@@ -20,7 +20,6 @@ const InputContaier = styled.div`
 
 `
 export default function InputText({align,label,onChange,type,value}) {
-
   return (
     <InputContaier $align={align}>
         <strong>{label}</strong>
