@@ -10,11 +10,6 @@ import SellScreen from './SellScreen'
 import ProductsScreen from './ProductsScreen'
 
 const HomePage = styled.div`
-    background-repeat:no-repeat;
-    background-image:url(./background.PNG);
-    background-position:bottom;
-    background-repeat:no-repeat;
-    background-position:bottom;
     display:flex;
     justify-content:start;
     gap:30px;

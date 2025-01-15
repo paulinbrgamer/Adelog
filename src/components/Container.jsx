@@ -19,7 +19,7 @@ align-items: ${(props) => props.$just };
 flex-direction: column;
 padding: 10px;
 border-radius: 6px;
-opacity: 0.96;
+opacity: 1;
 animation: ${fdInOut} 300ms ease;
 `
 export default function Container({children,just}) {

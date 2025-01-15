@@ -8,6 +8,7 @@ position:fixed;
 bottom:0px;
 width:100%;
 border-top: 1px solid lightgray;
+background-color: #ffffffd3;
 `
 export default function NavOptions({children}) {
 

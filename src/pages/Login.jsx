@@ -10,8 +10,9 @@ import styled from 'styled-components';
 const LoginPage = styled.div`
 
     background-repeat:no-repeat;
-    background-image:url(./background.PNG);
-    background-position:bottom;
+    background-image:url(https://img.freepik.com/free-vector/white-background-with-abstract-lines-copy-space_23-2148822144.jpg?t=st=1736904842~exp=1736908442~hmac=3441c313b9c2eaa6e608901016a415f0e72233e3774a47d3b992cf2974418c00&w=1380);
+    background-position:center;
+    background-size: cover;
     display:flex;
     justify-content:start;
     gap:30px;

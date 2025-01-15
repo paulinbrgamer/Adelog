@@ -47,7 +47,7 @@ export const AuthProvider = ({children})=>{
                 settoast(true)
                 setTimeout(() => {
                 settoast(false)
-                }, 2000)
+                }, 1500)
                 
             }
             
@@ -55,7 +55,9 @@ export const AuthProvider = ({children})=>{
     }
     const logout = ()=>{
         setUser(null)
+        setisLogged(false)
         localStorage.removeItem('user')
+        navegate('/')
     }
     const values = {User,login,logout,setisLogged,isLogged}
 

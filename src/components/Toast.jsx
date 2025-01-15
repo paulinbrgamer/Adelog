@@ -32,7 +32,7 @@ const ToastContainer = styled.div`
   text-align: center;
   background-color: ${(props)=>props.$color};
   color:white;
-  animation: ${fdInOut} 2.2s ease-in-out;
+  animation: ${fdInOut} 1.6s ease-in-out;
 `
 function Toast({message,color}) {
   return (
