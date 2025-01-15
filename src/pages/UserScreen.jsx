@@ -12,6 +12,7 @@ const UserContainer = styled.div`
     width:90%;
     flex-direction: column;
     align-items: center;
+    justify-content:space-between;
     
 `
 const PermissionComponent = styled.div`
@@ -26,17 +27,19 @@ export default function UserScreen() {
     
   return (
     <>
-    <Container just={'center'} height={"70dvh"}>
+    <Container just={'center'} aligh={'space-evenly'} height={"70dvh"}>
         <UserContainer >
           <UserRound size={50} strokeWidth={0.6}/>
           <PermissionComponent style={{margin:10}}>
           <p style={{color:"orange"}}>Permissão : {User?.permission ||'loading'}</p>
         </PermissionComponent>
         </UserContainer>
+        <Container>
         <InputText value={User?.name ||'loading'} type='text' align='start' label={'Nome:'}/>
         <InputText value={User?.email ||'loading'} type='email' align='start' label={'E-mail:'}/>
         <InputText value={User?.key ||'loading'} type='password' align='start' label={'Chave:'}/>
 
+        </Container>
         <IconButton onclick={()=>logout()} >
         <LogOut  size={26} strokeWidth={1.4} style={{ transform: 'scaleX(-1)' }} color='#e02323'/>
         <p style={{fontWeight:'400',color:'#e02323'}}>Sair</p>

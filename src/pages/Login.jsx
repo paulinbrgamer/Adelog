@@ -7,6 +7,7 @@ import InputText from '../components/InputText'
 import Toast from '../components/Toast';
 import { useNavigate  } from "react-router-dom";
 import styled from 'styled-components';
+import { fdInOut } from '../components/FdInOt'
 const LoginPage = styled.div`
 
     background-repeat:no-repeat;
@@ -20,6 +21,7 @@ const LoginPage = styled.div`
     flex-direction:column;
     padding-top:20dvh;
     height:80dvh;
+    animation: ${fdInOut} 300ms ease-in-out;
 `
 export default function Login() {
     const [acessKey, setacessKey] = useState('')
