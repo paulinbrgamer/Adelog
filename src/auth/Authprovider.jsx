@@ -5,47 +5,38 @@ const AuthContext = createContext()
 
 export const AuthProvider = ({children})=>{
     const  [User, setUser] = useState(null)
+    const [storeData,setStore] = useState([])
     const  [isLogged, setisLogged] = useState(false)
     const navegate = useNavigate()
 
     const login = async(userData,settoast)=>{
-        const {data,error} = await supabase.from('users').select('*').eq('key',`${userData.key}`)
+        const {data,error} = await supabase.from('users').select('*').eq('key',`${userData.key}`).single()
         if (error){
+            if(settoast){
+                settoast(true)
+                setTimeout(() => {
+                settoast(false)
+                }, 1500)
+            }
             console.log('Erro ao buscar os dados: ',error);
             setUser({user:false})
         }
         else{
-            
-            
-            if(data.length>0){
-            const storeId = data[0].store_id
-            const {data:dataStore, error:Store} = await supabase.from('stores').select('*').eq('id',storeId)
-            if(error){
-                console.log('Erro ao buscar os dados: ',Store);
-                
-            }
-            else{
-                console.log(dataStore);
-                
-            }
             navegate('/home')
-            setUser(data[0])
-            localStorage.setItem('user',JSON.stringify(data[0])) 
+            setUser(data)
+            localStorage.setItem('user',JSON.stringify(data)) 
             setisLogged(true)
-
+            const {data:dataStore, error:Storeerror} = await supabase.from('products').select('*').eq('store_id',data.store_id)
+            if(Storeerror){
+                console.log('Erro ao buscar os dados: ',Storeerror);
             }
             else{
-                if(settoast){
-                    settoast(true)
-                    setTimeout(() => {
-                    settoast(false)
-                    }, 1500)
-                }
+                setStore(dataStore.map((product)=>product));
             }
-            
         }
     }
     const logout = ()=>{
+        setStore([])
         setUser(null)
         setisLogged(false)
         localStorage.removeItem('user')
@@ -54,6 +45,7 @@ export const AuthProvider = ({children})=>{
     useEffect(() => {
         const session = JSON.parse(localStorage.getItem('user'))
         if (!session) {
+            setStore([])
             setisLogged(false)
             navegate('/')
           }else{
@@ -61,7 +53,7 @@ export const AuthProvider = ({children})=>{
           }
     }, [])
     
-    const values = {User,login,logout,setisLogged,isLogged}
+    const values = {User,storeData,login,logout}
 
     return(
         <AuthContext.Provider value={values}>

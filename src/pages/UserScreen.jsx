@@ -37,7 +37,6 @@ export default function UserScreen() {
         <Container>
         <InputText value={User?.name ||'loading'} type='text' align='start' label={'Nome:'}/>
         <InputText value={User?.email ||'loading'} type='email' align='start' label={'E-mail:'}/>
-        <InputText value={User?.key ||'loading'} type='password' align='start' label={'Chave:'}/>
 
         </Container>
         <IconButton onclick={()=>logout()} >
