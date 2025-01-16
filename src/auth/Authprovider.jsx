@@ -7,17 +7,7 @@ export const AuthProvider = ({children})=>{
     const  [User, setUser] = useState(null)
     const  [isLogged, setisLogged] = useState(false)
     const navegate = useNavigate()
-    useEffect(() => {
-        const session = JSON.parse(localStorage.getItem('user'))
-        if (!session) {
-            setisLogged(false)
-            navegate('/')
-          }else{
-            setUser(session)
-            setisLogged(true)
-          }
-    }, [])
-    
+
     const login = async(userData,settoast)=>{
         const {data,error} = await supabase.from('users').select('*').eq('key',`${userData.key}`)
         if (error){
@@ -35,6 +25,7 @@ export const AuthProvider = ({children})=>{
                 
             }
             else{
+                console.log(dataStore);
                 
             }
             navegate('/home')
@@ -44,11 +35,12 @@ export const AuthProvider = ({children})=>{
 
             }
             else{
-                settoast(true)
-                setTimeout(() => {
-                settoast(false)
-                }, 1500)
-                
+                if(settoast){
+                    settoast(true)
+                    setTimeout(() => {
+                    settoast(false)
+                    }, 1500)
+                }
             }
             
         }
@@ -59,6 +51,16 @@ export const AuthProvider = ({children})=>{
         localStorage.removeItem('user')
         navegate('/')
     }
+    useEffect(() => {
+        const session = JSON.parse(localStorage.getItem('user'))
+        if (!session) {
+            setisLogged(false)
+            navegate('/')
+          }else{
+            login({'key':session.key},null)
+          }
+    }, [])
+    
     const values = {User,login,logout,setisLogged,isLogged}
 
     return(
