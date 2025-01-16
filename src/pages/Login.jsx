@@ -34,7 +34,7 @@ export default function Login() {
                 <h1>Adelog</h1>
                 <h3 style={{ color: 'grey' }}>Sistema de Gerenciamento</h3>
             </div>
-            <Container just={'center'}>
+            <Container border={'none'} just={'center'}>
                 <CiUser size={60} style={{ margin: '20px' }} />
                 <InputText type='password' onChange={setacessKey} align='center' label='Chave de Acesso' />
                 <IconButton>

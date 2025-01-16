@@ -10,14 +10,15 @@ import AppProvider from './AppProvider';
 
 const HomePage = styled.div`
     display:flex;
-    justify-content:center;
-    align-content:start;
-    gap:3dvh;
-    flex-wrap: wrap;
+    justify-content:start;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap:1dvh;
     height:100dvh;
 `
 function App() {
-  const [currentRendering, setcurrentRendering] = useState('user')
+  const [currentRendering, setcurrentRendering] = useState('products')
   const title = {user:'Dados pessoais',products:'Produtos Cadastrados',sell:"Vender"}
   const handleChangeScreen = (set, value) => {
     set(value)
