@@ -25,39 +25,21 @@ const LoginPage = styled.div`
 `
 export default function Login() {
     const [acessKey, setacessKey] = useState('')
-    const {login,isLogged,setisLogged} = useAuth()
+    const {login} = useAuth()
     const [toast, settoast] = useState(false)
-    const navegate = useNavigate()
 
-    useEffect(() => {
-    const session = JSON.parse(localStorage.getItem('user'))
-    if(session){
-        setisLogged(true)
-        navegate('./home')
-    }
-    
-      
-    }, [])
-    const handleLogin = (loginfunc,key,settoast,navegate)=>{
-        loginfunc({'key':key},settoast,navegate)
-    }
     return (
         <LoginPage>
-
             {toast?<Toast color={'#e02323'} message='Usuário não encontrado'/>:null}
-
             <div style={{ textAlign: 'center' }}>
                 <h1>Adelog</h1>
                 <h3 style={{ color: 'grey' }}>Sistema de Gerenciamento</h3>
             </div>
-
             <Container just={'center'}>
-
                 <CiUser size={60} style={{ margin: '20px' }} />
-
                 <InputText type='password' onChange={setacessKey} align='center' label='Chave de Acesso' />
                 <IconButton>
-                    <CiLogin onClick={()=>handleLogin(login,acessKey,settoast,navegate)}  size={30} />
+                    <CiLogin onClick={()=>login({'key':acessKey},settoast)}  size={30} />
                 </IconButton>
             </Container>
             

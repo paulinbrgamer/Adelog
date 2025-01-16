@@ -18,7 +18,7 @@ export const AuthProvider = ({children})=>{
           }
     }, [])
     
-    const login = async(userData,settoast,navegate)=>{
+    const login = async(userData,settoast)=>{
         const {data,error} = await supabase.from('users').select('*').eq('key',`${userData.key}`)
         if (error){
             console.log('Erro ao buscar os dados: ',error);

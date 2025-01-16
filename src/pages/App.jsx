@@ -1,9 +1,7 @@
 import NavOptions from '../components/NavOptions'
 import styled from 'styled-components'
 import IconButton from '../components/IconButton'
-import { useEffect, useState } from 'react'
-import { useAuth } from '../auth/Authprovider'
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react'
 import { PackageSearch, User, Store } from 'lucide-react';
 import UserScreen from './UserScreen'
 import SellScreen from './SellScreen'
@@ -13,7 +11,6 @@ const HomePage = styled.div`
     display:flex;
     justify-content:center;
     align-content:start;
-    background-color: #f8f8f8;
     gap:3dvh;
     flex-wrap: wrap;
     height:100dvh;
