@@ -30,8 +30,8 @@ export default function UserScreen() {
     <>
     <Container just={'center'} aligh={'space-evenly'} height={"70dvh"}>
 
-        <Container>
-        <UserRound style={{alignSelf:"center"}} size={50} strokeWidth={0.6}/>
+        <Container just={'center'}>
+        <UserRound  size={50} strokeWidth={0.6}/>
         <InputText value={User?.name ||'loading'} type='text' align='start' label={'Nome:'}/>
         <InputText value={User?.email ||'loading'} type='email' align='start' label={'E-mail:'}/>
         <PermissionComponent style={{margin:10}}>

@@ -1,11 +1,10 @@
-import { useState,useEffect } from 'react'
+import { useState } from 'react'
 import { CiLogin, CiUser } from "react-icons/ci";
 import { useAuth } from '../auth/Authprovider'
 import Container from '../components/Container'
 import IconButton from '../components/IconButton'
 import InputText from '../components/InputText'
 import Toast from '../components/Toast';
-import { useNavigate  } from "react-router-dom";
 import styled from 'styled-components';
 import { fdInOut } from '../components/FdInOt'
 const LoginPage = styled.div`
