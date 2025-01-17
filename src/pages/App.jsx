@@ -15,6 +15,7 @@ const HomePage = styled.div`
     flex-direction: column;
     flex-wrap: nowrap;
     gap:1dvh;
+    padding-top: 10px;
     height:100dvh;
 `
 function App() {
@@ -31,17 +32,17 @@ function App() {
         
         <NavOptions>
           <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'user')}>
-            <User size={26} strokeWidth={1} color={currentRendering=='user'?'orange':'black'} />
+            <User size={26} strokeWidth={1} fill={currentRendering=='user'?'black':'white'} color={currentRendering=='user'?'black':'gray'} />
             <p>Conta</p>
           </IconButton>
 
           <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'products')}>
-            <PackageSearch size={26} strokeWidth={1} color={currentRendering=='products'?'orange':'black'} />
+            <PackageSearch size={26} strokeWidth={1} stroke={currentRendering=='products'?'white':'black'} fill={currentRendering=='products'?'black':'white'} color={currentRendering=='products'?'black':'gray'} />
             <p>Produtos</p>
           </IconButton>
 
           <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'sell')}>
-            <Store size={26} strokeWidth={1} color={currentRendering=='sell'?'orange':'black'}/>
+            <Store size={26} stroke={currentRendering=='sell'?'white':'black'} strokeWidth={1} fill={currentRendering=='sell'?'black':'white'} color={currentRendering=='sell'?'black':'gray'}/>
             <p>Vender</p>
           </IconButton>
         </NavOptions>

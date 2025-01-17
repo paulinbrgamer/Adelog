@@ -28,15 +28,17 @@ export default function UserScreen() {
     
   return (
     <>
-    <Container just={'center'} aligh={'space-evenly'} height={"70dvh"}>
+    <Container border={'none'} just={'center'} aligh={'space-evenly'} height={"50dvh"}>
 
-        <Container just={'center'}>
-        <UserRound  size={50} strokeWidth={0.6}/>
-        <InputText value={User?.name ||'loading'} type='text' align='start' label={'Nome:'}/>
-        <InputText value={User?.email ||'loading'} type='email' align='start' label={'E-mail:'}/>
-        <PermissionComponent style={{margin:10}}>
-          <p style={{color:"orange"}}>Permissão : {User?.permission ||'loading'}</p>
-        </PermissionComponent>
+        <Container just={'center'} border={'none'}>
+        <img style={{objectFit: 'cover',objectPosition: 'top'}} width={290} src="https://stories.freepiklabs.com/api/vectors/take-away/bro/render?color=37474FFF&background=complete&hide=" alt="" />
+        <h3 style={{marginTop:'-30px'}}>Nome: {User?.name}</h3>
+        <Container border={'none'} >
+        <h4>E-mail:</h4>
+        <p>{User?.email}</p>
+        <h4>Permissão:</h4>
+        <p>{User?.permission}</p>
+        </Container>
         </Container>
         
         <IconButton onclick={()=>logout()} >

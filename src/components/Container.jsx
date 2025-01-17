@@ -18,6 +18,6 @@ animation: ${fdInOut} 300ms ease;
 export default function Container({children,just,height,aligh,border}) {
 
   return (
-    <StyledContainer $border={border?border:`1px solid #e9e9e9`} $height={height} $aligh={aligh} $just={just}>{children}</StyledContainer>
+    <StyledContainer $border={border?border:`1px solid #6e6e6e`} $height={height} $aligh={aligh} $just={just}>{children}</StyledContainer>
   )
 }

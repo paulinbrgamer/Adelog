@@ -4,7 +4,7 @@ const Button = styled.button`
 
 background-color:#ffffff01;
 border:none;
-font-size:12pt;
+font-size:10pt;
 transition: all 80ms ease;
 cursor: pointer;
 &:active {

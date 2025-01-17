@@ -4,20 +4,21 @@ import { Search } from "lucide-react";
 
 const Container = styled.div`
     width: 90%;
-    background-color: #f3f0f0;
+    background-color: #EDEDED;
     margin: 10px;
     padding: 10px;
     border-radius: 6px;
     display: flex;
-    border:1px solid #3a3939;
+    justify-content: space-between;
 `
 export default function SearchComponent() {
   return (
     <Container>
-        <input type="text" style={{border:'none',backgroundColor:'transparent',width:'90%',fontSize:'14pt',textIndent:'10px',outline:'none'} }placeholder='Pesquisar produtos'/>
-        <IconButton>
-            <Search color="gray"/>
+              <IconButton>
+            <Search color="#6B6B6B"/>
         </IconButton>
+        <input type="text" style={{border:'none',backgroundColor:'transparent',width:'90%',fontSize:'16pt',textIndent:'10px',outline:'none',color:"gray"} }placeholder='Pesquisar produtos'/>
+
     </Container>
   )
 }
