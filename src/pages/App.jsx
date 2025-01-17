@@ -16,7 +16,7 @@ const HomePage = styled.div`
     flex-wrap: nowrap;
     gap:1dvh;
     padding-top: 10px;
-    height:100dvh;
+    height:98dvh;
 `
 function App() {
   const [currentRendering, setcurrentRendering] = useState('products')
