@@ -26,7 +26,7 @@ return(
         <ProductContainer>
             <Title>{data.name}</Title>
             <p style={{color:'gray',fontWeight:'400',gridColumn:'1/2',gridRow:"2/4",fontSize:'10pt'}}>Unidades: {data.units}</p>
-            <ShoppingCart size={22} color="white" style={{zIndex:"1",padding:'4px',backgroundColor:'black',borderRadius: '4px',gridRow:"1/3",gridColumn:"2/3",alignContent:"end",marginLeft:'auto'}}/>
+            <ShoppingCart  size={22} color="white" style={{zIndex:"1",padding:'4px',backgroundColor:'black',borderRadius: '4px',gridRow:"1/3",gridColumn:"2/3",alignContent:"end",marginLeft:'auto'}}/>
             <Title style={{gridColumn:'2/3',gridRow:'3/4',textAlign:'end',alignContent:"end"}}>R$ {data.price.toFixed(2)}</Title>
         </ProductContainer>
     )

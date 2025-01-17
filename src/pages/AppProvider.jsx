@@ -5,6 +5,7 @@ const AppContext = createContext()
 
 export const AppProvider =({children}) =>{
     const [storeData,setStore] = useState([])
+    const [Cart,setCart] = useState([])
     const {User} = useAuth();
     const getStoreData = async()=>{
         if(User){
@@ -13,7 +14,7 @@ export const AppProvider =({children}) =>{
                 console.log('Erro ao buscar os dados: ',Storeerror);
             }
             else{
-                setStore(dataStore.map((product)=>product));
+                setStore(dataStore.sort((a,b)=>b.name<a.name?1:b.name>a.name?-1:0));
             }
         }
         
@@ -22,7 +23,7 @@ export const AppProvider =({children}) =>{
         getStoreData()
     },[User])
   return (
-    <AppContext.Provider value={{storeData,getStoreData}}>
+    <AppContext.Provider value={{storeData,getStoreData,Cart,setCart}}>
         {children}
     </AppContext.Provider>
   )

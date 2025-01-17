@@ -20,7 +20,7 @@ const HomePage = styled.div`
 `
 function App() {
   const [currentRendering, setcurrentRendering] = useState('products')
-  const title = {user:'Dados pessoais',products:'Produtos Cadastrados',sell:"Vender"}
+  const title = {user:'Dados pessoais',products:'Estoque de Produtos',sell:"Vender"}
   const handleChangeScreen = (set, value) => {
     set(value)
   }
