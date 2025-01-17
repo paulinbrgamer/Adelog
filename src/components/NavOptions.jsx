@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 const OptionsConatiner = styled.nav`
 display:flex;
-justify-content:space-evenly;
+justify-content:space-around;
 padding:10px;
 position:fixed;
 bottom:0px;

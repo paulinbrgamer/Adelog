@@ -24,15 +24,16 @@ const ProductContainer = styled.div`
 `
 const ProductComponent = ({ data }) => {
     const [isModalOpen, setisModalOpen] = useState(false)
-    const [isOnCart,setisOnCart] = useState(false)
     const {Cart,setCart} = useApp()
-    const [Units,setUnits] = useState(0)
+    const [Units,setUnits] = useState(null)
     const handleFinalizeUnits=()=>{
-        let newState = Cart?.filter((Obj)=>Obj.id !=data.id)
-        newState.push({...data,units:Units})
-        console.log(newState);
-        setCart(newState)
-        setisModalOpen(false)
+        if(Units>0){
+            let newState = Cart?.filter((Obj)=>Obj.id !=data.id)
+            newState.push({...data,units:Units})
+            console.log(newState);
+            setCart(newState)
+            setisModalOpen(false)
+        }
     }
     return (
         <ProductContainer>
