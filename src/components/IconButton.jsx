@@ -12,9 +12,9 @@ cursor: pointer;
     }
 
 `
-export default function IconButton({children,onclick,color}) {
+export default function IconButton({children,onclick,style}) {
   return (
-    <Button $color={color} onClick={onclick}>
+    <Button style={style} onClick={onclick}>
         {children}
     </Button>
   )

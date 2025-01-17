@@ -7,6 +7,7 @@ export const AppProvider =({children}) =>{
     const [storeData,setStore] = useState([])
     const [Cart,setCart] = useState([])
     const {User} = useAuth();
+
     const getStoreData = async()=>{
         if(User){
             const {data:dataStore, error:Storeerror} = await supabase.from('products').select('*').eq('store_id',User.store_id )
