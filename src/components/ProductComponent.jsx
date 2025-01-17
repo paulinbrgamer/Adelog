@@ -54,8 +54,10 @@ const ProductComponent = ({ data }) => {
                 null
             }
             <Title>{data.name}</Title>
+
             <p style={{ color: 'gray', fontWeight: '400', gridColumn: '1/2', gridRow: "2/4", fontSize: '10pt' }}>Unidades: {data.units}</p>
-            <ShoppingCart onClick={() => setisModalOpen(true)} size={22} color="white" style={{ padding: '4px', backgroundColor: 'black', borderRadius: '4px', gridRow: '2/3', gridColumn: "2/3", alignContent: "end", marginLeft: 'auto' }} />
+
+           {data.units>0? <ShoppingCart onClick={() => setisModalOpen(true)} size={22} color="white" style={{ padding: '4px', backgroundColor: 'black', borderRadius: '4px', gridRow: '2/3', gridColumn: "2/3", alignContent: "end", marginLeft: 'auto' }} />:null}
             <Title style={{ gridColumn: '2/3', gridRow: "1/2", textAlign: 'end', alignContent: "end" }}>R$ {data.price.toFixed(2)}</Title>
         </ProductContainer>
     )

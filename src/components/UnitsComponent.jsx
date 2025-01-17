@@ -14,14 +14,13 @@ export default function UnitsComponent({data,set}) {
     const input = useRef()
 
     useEffect(() => {
-        if (Units?Units>data.units || Units<=0:null){
+        if (Units?Units>data.units || Units<=0:null ){
             settoast(true)
             setTimeout(() => {
             settoast(false)
             }, 1500)
-            setUnits(0)
-            set(Units)
-            input.current.value = 0
+            input.current.value = 1
+            setUnits(Number(input.current.value))            
 
         }
         else{
