@@ -1,9 +1,9 @@
-import { useEffect, createContext,useState } from "react";
+import { useEffect, createContext,useState,useContext } from "react";
 import { useAuth } from "../auth/Authprovider";
 import { supabase } from "../services/cliente";
 const AppContext = createContext()
 
-function AppProvider({children}) {
+export const AppProvider =({children}) =>{
     const [storeData,setStore] = useState([])
     const {User} = useAuth();
     const getStoreData = async()=>{
@@ -19,7 +19,6 @@ function AppProvider({children}) {
         
     }
     useEffect( () => {
-        
         getStoreData()
     },[User])
   return (
@@ -29,4 +28,4 @@ function AppProvider({children}) {
   )
 }
 
-export default AppProvider
+export const useApp=()=>useContext(AppContext)

@@ -3,14 +3,13 @@ import {styled} from 'styled-components'
 import { fdInOut } from './FdInOt'
 const StyledContainer = styled.div`
 background-color: white;
-width:90%;
+width:95%;
 height:  ${(props) => props.$height };
 border: ${(props) => props.$border };
 display: flex;
 align-items: ${(props) => props.$just };
 flex-direction: column;
 justify-content:${(props) => props.$aligh };
-padding: 14px;
 border-radius: 6px;
 opacity: 1;
 animation: ${fdInOut} 300ms ease;

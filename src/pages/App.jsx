@@ -6,7 +6,7 @@ import { PackageSearch, User, Store } from 'lucide-react';
 import UserScreen from './UserScreen'
 import SellScreen from './SellScreen'
 import ProductsScreen from './ProductsScreen'
-import AppProvider from './AppProvider';
+import { AppProvider } from './AppProvider';
 
 const HomePage = styled.div`
     display:flex;

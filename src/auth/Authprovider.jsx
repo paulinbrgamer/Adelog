@@ -40,7 +40,6 @@ export const AuthProvider = ({children})=>{
             login({'key':session.key},null)
           }
     }, [])
-    
     const values = {User,login,logout}
 
     return(
@@ -48,5 +47,6 @@ export const AuthProvider = ({children})=>{
             {children}
         </AuthContext.Provider>
     )
+
 }
 export const useAuth=()=>useContext(AuthContext)
