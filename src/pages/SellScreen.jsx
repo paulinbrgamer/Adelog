@@ -68,9 +68,9 @@ export default function SellScreen() {
           setTimeout(() => {
             setisFinished(false)
             setCart([])
+          setisAproved(true)
             
           }, 800);
-          setisAproved(true)
           setTimeout(() => {
             setisAproved(false)
           }, 1500);
