@@ -21,7 +21,7 @@ export default function ProductsScreen() {
     }, 300);
 
     return ()=>clearTimeout(timeoutId)
-  },[search])
+  },[search,storeData])
   return (
     <Container border={'none'} just={'center'} aligh={'start'} height={'calc(100% - 140px)'}>
 

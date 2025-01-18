@@ -22,6 +22,18 @@ export const AppProvider =({children}) =>{
     }
     useEffect( () => {
         getStoreData()
+        const subscription = supabase.channel('products:update').on(
+            'postgres_changes',
+            {event:'*',schema:'public',table:'products'},
+            (payload)=>{
+                getStoreData()
+                
+            }
+        ).subscribe()
+
+        return()=>{
+            supabase.removeChannel(subscription)
+        }
     },[User])
   return (
     <AppContext.Provider value={{setStore,storeData,getStoreData,Cart,setCart}}>
