@@ -5,7 +5,9 @@ import { useApp } from "./AppProvider";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 const Products = styled.div`
-
+  width:90%;
+  overflow-y:scroll;
+  padding:10px;
 `
 export default function ProductsScreen() {
   const {storeData} = useApp()
@@ -24,7 +26,7 @@ export default function ProductsScreen() {
     <Container border={'none'} just={'center'} aligh={'start'} height={'calc(100% - 140px)'}>
 
       <SearchComponent onChange={setSearch}/>
-      <Products style={{width:"90%",overflowY:"scroll",padding:"10px",}}>
+      <Products >
         {search?filteredProducts?.map((obj,id)=>
         <ProductComponent cart key={obj?.id || id} data={obj}/>
         ):storeData.map((obj,id)=>
