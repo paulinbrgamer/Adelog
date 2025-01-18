@@ -23,20 +23,22 @@ export default function SellScreen() {
   }
   return (
     <Container border={'none'} height={'calc(100% - 140px)'}>
-        <Title>Items: {Cart.length}</Title>
-
+        <Title>Items: {Cart.length}</Title> 
       <Products>
         {Cart.map((item)=>
           <ProductComponent trash key={item.id+'cart'} data={item}/>
         )}
       </Products>
-      {Cart.length>0?<div style={{display:'flex',justifyContent:"space-evenly",padding:"6px"}}>
+      {Cart.length>0?<div style={{display:'flex',flexDirection:"column",justifyContent:"space-evenly",padding:"6px"}}>
+      <Title>Total: R$ {Cart.reduce((acc,obj)=>acc+=obj.price,0).toFixed(2)}</Title>
+        <div style={{display:'flex',justifyContent:"space-evenly",padding:"6px"}}>
         <IconButton style={{padding:'4px'}} onclick={()=>handleCancel()}>
           <p style={{ fontWeight:'normal', fontSize: "12pt" }}>Cancelar</p>
         </IconButton>
         <IconButton style={{padding:'4px'}}>
           <Title>Finalizar</Title>
         </IconButton>
+        </div>
       </div>:null}
     </Container>
   )
