@@ -31,14 +31,7 @@ const ProductComponent = ({ data }) => {
     const handleFinalizeUnits = () => {
         if (Units > 0) {
             let newState = Cart?.filter((Obj) => Obj.id != data.id)
-            let newStore = storeData
-            setStore(newStore.map(element =>{
-                if(element.id == data.id){
-                    element.units -= Units
-                }
-                return element
-            }))
-            newState.push({ ...data, units: Units })
+            newState.push({ ...data, units: Units,price:Number(Units*data.price)})
             setCart(newState)
             setisModalOpen(false)
             setisToastOn(true)
@@ -46,6 +39,7 @@ const ProductComponent = ({ data }) => {
                 setisToastOn(false)
             }, 1500);
         }
+
     }
     return (
         <ProductContainer>
@@ -56,12 +50,12 @@ const ProductComponent = ({ data }) => {
                     <Title>Unidades de {data.name}:</Title>
                     <ShoppingCart />
                     <UnitsComponent data={data} set={setUnits} />
-                    <div style={{ display: 'flex', flexDirection: "row", gap: '20px' }}>
+                    <div style={{ display: 'flex', flexDirection: "row",width: '90%',alignContent: 'center',justifyContent: 'space-between'}}>
+                        <IconButton onclick={() => setisModalOpen(false)} style={{ gridRow: "2/2" }}>
+                            <p style={{ fontWeight:'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
+                        </IconButton>
                         <IconButton onclick={() => handleFinalizeUnits()} style={{ gridRow: "2/2" }}>
                             <p style={{ fontWeight: 'bold', marginTop: "8px", fontSize: "12pt" }}>Finalizar</p>
-                        </IconButton>
-                        <IconButton onclick={() => setisModalOpen(false)} style={{ gridRow: "2/2" }}>
-                            <p style={{ fontWeight: 'bold', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
                         </IconButton>
                     </div>
                 </ModalComponent> :
