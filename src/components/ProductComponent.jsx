@@ -50,7 +50,7 @@ const ProductComponent = ({ data, cart, trash }) => {
         <ProductContainer>
             {isToastOn ? <Toast style={{ justifySelf: 'center' }} message={'Produto adicionado'} color={'#008300'} /> : null}
 
-            {isModalOpen ?
+            {isModalOpen && data.units>0 ?
                 <ModalComponent>
                     <Title>Unidades de {data.name}:</Title>
                     <ShoppingCart />

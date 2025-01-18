@@ -27,7 +27,7 @@ export default function UnitsComponent({data,set}) {
         else{
             set(Units)
         }
-    }, [Units])
+    }, [Units,data])
     useEffect(() => {
         input.current.focus()
     }, [])
