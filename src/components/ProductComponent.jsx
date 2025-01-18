@@ -23,7 +23,7 @@ const ProductContainer = styled.div`
     gap: 4px;
     animation: ${fdInOut} 300ms ease-in-out;
 `
-const ProductComponent = ({ data }) => {
+const ProductComponent = ({ data,cart }) => {
     const [isModalOpen, setisModalOpen] = useState(false)
     const [isToastOn, setisToastOn] = useState(false)
     const { setStore,storeData,Cart,setCart } = useApp()
@@ -43,14 +43,14 @@ const ProductComponent = ({ data }) => {
     }
     return (
         <ProductContainer>
-            {isToastOn ? <Toast style={{ justifySelf: 'center' }} message={'Produto adicionado'} color={'#006400'} /> : null}
+            {isToastOn ? <Toast style={{ justifySelf: 'center' }} message={'Produto adicionado'} color={'#008300'} /> : null}
 
             {isModalOpen ?
                 <ModalComponent>
                     <Title>Unidades de {data.name}:</Title>
                     <ShoppingCart />
                     <UnitsComponent data={data} set={setUnits} />
-                    <div style={{ display: 'flex', flexDirection: "row",width: '90%',alignContent: 'center',justifyContent: 'space-between'}}>
+                    <div style={{ display: 'flex', flexDirection: "row",width: '90%',alignContent: 'center',justifyContent: 'space-between',padding:"4px"}}>
                         <IconButton onclick={() => setisModalOpen(false)} style={{ gridRow: "2/2" }}>
                             <p style={{ fontWeight:'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
                         </IconButton>
@@ -65,7 +65,7 @@ const ProductComponent = ({ data }) => {
 
             <p style={{ color: 'gray', fontWeight: '400', gridColumn: '1/2', gridRow: "2/4", fontSize: '10pt' }}>Unidades: {data?.units}</p>
 
-            {data?.units > 0 ? <ShoppingCart onClick={() => setisModalOpen(true)} size={22} color="white" style={{ padding: '4px', backgroundColor: 'black', borderRadius: '4px', gridRow: '2/3', gridColumn: "2/3", alignContent: "end", marginLeft: 'auto' }} /> : null}
+            {data?.units > 0 && cart ? <ShoppingCart onClick={() => setisModalOpen(true)} size={22} color="white" style={{ padding: '4px', backgroundColor: 'black', borderRadius: '4px', gridRow: '2/3', gridColumn: "2/3", alignContent: "end", marginLeft: 'auto' }} /> : null}
             <Title style={{ gridColumn: '2/3', gridRow: "1/2", textAlign: 'end', alignContent: "start", textWrap: "nowrap" }}>R$ {data?.price.toFixed(2)}</Title>
         </ProductContainer>
     )

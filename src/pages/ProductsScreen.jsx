@@ -26,9 +26,9 @@ export default function ProductsScreen() {
       <SearchComponent onChange={setSearch}/>
       <Products style={{width:"90%",overflowY:"scroll",padding:"10px",}}>
         {search?filteredProducts?.map((obj,id)=>
-        <ProductComponent  key={obj?.id || id} data={obj}/>
+        <ProductComponent cart key={obj?.id || id} data={obj}/>
         ):storeData.map((obj,id)=>
-        <ProductComponent  key={obj?.id || id} data={obj}/>
+        <ProductComponent cart key={obj?.id || id} data={obj}/>
         )}
       </Products>
     </Container>

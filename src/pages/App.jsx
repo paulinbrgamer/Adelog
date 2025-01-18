@@ -2,7 +2,7 @@ import NavOptions from '../components/NavOptions'
 import styled from 'styled-components'
 import IconButton from '../components/IconButton'
 import { useState } from 'react'
-import { PackageSearch, User, Store } from 'lucide-react';
+import { PackageSearch, User, Store, ShoppingCart } from 'lucide-react';
 import UserScreen from './UserScreen'
 import SellScreen from './SellScreen'
 import ProductsScreen from './ProductsScreen'
@@ -20,10 +20,11 @@ const HomePage = styled.div`
 `
 function App() {
   const [currentRendering, setcurrentRendering] = useState('products')
-  const title = {user:'Dados pessoais',products:'Estoque de Produtos',sell:"Vender"}
+  const title = {user:'Dados pessoais',products:'Estoque de Produtos',sell:"Carrinho de compras"}
   const handleChangeScreen = (set, value) => {
     set(value)
   }
+  
   return (
     <AppProvider>
       <HomePage  >
@@ -33,17 +34,17 @@ function App() {
         <NavOptions>
           <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'user')}>
             <User size={26} strokeWidth={1} fill={currentRendering=='user'?'black':'white'} color={currentRendering=='user'?'black':'gray'} />
-            <p>Conta</p>
+            <p style={{color:currentRendering=='user'?'black':'gray'}}>Conta</p>
           </IconButton>
 
           <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'products')}>
-            <PackageSearch size={26} strokeWidth={1} stroke={currentRendering=='products'?'white':'black'} fill={currentRendering=='products'?'black':'white'} color={currentRendering=='products'?'black':'gray'} />
-            <p>Produtos</p>
+            <PackageSearch size={26} strokeWidth={1} stroke={currentRendering=='products'?'white':'gray'} fill={currentRendering=='products'?'black':'white'} color={currentRendering=='products'?'black':'gray'} />
+            <p style={{color:currentRendering=='products'?'black':'gray'}}>Produtos</p>
           </IconButton>
 
           <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'sell')}>
-            <Store size={26} stroke={currentRendering=='sell'?'white':'black'} strokeWidth={1} fill={currentRendering=='sell'?'black':'white'} color={currentRendering=='sell'?'black':'gray'}/>
-            <p>Vender</p>
+            <ShoppingCart size={26} stroke={currentRendering=='sell'?'black':'gray'} strokeWidth={1.3} fill={currentRendering=='sell'?'black':'white'} color={currentRendering=='sell'?'black':'gray'}/>
+            <p style={{color:currentRendering=='sell'?'black':'gray'}}>Carrinho</p>
           </IconButton>
         </NavOptions>
       </HomePage>
