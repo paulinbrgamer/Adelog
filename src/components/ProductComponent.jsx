@@ -31,9 +31,13 @@ const ProductComponent = ({ data }) => {
     const handleFinalizeUnits = () => {
         if (Units > 0) {
             let newState = Cart?.filter((Obj) => Obj.id != data.id)
-                
-            storeData.map(element =>element.id == data.id?element.units -= Units:null)
-            console.log(storeData);
+            let newStore = storeData
+            setStore(newStore.map(element =>{
+                if(element.id == data.id){
+                    element.units -= Units
+                }
+                return element
+            }))
             newState.push({ ...data, units: Units })
             setCart(newState)
             setisModalOpen(false)
