@@ -24,7 +24,7 @@ export const AppProvider =({children}) =>{
         getStoreData()
     },[User])
   return (
-    <AppContext.Provider value={{storeData,getStoreData,Cart,setCart}}>
+    <AppContext.Provider value={{setStore,storeData,getStoreData,Cart,setCart}}>
         {children}
     </AppContext.Provider>
   )

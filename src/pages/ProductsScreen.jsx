@@ -1,7 +1,6 @@
 import Container from "../components/Container";
 import SearchComponent from "../components/SearchComponent";
 import ProductComponent from "../components/ProductComponent";
-import ModalComponent from "../components/ModalComponent";
 import { useApp } from "./AppProvider";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
@@ -26,10 +25,10 @@ export default function ProductsScreen() {
 
       <SearchComponent onChange={setSearch}/>
       <Products style={{width:"90%",overflowY:"scroll",padding:"10px",}}>
-        {search?filteredProducts?.map((obj)=>
-        <ProductComponent  key={obj.id} data={obj}/>
-        ):storeData.map((obj)=>
-        <ProductComponent  key={obj.id} data={obj}/>
+        {search?filteredProducts?.map((obj,id)=>
+        <ProductComponent  key={obj?.id || id} data={obj}/>
+        ):storeData.map((obj,id)=>
+        <ProductComponent  key={obj?.id || id} data={obj}/>
         )}
       </Products>
     </Container>

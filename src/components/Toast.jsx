@@ -34,9 +34,9 @@ const ToastContainer = styled.div`
   color:white;
   animation: ${fdInOut} 1.6s ease-in-out;
 `
-function Toast({message,color}) {
+function Toast({message,color,style}) {
   return (
-    <ToastContainer $color={color}>{message}</ToastContainer>
+    <ToastContainer style={style} $color={color}>{message}</ToastContainer>
   )
 }
 
