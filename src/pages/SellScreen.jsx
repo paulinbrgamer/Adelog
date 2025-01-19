@@ -50,28 +50,24 @@ export default function SellScreen() {
   }
   const handleFinalize = async() => {
     setisFinished(true)
-
-    const update = Cart.map((item)=>{
-      const current = storeData.filter(data=>data.id==item.id)
-      const newItem = {id:item.id,units:current[0].units-item.units}
-            setStore(storeData.map(data=>{
-        if(data.id==item.id){
-          data.units = data.units - item.units
-        }
-        return data
-      }))
-      return newItem
-    })    
-    update.forEach(async (item )=> {
-      const {data,error} = await supabase.from('productss').update({units:item.units}).eq('id',item.id)
+    Cart.forEach(async (item )=> {
+      const currentvalue = storeData.filter((data)=>data.id==item.id)
+      const {data,error} = await supabase.from('products').update({units:currentvalue[0].units -item.units}).eq('id',item.id)
       if (error) {
         setisFinished(false)
         setisError(true)
         setTimeout(() => {
           setisError(false)
         }, 1500);
+        
       }
       else{
+        setStore(storeData.map((updateddata)=>{
+          if(updateddata.id == item.id){
+            updateddata.units -= item.units
+          }
+          return updateddata
+        }))
           setTimeout(() => {
             setisFinished(false)
             setCart([])
