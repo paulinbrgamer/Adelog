@@ -26,8 +26,8 @@ export const AppProvider =({children}) =>{
             'postgres_changes',
             {event:'*',schema:'public',table:'products'},
             (payload)=>{
+
                 getStoreData()
-                
             }
         ).subscribe()
 

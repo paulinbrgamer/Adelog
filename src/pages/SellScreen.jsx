@@ -1,4 +1,4 @@
-import { useState,useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useApp } from './AppProvider'
 import ProductComponent from '../components/ProductComponent'
 import {styled,keyframes} from 'styled-components'
@@ -44,13 +44,22 @@ export default function SellScreen() {
   const [isFinished, setisFinished] = useState(false)
   const [isError,setisError] = useState(false)
   const [isAproved,setisAproved] = useState(false)
-
+  useEffect(() => {
+    setCart(Cart.filter(item=>{
+      const current = storeData.filter((data)=>data.id==item.id)
+      if(item.units<= current[0].units){
+        return item
+      }
+    }))
+    
+  }, [storeData])
   const handleCancel = () => {
     setCart([])
   }
   const handleFinalize = async() => {
     setisFinished(true)
     Cart.forEach(async (item )=> {
+
       const currentvalue = storeData.filter((data)=>data.id==item.id)
       const {data,error} = await supabase.from('products').update({units:currentvalue[0].units -item.units}).eq('id',item.id)
       if (error) {
