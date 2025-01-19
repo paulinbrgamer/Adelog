@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useRef, useEffect } from 'react'
 import { useApp } from './AppProvider'
 import ProductComponent from '../components/ProductComponent'
 import {styled,keyframes} from 'styled-components'
@@ -42,12 +42,15 @@ const Products = styled.div`
 export default function SellScreen() {
   const { Cart, setCart,storeData,setStore } = useApp()
   const [isFinished, setisFinished] = useState(false)
+  const [isError,setisError] = useState(false)
   const [isAproved,setisAproved] = useState(false)
+
   const handleCancel = () => {
     setCart([])
   }
   const handleFinalize = async() => {
     setisFinished(true)
+
     const update = Cart.map((item)=>{
       const current = storeData.filter(data=>data.id==item.id)
       const newItem = {id:item.id,units:current[0].units-item.units}
@@ -60,9 +63,13 @@ export default function SellScreen() {
       return newItem
     })    
     update.forEach(async (item )=> {
-      const {data,error} = await supabase.from('products').update({units:item.units}).eq('id',item.id)
+      const {data,error} = await supabase.from('productss').update({units:item.units}).eq('id',item.id)
       if (error) {
-        console.log('Erro : ',error);
+        setisFinished(false)
+        setisError(true)
+        setTimeout(() => {
+          setisError(false)
+        }, 1500);
       }
       else{
           setTimeout(() => {
@@ -88,6 +95,7 @@ export default function SellScreen() {
         </ModalComponent> : null
       }
       {isAproved?<Toast message={'Venda Concluida'} color={'#008300'}/>:null}
+      {isError?<Toast message={'Erro, venda não registrada'} color={'#e02323'}/>:null}
       <Title>Items: {Cart.length}</Title>
       <Products>
         {Cart.map((item) =>
