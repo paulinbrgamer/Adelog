@@ -7,6 +7,7 @@ import IconButton from '../components/IconButton'
 import ModalComponent from '../components/ModalComponent'
 import { supabase } from "../services/cliente";
 import Toast from '../components/Toast'
+const session = JSON.parse(localStorage.getItem('user'))
 const spin = keyframes`
       0% {
         transform: rotate(0deg);
@@ -59,7 +60,6 @@ export default function SellScreen() {
   const handleFinalize = async() => {
     setisFinished(true)
     Cart.forEach(async (item )=> {
-
       const currentvalue = storeData.filter((data)=>data.id==item.id)
       const {data,error} = await supabase.from('products').update({units:currentvalue[0].units -item.units}).eq('id',item.id)
       if (error) {
@@ -71,6 +71,14 @@ export default function SellScreen() {
         
       }
       else{
+        const {id,...rest} = item
+        const date = new Date()
+        const sale = {...rest,user_id:session.id,store_id:session.store_id,date:date.toISOString()}
+        const {data:newsale,error:saleError} = await supabase.from('sales').insert([sale])
+        if(saleError){
+          console.log('Error sale : ',saleError)
+          
+        }
         setStore(storeData.map((updateddata)=>{
           if(updateddata.id == item.id){
             updateddata.units -= item.units
