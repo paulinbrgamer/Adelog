@@ -7,6 +7,7 @@ import IconButton from '../components/IconButton'
 import ModalComponent from '../components/ModalComponent'
 import { supabase } from "../services/cliente";
 import Toast from '../components/Toast'
+import { data } from 'react-router-dom'
 const session = JSON.parse(localStorage.getItem('user'))
 const spin = keyframes`
       0% {
@@ -54,15 +55,17 @@ export default function SellScreen() {
     }))
     
   }, [storeData])
+
   const handleCancel = () => {
     setCart([])
   }
   const handleFinalize = async() => {
     setisFinished(true)
     Cart.forEach(async (item )=> {
-      const currentvalue = storeData.filter((data)=>data.id==item.id)
-      const {data,error} = await supabase.from('products').update({units:currentvalue[0].units -item.units}).eq('id',item.id)
+      const {data,error} = await supabase.rpc('decrement_stock',{product_id:item.id,quantity:item.units})
       if (error) {
+        console.log(item);
+        
         setisFinished(false)
         setisError(true)
         setTimeout(() => {
@@ -73,12 +76,15 @@ export default function SellScreen() {
       else{
         const {id,...rest} = item
         const date = new Date()
+        console.log(date.toISOString());
+        
         const sale = {...rest,user_id:session.id,store_id:session.store_id,date:date.toISOString()}
         const {data:newsale,error:saleError} = await supabase.from('sales').insert([sale])
         if(saleError){
           console.log('Error sale : ',saleError)
           
         }
+
         setStore(storeData.map((updateddata)=>{
           if(updateddata.id == item.id){
             updateddata.units -= item.units
@@ -87,7 +93,6 @@ export default function SellScreen() {
         }))
           setTimeout(() => {
             setisFinished(false)
-            setCart([])
           setisAproved(true)
             
           }, 800);
@@ -95,7 +100,8 @@ export default function SellScreen() {
             setisAproved(false)
           }, 1500);
       }
-    });
+    }); 
+    setCart([])
   }
 
   return (
