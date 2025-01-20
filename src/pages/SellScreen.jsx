@@ -46,37 +46,28 @@ export default function SellScreen() {
   const [isFinished, setisFinished] = useState(false)
   const [isError,setisError] = useState(false)
   const [isAproved,setisAproved] = useState(false)
-  useEffect(() => {
-    setCart(Cart.filter(item=>{
-      const current = storeData.filter((data)=>data.id==item.id)
-      if(item.units<= current[0].units){
-        return item
-      }
-    }))
-    
-  }, [storeData])
+
 
   const handleCancel = () => {
     setCart([])
   }
   const handleFinalize = async() => {
     setisFinished(true)
+    let errorCart = []
     Cart.forEach(async (item )=> {
       const {data,error} = await supabase.rpc('decrement_stock',{product_id:item.id,quantity:item.units})
       if (error) {
-        console.log(item);
-        
+        errorCart.push(item)
         setisFinished(false)
         setisError(true)
         setTimeout(() => {
           setisError(false)
+
         }, 1500);
-        
       }
       else{
         const {id,...rest} = item
         const date = new Date()
-        console.log(date.toISOString());
         
         const sale = {...rest,user_id:session.id,store_id:session.store_id,date:date.toISOString()}
         const {data:newsale,error:saleError} = await supabase.from('sales').insert([sale])
@@ -84,7 +75,6 @@ export default function SellScreen() {
           console.log('Error sale : ',saleError)
           
         }
-
         setStore(storeData.map((updateddata)=>{
           if(updateddata.id == item.id){
             updateddata.units -= item.units
@@ -101,7 +91,7 @@ export default function SellScreen() {
           }, 1500);
       }
     }); 
-    setCart([])
+    setCart(errorCart)
   }
 
   return (
@@ -114,7 +104,7 @@ export default function SellScreen() {
         </ModalComponent> : null
       }
       {isAproved?<Toast message={'Venda Concluida'} color={'#008300'}/>:null}
-      {isError?<Toast message={'Erro, venda não registrada'} color={'#e02323'}/>:null}
+      {isError?<Toast message={'Erro, Unidade de produto Inválida'} color={'#e02323'}/>:null}
       <Title>Items: {Cart.length}</Title>
       <Products>
         {Cart.map((item) =>

@@ -9,11 +9,11 @@ export const AppProvider =({children}) =>{
     const {User} = useAuth();
 
     useEffect(() => {
-        console.log("-----Alteração do storeData")
-        console.log(storeData);
+        console.log("-----Alteração do carro")
+        console.log(Cart);
         console.log(" ")
         
-    }, [storeData]);
+    }, [Cart]);
     const getStoreData = async()=>{
         if(User){
             const {data:dataStore, error:Storeerror} = await supabase.from('products').select('*').eq('store_id',User.store_id )
