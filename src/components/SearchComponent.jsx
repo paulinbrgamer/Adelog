@@ -18,11 +18,11 @@ const Container = styled.div`
 export default function SearchComponent({onChange}) {
   return (
     <Container>
-              <IconButton>
+
+        <input onChange={(e)=>onChange(e.target.value)} type="text" style={{border:'none',backgroundColor:'transparent',width:'100%',fontSize:'14pt',textIndent:'10px',outline:'none',color:"gray"} }placeholder='Pesquisar produtos'/>
+        <IconButton>
             <Search color="#6B6B6B"/>
         </IconButton>
-        <input onChange={(e)=>onChange(e.target.value)} type="text" style={{border:'none',backgroundColor:'transparent',width:'100%',fontSize:'14pt',textIndent:'10px',outline:'none',color:"gray"} }placeholder='Pesquisar produtos'/>
-
     </Container>
   )
 }

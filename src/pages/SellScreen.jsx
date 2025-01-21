@@ -91,7 +91,7 @@ export default function SellScreen() {
   }
 
   return (
-    <Container shadow = {'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'}  border={'none'} just={'center'} aligh={'start'} height={'calc(100% - 140px)'}>
+    <Container shadow = {'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'}  border={'none'} just={'center'} aligh={'start'} height={'calc(100% - 160px)'}>
       {isFinished ?
         <ModalComponent>
           <ContainerL>
