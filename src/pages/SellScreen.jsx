@@ -37,6 +37,7 @@ const Title = styled.p`
     `
 const Products = styled.div`
   width:90%;
+  height: 100%;
   overflow-y:scroll;
   padding:10px;
   box-sizing: border-box;
@@ -90,7 +91,7 @@ export default function SellScreen() {
   }
 
   return (
-    <Container border={'none'} just={'center'} aligh={'start'} height={'calc(100% - 140px)'}>
+    <Container shadow = {'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'}  border={'none'} just={'center'} aligh={'start'} height={'calc(100% - 140px)'}>
       {isFinished ?
         <ModalComponent>
           <ContainerL>
@@ -109,12 +110,12 @@ export default function SellScreen() {
       {Cart.length > 0 ? 
       <div style={{ display: 'flex', flexDirection: "column", justifyContent: "space-evenly", padding: "6px" ,width:"100%" }}>
         <Title>Total: R$ {Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)}</Title>
-        <div style={{ display: 'flex', justifyContent: "space-evenly", padding: "6px",width:"100%" }}>
-          <IconButton style={{ padding: '4px' }} onclick={() => handleCancel()}>
+        <div style={{ display: 'flex', justifyContent: "center", padding: "6px",width:"100%",gap:"60px" }}>
+          <IconButton style={{ padding: '4px' ,border:"1px solid ",borderRadius:'4px'}} onclick={() => handleCancel()}>
             <p style={{ fontWeight: 'normal', fontSize: "12pt" }}>Cancelar</p>
           </IconButton>
-          <IconButton onclick={() => handleFinalize()} style={{ padding: '4px' }}>
-            <Title>Finalizar</Title>
+          <IconButton onclick={() => handleFinalize()} style={{padding: '6px' ,border:"1px solid ",borderRadius:'4px',backgroundColor:"black"}}>
+              <p style={{ fontWeight: 'normal', fontSize: "12pt" ,color:'white'}}>Finalizar</p>
           </IconButton>
         </div>
       </div> : null}

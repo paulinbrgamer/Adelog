@@ -16,11 +16,13 @@ animation: ${fdInOut} 300ms ease;
 @media (min-width: 600px) {
     justify-content: ${(props) => props.$aligh?props.$aligh:'center' };
     gap: 50px;
+    box-shadow: ${(props) => props.$shadow?props.$shadow:'none'};
+    padding: 10px;
   }
 `
-export default function Container({children,just,height,aligh,border}) {
+export default function Container({children,just,height,aligh,border,shadow,style}) {
 
   return (
-    <StyledContainer $border={border?border:`1px solid #6e6e6e`} $height={height} $aligh={aligh} $just={just}>{children}</StyledContainer>
+    <StyledContainer style={style} $shadow={shadow} $border={border?border:`1px solid #6e6e6e`} $height={height} $aligh={aligh} $just={just}>{children}</StyledContainer>
   )
 }

@@ -28,7 +28,7 @@ export default function UserScreen() {
     
   return (
     <>
-    <Container border={'none'} just={'center'} aligh={'space-evenly'} height={"50dvh"}>
+    <Container shadow = {'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'}  border={'none'} just={'center'} aligh={'space-evenly'} height={'calc(100% - 140px)'}>
 
         <Container just={'center'} border={'none'}>
         <img style={{objectFit: 'cover',objectPosition: 'top'}} width={290} src="https://stories.freepiklabs.com/api/vectors/take-away/bro/render?color=37474FFF&background=complete&hide=" alt="" />

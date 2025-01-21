@@ -5,22 +5,7 @@ import { supabase } from "../services/cliente"
 import { fdInOut } from "../components/FdInOt"
 import TableComponent from "../components/TableComponent"
 import { useApp } from "./AppProvider"
-    
-const Container = styled.div`
-    background-color: white;
-    width: clamp(100px,95%,900px);
-    height:  ${(props) => props.$height };
-    border: ${(props) => props.$border };
-    display: flex;
-    align-items: ${(props) => props.$just };
-    flex-direction: column;
-    justify-content:${(props) => props.$aligh };
-    border-radius: 6px;
-    opacity: 1;
-    overflow: scroll;
-    animation: ${fdInOut} 300ms ease;
-    
-`
+import Container from "../components/Container"
 const Title = styled.p`
 font-weight: 600;
 font-size: 12pt ;
@@ -50,7 +35,7 @@ const SalesComponent = ()=>{
     }, [User,storeData])
     
     return (
-        <Container $border={'none'} $height={'calc(100% - 140px)'}>
+        <Container shadow = {'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'} border={'none'} height={'calc(100% - 140px)'} style={{overflow:'scroll'}} aligh={'none'}>
             <TableComponent data={sales} header={['Nome','Unidades','Total(R$)','Data']}/>
         </Container>
     )

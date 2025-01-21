@@ -5,7 +5,6 @@ const Table = styled.table`
 
 `
 const Tbody = styled.tbody`
-
 `
 const Thead = styled.thead`
 

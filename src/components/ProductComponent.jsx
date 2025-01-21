@@ -16,7 +16,6 @@ const ProductContainer = styled.div`
     width: 100%;
     border-radius: 4px;
     margin-bottom: 8px;
-    padding: 4px;
     grid-template-rows: 1fr 1fr 1fr;
     grid-template-columns: 5fr 2fr;
     box-sizing: border-box;
@@ -68,7 +67,16 @@ const ProductComponent = ({ data, cart, trash }) => {
             }
             <Title>{data?.name}</Title>
             <p style={{ color: 'gray', fontWeight: '400', gridColumn: '1/2', gridRow: "2/4", fontSize: '10pt' }}>Unidades: {data?.units}</p>
-            {data?.units > 0 && cart ? <ShoppingCart onClick={() => setisModalOpen(true)} size={22} color="white" style={{ padding: '4px', backgroundColor: 'black', borderRadius: '4px', gridRow: '2/3', gridColumn: "2/3", alignContent: "end", marginLeft: 'auto' }} /> : trash ? <Trash onClick={()=>handleDeleteOnCart()} size={22} color="white" style={{ padding: '4px', backgroundColor: 'rgb(224, 35, 35)', borderRadius: '4px', gridRow: '2/3', gridColumn: "2/3", alignContent: "end", marginLeft: 'auto' }} /> : null}
+            {data?.units > 0 && cart ? 
+            <IconButton onclick={() => setisModalOpen(true)}  style={{ padding: '4px', backgroundColor: 'black', borderRadius: '4px', gridRow: '2/3', gridColumn: "2/3", alignContent: "end", marginLeft: 'auto' }}>
+                <ShoppingCart size={22} color="white"  /> 
+            </IconButton>
+            : trash ? 
+            <IconButton onclick={()=>handleDeleteOnCart()}   style={{ padding: '4px', backgroundColor: 'rgb(224, 35, 35)', borderRadius: '4px', gridRow: '2/3', gridColumn: "2/3", alignContent: "end", marginLeft: 'auto' }}>
+                <Trash size={22} color="white"  /> 
+            </IconButton>
+            
+            : null}
             <Title style={{ gridColumn: '2/3', gridRow: "1/2", textAlign: 'end', alignContent: "start", textWrap: "nowrap" }}>R$ {data?.price.toFixed(2)}</Title>
         </ProductContainer>
     )
