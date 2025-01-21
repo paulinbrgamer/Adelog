@@ -2,7 +2,7 @@ import NavOptions from '../components/NavOptions'
 import styled from 'styled-components'
 import IconButton from '../components/IconButton'
 import { useState } from 'react'
-import { PackageSearch, User, ScrollText , ShoppingCart } from 'lucide-react';
+import { PackageSearch, User, FileText  , ShoppingCart } from 'lucide-react';
 import UserScreen from './UserScreen'
 import SellScreen from './SellScreen'
 import ProductsScreen from './ProductsScreen'
@@ -50,7 +50,7 @@ function App() {
             <p style={{color:currentRendering=='sell'?'black':'gray'}}>Carrinho</p>
           </IconButton>
           <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'sales')}>
-            <ScrollText size={26} stroke={currentRendering=='sales'?'black':'gray'} strokeWidth={1.3} fill={currentRendering=='sales'?'black':'white'} color={currentRendering=='sales'?'black':'gray'}/>
+            <FileText  size={26} stroke={currentRendering=='sales'?'black':'gray'} strokeWidth={1.3} fill={currentRendering=='sales'?'black':'white'} color={currentRendering=='sales'?'black':'gray'}/>
             <p style={{color:currentRendering=='sales'?'black':'gray'}}>Histórico</p>
           </IconButton>
         </NavOptions>
