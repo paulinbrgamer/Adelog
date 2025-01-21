@@ -33,12 +33,12 @@ export default function UserScreen() {
         <Container just={'center'} border={'none'}>
         <img style={{objectFit: 'cover',objectPosition: 'top'}} width={290} src="https://stories.freepiklabs.com/api/vectors/take-away/bro/render?color=37474FFF&background=complete&hide=" alt="" />
         <h3 style={{marginTop:'-30px'}}>Nome: {User?.name}</h3>
-        <Container border={'none'} >
+        <div  >
         <h4>E-mail:</h4>
         <p>{User?.email}</p>
         <h4>Permissão:</h4>
         <p>{User?.permission}</p>
-        </Container>
+        </div>
         </Container>
         
         <IconButton onclick={()=>logout()} >

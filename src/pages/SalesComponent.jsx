@@ -8,7 +8,7 @@ import { useApp } from "./AppProvider"
     
 const Container = styled.div`
     background-color: white;
-    width:95%;
+    width: clamp(100px,95%,900px);
     height:  ${(props) => props.$height };
     border: ${(props) => props.$border };
     display: flex;
@@ -19,6 +19,7 @@ const Container = styled.div`
     opacity: 1;
     overflow: scroll;
     animation: ${fdInOut} 300ms ease;
+    
 `
 const Title = styled.p`
 font-weight: 600;

@@ -36,7 +36,7 @@ const Title = styled.p`
   text-align: center;
     `
 const Products = styled.div`
-  width:100%;
+  width:90%;
   overflow-y:scroll;
   padding:10px;
   box-sizing: border-box;
@@ -90,7 +90,7 @@ export default function SellScreen() {
   }
 
   return (
-    <Container border={'none'} height={'calc(100% - 140px)'}>
+    <Container border={'none'} just={'center'} aligh={'start'} height={'calc(100% - 140px)'}>
       {isFinished ?
         <ModalComponent>
           <ContainerL>
@@ -107,9 +107,9 @@ export default function SellScreen() {
         )}
       </Products>
       {Cart.length > 0 ? 
-      <div style={{ display: 'flex', flexDirection: "column", justifyContent: "space-evenly", padding: "6px" }}>
+      <div style={{ display: 'flex', flexDirection: "column", justifyContent: "space-evenly", padding: "6px" ,width:"100%" }}>
         <Title>Total: R$ {Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)}</Title>
-        <div style={{ display: 'flex', justifyContent: "space-evenly", padding: "6px" }}>
+        <div style={{ display: 'flex', justifyContent: "space-evenly", padding: "6px",width:"100%" }}>
           <IconButton style={{ padding: '4px' }} onclick={() => handleCancel()}>
             <p style={{ fontWeight: 'normal', fontSize: "12pt" }}>Cancelar</p>
           </IconButton>

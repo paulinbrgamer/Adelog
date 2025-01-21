@@ -30,7 +30,7 @@ const Modal = styled.div`
 const ModalContent = styled.div`
     border-radius: 4px;
     position: relative;
-    width: 60%;
+    width: clamp(100px,95%,300px);
     bottom: 5%;
     background-color: white;
     display: flex;

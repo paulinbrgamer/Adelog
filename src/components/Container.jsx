@@ -3,7 +3,7 @@ import {styled} from 'styled-components'
 import { fdInOut } from './FdInOt'
 const StyledContainer = styled.div`
 background-color: white;
-width:95%;
+width: clamp(100px,95%,900px);
 height:  ${(props) => props.$height };
 border: ${(props) => props.$border };
 display: flex;
@@ -13,6 +13,10 @@ justify-content:${(props) => props.$aligh };
 border-radius: 6px;
 opacity: 1;
 animation: ${fdInOut} 300ms ease;
+@media (min-width: 600px) {
+    justify-content: ${(props) => props.$aligh?props.$aligh:'center' };
+    gap: 50px;
+  }
 `
 export default function Container({children,just,height,aligh,border}) {
 
