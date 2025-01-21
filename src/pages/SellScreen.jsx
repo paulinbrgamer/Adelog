@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useApp } from './AppProvider'
 import ProductComponent from '../components/ProductComponent'
 import {styled,keyframes} from 'styled-components'
