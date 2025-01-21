@@ -25,7 +25,7 @@ const ProductContainer = styled.div`
 const ProductComponent = ({ data, cart, trash }) => {
     const [isModalOpen, setisModalOpen] = useState(false)
     const [isToastOn, setisToastOn] = useState(false)
-    const { setStore, storeData, Cart, setCart } = useApp()
+    const {Cart, setCart } = useApp()
     const [Units, setUnits] = useState(null)
     const handleFinalizeUnits = () => {
         if (Units > 0) {

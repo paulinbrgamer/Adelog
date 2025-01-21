@@ -7,7 +7,10 @@ const Table = styled.table`
 const Tbody = styled.tbody`
 `
 const Thead = styled.thead`
-
+    position: sticky;
+      top: 0; /* Fixa o cabeçalho no topo */
+      z-index: 1;
+      background-color: white;
 `
 const Td = styled.td`
     animation: ${fdInOut} 300ms ease-in-out;
@@ -27,10 +30,10 @@ const Tr = styled.tr`
 export default function TableComponent({ data, header }) {
     return (
         <Table>
-            <Thead>
-                <Tr>
+            <Thead >
+                <tr >
                 {header.map(item => <Th key={item}>{item}</Th>)}
-                </Tr>
+                </tr>
             </Thead>
             <Tbody>
                 {data.map((item,idx) => <Tr key={idx}>{Object.keys(item).filter((item) => item !== 'user_id' && item !== 'store_id'&& item !== 'id').map(key => <Td  key={key+idx}>{item[key]}</Td>)}</Tr>)}

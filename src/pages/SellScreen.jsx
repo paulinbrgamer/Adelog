@@ -110,7 +110,7 @@ export default function SellScreen() {
       {Cart.length > 0 ? 
       <div style={{ display: 'flex', flexDirection: "column", justifyContent: "space-evenly", padding: "6px" ,width:"100%" }}>
         <Title>Total: R$ {Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)}</Title>
-        <div style={{ display: 'flex', justifyContent: "center", padding: "6px",width:"100%",gap:"60px" }}>
+        <div style={{ display: 'flex', justifyContent: "center",width:"100%",gap:"60px" }}>
           <IconButton style={{ padding: '4px' ,border:"1px solid ",borderRadius:'4px'}} onclick={() => handleCancel()}>
             <p style={{ fontWeight: 'normal', fontSize: "12pt" }}>Cancelar</p>
           </IconButton>

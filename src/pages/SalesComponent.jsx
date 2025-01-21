@@ -36,6 +36,7 @@ const SalesComponent = ()=>{
     
     return (
         <Container shadow = {'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'} border={'none'} height={'calc(100% - 160px)'} style={{overflow:'scroll'}} aligh={'none'}>
+            
             <TableComponent data={sales} header={['Nome','Unidades','Total(R$)','Data']}/>
         </Container>
     )
