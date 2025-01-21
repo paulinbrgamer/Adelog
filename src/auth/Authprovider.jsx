@@ -5,6 +5,7 @@ const AuthContext = createContext()
 
 export const AuthProvider = ({children})=>{
     const  [User, setUser] = useState(null)
+    
     const navegate = useNavigate()
 
     const login = async(userData,settoast)=>{

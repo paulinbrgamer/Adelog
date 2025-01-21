@@ -8,7 +8,7 @@ import ModalComponent from '../components/ModalComponent'
 import { supabase } from "../services/cliente";
 import Toast from '../components/Toast'
 import { data } from 'react-router-dom'
-const session = JSON.parse(localStorage.getItem('user'))
+import { useAuth } from '../auth/Authprovider'
 const spin = keyframes`
       0% {
         transform: rotate(0deg);
@@ -46,7 +46,7 @@ export default function SellScreen() {
   const [isFinished, setisFinished] = useState(false)
   const [isError,setisError] = useState(false)
   const [isAproved,setisAproved] = useState(false)
-
+  const {User} = useAuth()
 
   const handleCancel = () => {
     setCart([])
@@ -69,18 +69,13 @@ export default function SellScreen() {
         const {id,...rest} = item
         const date = new Date()
         
-        const sale = {...rest,user_id:session.id,store_id:session.store_id,date:date.toISOString()}
+        const sale = {...rest,user_id:User.id,store_id:User.store_id,date:date.toISOString()}
         const {data:newsale,error:saleError} = await supabase.from('sales').insert([sale])
         if(saleError){
           console.log('Error sale : ',saleError)
           
         }
-        setStore(storeData.map((updateddata)=>{
-          if(updateddata.id == item.id){
-            updateddata.units -= item.units
-          }
-          return updateddata
-        }))
+
           setTimeout(() => {
             setisFinished(false)
           setisAproved(true)
@@ -104,14 +99,15 @@ export default function SellScreen() {
         </ModalComponent> : null
       }
       {isAproved?<Toast message={'Venda Concluida'} color={'#008300'}/>:null}
-      {isError?<Toast message={'Erro, Unidade de produto Inválida'} color={'#e02323'}/>:null}
+      {isError?<Toast message={'Erro, Venda não registrada'} color={'#e02323'}/>:null}
       <Title>Items: {Cart.length}</Title>
       <Products>
         {Cart.map((item) =>
           <ProductComponent trash key={item.id + 'cart'} data={item} />
         )}
       </Products>
-      {Cart.length > 0 ? <div style={{ display: 'flex', flexDirection: "column", justifyContent: "space-evenly", padding: "6px" }}>
+      {Cart.length > 0 ? 
+      <div style={{ display: 'flex', flexDirection: "column", justifyContent: "space-evenly", padding: "6px" }}>
         <Title>Total: R$ {Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)}</Title>
         <div style={{ display: 'flex', justifyContent: "space-evenly", padding: "6px" }}>
           <IconButton style={{ padding: '4px' }} onclick={() => handleCancel()}>

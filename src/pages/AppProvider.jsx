@@ -7,13 +7,12 @@ export const AppProvider =({children}) =>{
     const [storeData,setStore] = useState([])
     const [Cart,setCart] = useState([])
     const {User} = useAuth();
-
     useEffect(() => {
-        console.log("-----Alteração do carro")
-        console.log(Cart);
+        console.log("-----Alteração do data")
+        console.log(storeData);
         console.log(" ")
         
-    }, [Cart]);
+    }, [storeData   ]);
     const getStoreData = async()=>{
         if(User){
             const {data:dataStore, error:Storeerror} = await supabase.from('products').select('*').eq('store_id',User.store_id )
@@ -28,12 +27,37 @@ export const AppProvider =({children}) =>{
     }
     useEffect( () => {
         getStoreData()
+        console.log(storeData);
+        
         const subscription = supabase.channel('products:update').on(
             'postgres_changes',
             {event:'*',schema:'public',table:'products'},
             (payload)=>{
+                const {eventType} = payload
+                switch (eventType) {
+                    case 'INSERT':
+                        setStore((prevStoreData) =>
+                        [...prevStoreData,payload.new]
+                        );
+                        setStore((prevStoreData)=>prevStoreData.sort((a,b)=>b.name<a.name?1:b.name>a.name?-1:0))
+                        break;
+                    case 'UPDATE':
+                        setStore((prevStoreData) =>
+                            prevStoreData.map((data) =>
+                                data.id === payload.new.id ? payload.new : data
+                            )
+                        );
+                        break;
+                    case 'DELETE':
+                        setStore((prevStoreData) =>
+                            prevStoreData.filter((data) => data.id !== payload.old.id)
+                        );
+                        break;
+                    default:
+                        break;
+                }
 
-                getStoreData()
+                
             }
         ).subscribe()
 

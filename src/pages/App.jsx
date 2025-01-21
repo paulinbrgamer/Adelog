@@ -2,11 +2,12 @@ import NavOptions from '../components/NavOptions'
 import styled from 'styled-components'
 import IconButton from '../components/IconButton'
 import { useState } from 'react'
-import { PackageSearch, User, Store, ShoppingCart } from 'lucide-react';
+import { PackageSearch, User, ScrollText , ShoppingCart } from 'lucide-react';
 import UserScreen from './UserScreen'
 import SellScreen from './SellScreen'
 import ProductsScreen from './ProductsScreen'
 import { AppProvider } from './AppProvider';
+import { useAuth } from '../auth/Authprovider';
 
 const HomePage = styled.div`
     display:flex;
@@ -20,6 +21,7 @@ const HomePage = styled.div`
 `
 function App() {
   const [currentRendering, setcurrentRendering] = useState('products')
+  const {User} = useAuth()
   const title = {user:'Dados pessoais',products:'Estoque de Produtos',sell:"Carrinho de compras"}
   const handleChangeScreen = (set, value) => {
     set(value)
