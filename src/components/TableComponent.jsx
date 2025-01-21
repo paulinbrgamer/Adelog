@@ -1,7 +1,6 @@
 import styled from "styled-components"
 import { fdInOut } from "./FdInOt"
 const Table = styled.table`
-    padding: 10px;
     box-sizing: border-box;
 
 `
@@ -14,7 +13,7 @@ const Thead = styled.thead`
 const Td = styled.td`
     animation: ${fdInOut} 300ms ease-in-out;
     text-align: center;
-    padding: 10px;
+    padding: 4px;
     
 `
 const Th = styled.th`
