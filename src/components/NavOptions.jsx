@@ -12,7 +12,7 @@ background-color: #ffffff;
 
 @media (min-width: 600px) {
     justify-content: center;
-    gap: 50px;
+    gap: 60px;
   }
 `
 export default function NavOptions({children}) {
