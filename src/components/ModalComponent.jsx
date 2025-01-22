@@ -1,7 +1,5 @@
 import {styled,keyframes} from "styled-components";
-
-import IconButton from "./IconButton";
-import Container from "./Container";
+import ReactDOM from 'react-dom';
 const fdInOut = keyframes`
      0% {
       opacity: 0;
@@ -42,13 +40,15 @@ const ModalContent = styled.div`
 
 `
 const ModalComponent = ({children})=>{
-    return(
+    return ReactDOM.createPortal(
         <Modal>
             <ModalContent>
                 {children}
 
             </ModalContent>
-        </Modal>
+        </Modal>,
+            document.body
+        
     )
 }
 export default ModalComponent

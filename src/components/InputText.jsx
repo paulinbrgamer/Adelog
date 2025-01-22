@@ -23,7 +23,7 @@ export default function InputText({align,label,onChange,type,value}) {
   return (
     <InputContaier $align={align}>
         <strong>{label}</strong>
-        <Input   $align={align} onChange={(e)=>onChange(e.target.value)} min={1} type={type} value={value}/>
+        <Input   $align={align} onChange={onChange} min={1} type={type} value={value}/>
     </InputContaier>
   )
 }

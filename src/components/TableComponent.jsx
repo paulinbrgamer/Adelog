@@ -1,7 +1,6 @@
 import styled from "styled-components"
 import { fdInOut } from "./FdInOt"
 const Table = styled.table`
-    box-sizing: border-box;
 
 `
 const Tbody = styled.tbody`
@@ -16,6 +15,7 @@ const Td = styled.td`
     animation: ${fdInOut} 300ms ease-in-out;
     text-align: center;
     padding: 4px;
+  
     
 `
 const Th = styled.th`
@@ -25,7 +25,12 @@ const Th = styled.th`
     border-radius: 4px;
 `
 const Tr = styled.tr`
-
+    transition: all ease 50ms;
+  &:hover{
+    cursor: pointer;
+     transform : scale(1.05) ;
+     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    }
 `
 export default function TableComponent({ data, header }) {
     return (

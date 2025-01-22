@@ -11,6 +11,9 @@ import ModalComponent from "../components/ModalComponent";
 import InputText from "../components/InputText";
 import Toast from "../components/Toast";
 const Products = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
   width:90%;
   overflow-y:scroll;
   padding:10px;
@@ -20,9 +23,8 @@ export default function ProductsScreen() {
   const [search, setSearch] = useState('')
   const [filteredProducts, setfilteredProducts] = useState([])
   const [addProduct, setaddProduct] = useState(false)
-  const [productName,setproductName] = useState('')
-  const [productUnits,setproductUnits] = useState('')
-  const [productPrice,setproductPrice] = useState('')
+  const [product,setproduct] = useState({name:'',units:0,price:0})
+  
   const [ToastError,setToastError] = useState(false)
 
   const { User } = useAuth()
@@ -35,9 +37,16 @@ export default function ProductsScreen() {
     return () => clearTimeout(timeoutId)
   }, [search, storeData])
   const createNewProduct = ()=>{
-    
-    
-    
+     if( product.name.length>0 && product.price>0 && product.units>0){
+      console.log('Validado')
+     }
+     else{
+      setToastError(true)
+      setTimeout(() => {
+        setToastError(false)
+      }, 1500);
+     }
+      
   }
   return (
     <Container shadow={'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'} border={'none'} just={'center'} aligh={'start'} height={'calc(100% - 160px)'}>
@@ -48,10 +57,10 @@ export default function ProductsScreen() {
             <ModalComponent>
               {ToastError?<Toast message={'Preencha todos os campos'} color={'#e02323'}/>:null}
               <h4>Cadastrar produto </h4>
-              <InputText label={'Nome'} onChange={setproductName}/>
+              <InputText label={'Nome'} onChange={(e)=>setproduct({...product,name:e.target.value})}/>
               <div style={{display:"flex",gap:"4px",padding:'4px'}}>
-              <InputText  type={'number'} onChange={setproductUnits} label={'Preço'}/>
-              <InputText type={'number'} onChange={setproductPrice} label={'Unidades'}/>
+              <InputText  type={'number'} onChange={(e)=>setproduct({...product,price:e.target.value})} label={'Preço'}/>
+              <InputText type={'number'} onChange={(e)=>setproduct({...product,units:e.target.value})} label={'Unidades'}/>
               </div>
               <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'space-between', padding: "4px" }}>
                 <IconButton onclick={() => setaddProduct(false)} style={{ gridRow: "2/2" }}>

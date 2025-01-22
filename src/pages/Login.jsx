@@ -35,7 +35,7 @@ export default function Login() {
             </div>
             <Container border={'none'} just={'center'}>
                 <CiUser size={60} style={{ margin: '20px' }} />
-                <InputText type='password' onChange={setacessKey} align='center' label='Chave de Acesso' />
+                <InputText type='password' onChange={(e)=>setacessKey(e.target.value)} align='center' label='Chave de Acesso' />
                 <IconButton>
                     <CiLogin onClick={()=>login({'key':acessKey},settoast)}  size={30} />
                 </IconButton>
