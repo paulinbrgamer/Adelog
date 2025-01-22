@@ -8,7 +8,7 @@ export default function UserScreen() {
     <>
       <Container shadow={'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'} border={'none'} just={'center'} aligh={'space-evenly'} height={'calc(100% - 160px)'}>
         <Container just={'center'} border={'none'}>
-          <img style={{ objectFit: 'cover', objectPosition: 'top' }} width={290} src="https://stories.freepiklabs.com/api/vectors/take-away/bro/render?color=37474FFF&background=complete&hide=" alt="" />
+          <img style={{ objectFit: 'cover', objectPosition: 'top' }} width={290} src={User?.permission=='box'?"https://stories.freepiklabs.com/api/vectors/take-away/bro/render?color=37474FFF&background=complete&hide=":'https://stories.freepiklabs.com/api/vectors/business-plan/pana/render?color=B0BEC5FF&background=complete&hide='} alt="" />
           <h3 style={{ marginTop: '-30px' }}>Nome: {User?.name}</h3>
           <div  >
             <h4>E-mail:</h4>

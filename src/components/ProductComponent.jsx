@@ -47,7 +47,7 @@ const ProductComponent = ({ data, cart, trash }) => {
     }
     return (
         <ProductContainer>
-            {isToastOn ? <Toast style={{ justifySelf: 'center' }} message={'Produto adicionado'} color={'#008300'} /> : null}
+            {isToastOn ? <Toast style={{ justifySelf: 'center' }} message={'Adicionado ao carrinho'} color={'#008300'} /> : null}
 
             {isModalOpen && data.units>0 ?
                 <ModalComponent>
