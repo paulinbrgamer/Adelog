@@ -52,7 +52,7 @@ export default function ProductsScreen() {
     return () => clearTimeout(timeoutId)
   }, [search, storeData])
   const createNewProduct = async ()=>{
-    console.log(product);
+    
     
      if( product.name.length>0 && product.price>0 && product.units>0 && product.line_code.length>0 && product.category.length>0){
       const {data,error} = await supabase.from('products').insert({...product,store_id : User?.store_id})
@@ -67,7 +67,11 @@ export default function ProductsScreen() {
         }, 1500);
       }
       else{
-
+        setaddProduct(false)
+        setisAproved(true)
+        setTimeout(() => {
+          setisAproved(false)
+        }, 1500);
       }
     }
      else{
@@ -99,7 +103,7 @@ export default function ProductsScreen() {
               </Select>
               <InputText type={'number'} onChange={(e)=>setproduct({...product,line_code:e.target.value})} label={'Código de barras'}/>
               <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'space-between', padding: "4px" }}>
-                <IconButton onclick={() => {setaddProduct(false),setproduct({name:'',units:0,price:0,category:'',line_code:-1})}} style={{ gridRow: "2/2" }}>
+                <IconButton onclick={() => setaddProduct(false)} style={{ gridRow: "2/2" }}>
                   <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
                 </IconButton>
                 <IconButton onclick={() => createNewProduct()} style={{ gridRow: "2/2" }}>
@@ -108,7 +112,7 @@ export default function ProductsScreen() {
               </div>
             </ModalComponent> : null}
 
-          <IconButton onclick={() => setaddProduct(true)} style={{ display: 'flex', justifyContent: "center", alignItems: 'center', gap: '6px' }}>
+          <IconButton onclick={() => {setaddProduct(true),setproduct({name:'',units:0,price:0,category:'',line_code:-1})}} style={{ display: 'flex', justifyContent: "center", alignItems: 'center', gap: '6px' }}>
             <PackagePlus strokeWidth={1.3} />
             <p>Adicionar </p>
           </IconButton>
