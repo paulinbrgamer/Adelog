@@ -29,12 +29,14 @@ const ToastContainer = styled.div`
   padding:10px;
   border-radius: 6px;
   width:90%;
+  z-index: 2;
   text-align: center;
   background-color: ${(props)=>props.$color};
   color:white;
   animation: ${fdInOut} 1.6s ease-in-out;
 `
 function Toast({message,color,style}) {
+
   return (
     <ToastContainer style={style} $color={color}>{message}</ToastContainer>
   )
