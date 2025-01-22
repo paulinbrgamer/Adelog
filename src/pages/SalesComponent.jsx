@@ -24,7 +24,8 @@ const SalesComponent = ()=>{
                 const SortedDate = data.sort((a, b) => new Date(b.date) - new Date(a.date))
                 setSales(SortedDate.map(item=>{
                     const date = new Date(item.date).toLocaleString()
-                    
+                    const nameItem = storeData.filter((product)=>item.id_product==product.id)
+                    item.id_product = nameItem[0].name 
                     item.date = date
                     return item
                 }))
