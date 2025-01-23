@@ -1,14 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useApp } from './AppProvider'
 import ProductComponent from '../components/ProductComponent'
-import {styled,keyframes} from 'styled-components'
+import { styled, keyframes } from 'styled-components'
 import Container from '../components/Container'
 import IconButton from '../components/IconButton'
 import ModalComponent from '../components/ModalComponent'
 import { supabase } from "../services/cliente";
 import Toast from '../components/Toast'
-import { data } from 'react-router-dom'
 import { useAuth } from '../auth/Authprovider'
+import InputText from '../components/InputText'
 const spin = keyframes`
       0% {
         transform: rotate(0deg);
@@ -45,20 +45,32 @@ const Products = styled.div`
 
 `
 export default function SellScreen() {
-  const { Cart, setCart,storeData,setStore } = useApp()
+  const { Cart, setCart, storeData, setStore } = useApp()
   const [isFinished, setisFinished] = useState(false)
-  const [isError,setisError] = useState(false)
-  const [isAproved,setisAproved] = useState(false)
-  const {User} = useAuth()
+  const [isError, setisError] = useState(false)
+  const [isAproved, setisAproved] = useState(false)
+  const { User } = useAuth()
+  const [exchange, setExchange] = useState(0)
+  useEffect(() => {
 
+    setExchange(Cart?.reduce((acc, obj) => acc += obj.price, 0).toFixed(2))
+  }, []);
   const handleCancel = () => {
     setCart([])
   }
-  const handleFinalize = async() => {
+  const handleExchange = (e) => {
+    if (e.key == 'Enter') {
+      if (Number(e.target.value) < Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)) {
+        e.target.value = Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)
+      }
+      setExchange(Number(e.target.value).toFixed(2))
+    }
+  }
+  const handleFinalize = async () => {
     setisFinished(true)
     let errorCart = []
-    Cart.forEach(async (item )=> {
-      const {data,error} = await supabase.rpc('decrement_stock',{product_id:item.id,quantity:item.units})
+    Cart.forEach(async (item) => {
+      const { data, error } = await supabase.rpc('decrement_stock', { product_id: item.id, quantity: item.units })
       if (error) {
         errorCart.push(item)
         setisFinished(false)
@@ -68,32 +80,32 @@ export default function SellScreen() {
 
         }, 1500);
       }
-      else{
-        const {id,name,category,line_code,...rest} = item
+      else {
+        const { id, name, category, line_code, ...rest } = item
         const date = new Date()
-        
-        const sale = {...rest,id_product:id,user_id:User.id,store_id:User.store_id,date:date.toISOString()}
-        const {data:newsale,error:saleError} = await supabase.from('sales').insert([sale])
-        if(saleError){
-          console.log('Error sale : ',saleError)
-          
+
+        const sale = { ...rest, id_product: id, user_id: User.id, store_id: User.store_id, date: date.toISOString() }
+        const { data: newsale, error: saleError } = await supabase.from('sales').insert([sale])
+        if (saleError) {
+          console.log('Error sale : ', saleError)
+
         }
 
-          setTimeout(() => {
-            setisFinished(false)
+        setTimeout(() => {
+          setisFinished(false)
           setisAproved(true)
-            
-          }, 800);
-          setTimeout(() => {
-            setisAproved(false)
-          }, 1500);
+
+        }, 800);
+        setTimeout(() => {
+          setisAproved(false)
+        }, 1500);
       }
-    }); 
+    });
     setCart(errorCart)
   }
 
   return (
-    <Container shadow = {'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'}  border={'none'} just={'center'} aligh={'start'} height={'calc(100% - 160px)'}>
+    <Container shadow={'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'} border={'none'} just={'center'} aligh={'start'} height={'calc(100% - 160px)'}>
       {isFinished ?
         <ModalComponent>
           <ContainerL>
@@ -101,26 +113,31 @@ export default function SellScreen() {
           </ContainerL>
         </ModalComponent> : null
       }
-      {isAproved?<Toast message={'Venda Concluida'} color={'#008300'}/>:null}
-      {isError?<Toast message={'Erro, Venda não registrada'} color={'#e02323'}/>:null}
+      {isAproved ? <Toast message={'Venda Concluida'} color={'#008300'} /> : null}
+      {isError ? <Toast message={'Erro, Venda não registrada'} color={'#e02323'} /> : null}
       <Title>Items: {Cart.length}</Title>
       <Products>
         {Cart.map((item) =>
           <ProductComponent trash key={item.id + 'cart'} data={item} />
         )}
       </Products>
-      {Cart.length > 0 ? 
-      <div style={{ display: 'flex', flexDirection: "column", justifyContent: "space-evenly", padding: "6px" ,width:"100%" }}>
-        <Title>Total: R$ {Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)}</Title>
-        <div style={{ display: 'flex', justifyContent: "center",width:"100%",gap:"60px" ,paddingTop:"8px"}}>
-          <IconButton style={{ padding: '4px' ,border:"1px solid ",borderRadius:'4px'}} onclick={() => handleCancel()}>
-            <p style={{ fontWeight: 'normal', fontSize: "12pt" }}>Cancelar</p>
-          </IconButton>
-          <IconButton onclick={() => handleFinalize()} style={{padding: '6px' ,border:"1px solid ",borderRadius:'4px',backgroundColor:"black"}}>
-              <p style={{ fontWeight: 'normal', fontSize: "12pt" ,color:'white'}}>Finalizar</p>
-          </IconButton>
-        </div>
-      </div> : null}
+      {Cart.length > 0 ?
+        <div style={{ display: 'flex', flexDirection: "column", justifyContent: "space-evenly", padding: "6px", width: "100%", gap: '6px' }}>
+          <Title>Total: R$ {Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)}</Title>
+          <Title style={{ color: "gray" }}>Troco : R$ {(exchange - Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)).toFixed(2)}</Title>
+
+          <ContainerL style={{ width: "240px", 'alignSelf': 'center' }}>
+            <InputText type={'Number'} label={'A receber(R$): '} onKeyDown={(e) => handleExchange(e)} />
+          </ContainerL>
+          <div style={{ display: 'flex', justifyContent: "center", width: "100%", gap: "60px", paddingTop: "8px" }}>
+            <IconButton style={{ padding: '4px', border: "1px solid ", borderRadius: '4px' }} onclick={() => handleCancel()}>
+              <p style={{ fontWeight: 'normal', fontSize: "12pt" }}>Cancelar</p>
+            </IconButton>
+            <IconButton onclick={() => handleFinalize()} style={{ padding: '6px', border: "1px solid ", borderRadius: '4px', backgroundColor: "black" }}>
+              <p style={{ fontWeight: 'normal', fontSize: "12pt", color: 'white' }}>Finalizar</p>
+            </IconButton>
+          </div>
+        </div> : null}
     </Container>
   )
 }
