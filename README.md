@@ -42,9 +42,9 @@ Este é um sistema de gerenciamento de loja de conveniência desenvolvido em **R
 - Você pode estar acessando o projeto pelo link : https://adelog.netlify.app/home
 - Chave de acesso demo : 3030
 
-## Licença
+## Licença 📄
 
-Este projeto está licenciado sob a [MIT License](LICENSE).
+Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](./LICENSE) para mais detalhes.
 
 
 
