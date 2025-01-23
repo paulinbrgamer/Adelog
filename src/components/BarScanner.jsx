@@ -11,11 +11,14 @@ const BarcodeScanner = ({ onDetected }) => {
                     constraints: {
                         facingMode: "environment", // Câmera traseira
                         width:360,
-                        height:300
+                        height:200
                     },
                 },
                 decoder: {
-                    readers: ["ean_reader"], // Adapte ao tipo de código de barras que você usa
+                    readers: [
+                        "ean_reader",  // EAN-13
+                        "upc_reader",  // UPC-A
+                    ], // Adapte ao tipo de código de barras que você usa
                 },
             },
             (err) => {
