@@ -27,12 +27,12 @@ export default function Login() {
     const handleEnter = (e)=>{
         if(e.key=='Enter'){
             setacessKey(e.target.value)
-            login({'key':acessKey},settoast)
+            
         }
     }
     return (
         <LoginPage>
-            <img src="./public/icon.png" alt="Icone Adelog " />
+            <img src="public/icon.png" alt="Icone Adelog " />
             {toast?<Toast style={{ justifySelf: 'center' }} color={'#e02323'} message='Usuário não encontrado'/>:null}
 
             <Container border={'none'} just={'center'} style={{backgroundColor:'transparent',maxWidth:'500px'}}>
