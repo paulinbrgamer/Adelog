@@ -16,8 +16,11 @@ const BarcodeScanner = ({ onDetected }) => {
                         width:1920,
                         height:1080
                     },
-                    locator: {
-                        halfSample: true, // Usa toda a imagem (desabilite para melhorar a precisão)
+                    area: { // Define a área específica
+                        top: "40%",    // Percentual do topo da tela
+                        right: "30%",  // Percentual da borda direita
+                        left: "30%",   // Percentual da borda esquerda
+                        bottom: "40%", // Percentual da base da tela
                     },
                 },
                 decoder: {
@@ -45,7 +48,12 @@ const BarcodeScanner = ({ onDetected }) => {
         };
     }, [onDetected]);
 
-    return <Div id="scanner"  />;
+    return <div id="scanner" style={{position: 'relative', width:' 100%', height:' 400px'}}>
+    <video id="video" autoPlay style={{width: '100%', height: '100%'}}></video>
+
+    <div style={{position:"absolute",top:"50%",left:"50%",width:"200px",height:"50px",border:"2px solid red",transform:"translate(-50%, -50%)",pointerEvents:"none"}}></div>
+</div>
+
 };
 
 export default BarcodeScanner;
