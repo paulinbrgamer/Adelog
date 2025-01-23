@@ -15,7 +15,9 @@ export default function UnitsComponent({data,set}) {
 
 
     useEffect(() => {
-        if (Units?Units>data.units || Units<=0:null ){
+
+        if (Units?Units>data.units || Units<=0 || Units%1!==0:null  ){
+            
             settoast(true)
             setTimeout(() => {
             settoast(false)
