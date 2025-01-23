@@ -44,7 +44,7 @@ Este é um sistema de gerenciamento de loja de conveniência desenvolvido em **R
 
 ## Licença 📄
 
-Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](./LICENSE) para mais detalhes.
+Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 
 
