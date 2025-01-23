@@ -57,7 +57,9 @@ export default function ProductsScreen() {
   }, [search, storeData])
   const handleBarcodeDetected = (barcode) => {
     setBarcode(barcode)
-    setShowReader(false)
+    setTimeout(() => {
+      setShowReader(false)
+    }, 500);
     setproduct({...product,line_code:Number(Barcode)})
 };
   const createNewProduct = async () => {
