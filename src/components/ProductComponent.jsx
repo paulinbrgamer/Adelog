@@ -1,8 +1,8 @@
 import styled from "styled-components"
 import { fdInOut } from "./FdInOt"
-import { ShoppingCart, SquarePen, Trash } from "lucide-react"
+import { BarcodeIcon, ShoppingCart, SquarePen, Trash } from "lucide-react"
 import ModalComponent from "./ModalComponent"
-import { useEffect, useState } from "react"
+import {  useState } from "react"
 import { useApp } from "../pages/AppProvider"
 import UnitsComponent from "./UnitsComponent"
 import IconButton from "./IconButton"
@@ -11,6 +11,7 @@ import { useAuth } from "../auth/Authprovider"
 import InputText from "./InputText"
 import { Select, Option } from "./SelectComponent"
 import { supabase } from "../services/cliente"
+import BarScanner from "../components/BarScanner";
 const Title = styled.p`
 font-weight: 600;
 font-size: 12pt ;
@@ -48,13 +49,15 @@ const ProductComponent = ({ data, cart, trash }) => {
         "Eletrônicos e Utilitários"
     ]
     const [isModalOpen, setisModalOpen] = useState(false)
-    const [isAproved,setisAproved] = useState(false)
+    const [isAproved, setisAproved] = useState(false)
     const [isToastOn, setisToastOn] = useState(false)
     const [ToastError, setToastError] = useState(false)
-    const [errorUpdate,seterrorUpdate] = useState(false)
+    const [errorUpdate, seterrorUpdate] = useState(false)
     const [errorMensage, setseterrorMensage] = useState('Produto não cadastrado')
     const [product, setproduct] = useState({ name: data.name, units: data.units, price: data.price, category: data.category, line_code: data.line_code })
     const [editModal, seteditModal] = useState(false)
+    const [Barcode,setBarcode] = useState('')
+    const [ShowReader,setShowReader]= useState(false)
     const { Cart, setCart } = useApp()
     const [Units, setUnits] = useState(null)
     const { User } = useAuth()
@@ -71,7 +74,11 @@ const ProductComponent = ({ data, cart, trash }) => {
         }
 
     }
-
+    const handleBarcodeDetected = (barcode) => {
+        setBarcode(barcode)
+        setShowReader(false)
+        setproduct({...product,line_code:Number(Barcode)})
+    };
     const handleDeleteOnCart = () => {
         let newState = Cart?.filter((Obj) => Obj.id != data.id)
         setCart(newState)
@@ -93,7 +100,7 @@ const ProductComponent = ({ data, cart, trash }) => {
                     seterrorUpdate(false)
                 }, 1500);
 
-            }else{
+            } else {
                 setisAproved(true)
                 setTimeout(() => {
                     setisAproved(false)
@@ -109,10 +116,10 @@ const ProductComponent = ({ data, cart, trash }) => {
         }
 
     }
-    const deleteProduct= async()=>{
-        const {data:DeleteProduct,error:ErrorDelete} = await supabase.from('products').delete().eq('id',data.id)
-        if(ErrorDelete){
-            console.log("Error : ",ErrorDelete);
+    const deleteProduct = async () => {
+        const { data: DeleteProduct, error: ErrorDelete } = await supabase.from('products').delete().eq('id', data.id)
+        if (ErrorDelete) {
+            console.log("Error : ", ErrorDelete);
             seterrorUpdate(true)
             setTimeout(() => {
                 seterrorUpdate(false)
@@ -123,7 +130,7 @@ const ProductComponent = ({ data, cart, trash }) => {
         <ProductContainer>
             {isToastOn ? <Toast style={{ justifySelf: 'center' }} message={'Adicionado ao carrinho'} color={'#008300'} /> : null}
             {errorUpdate ? <Toast style={{ justifySelf: 'center' }} message={errorMensage} color={'#e02323'} /> : null}
-            {isAproved?<Toast style={{ justifySelf: 'center' }}  message={'Estoque Atualizado'} color={'#008300'}/>:null}
+            {isAproved ? <Toast style={{ justifySelf: 'center' }} message={'Estoque Atualizado'} color={'#008300'} /> : null}
             {isModalOpen && data.units > 0 ?
                 <ModalComponent>
                     <Title>Unidades de {data.name}:</Title>
@@ -154,26 +161,36 @@ const ProductComponent = ({ data, cart, trash }) => {
                         {categorys.map((item) => <Option selected={product.category == item ? true : false} key={item + "edit"}>{item}</Option>)}
                     </Select>
                     <InputText type={'number'} onChange={(e) => setproduct({ ...product, line_code: e.target.value })} label={'Código de barras'} value={product.line_code} />
+                    <BarcodeIcon onClick={()=>setShowReader(true)}></BarcodeIcon>
+                    {ShowReader ?
+                        <ModalComponent>
+                            <BarScanner onDetected={handleBarcodeDetected} />
+                            <IconButton onclick={() => setShowReader(false)} style={{ gridRow: "2/2" }}>
+                                <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
+                            </IconButton>
+                        </ModalComponent> : null
+
+                    }
                     <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'space-between', padding: "4px" }}>
-                    <IconButton onclick={()=>deleteProduct()}>
-                        <Trash color={'#e02323'}/>
-                    </IconButton>
+                        <IconButton onclick={() => deleteProduct()}>
+                            <Trash color={'#e02323'} />
+                        </IconButton>
                         <IconButton onclick={() => seteditModal(false)} style={{ gridRow: "2/2" }}>
                             <p style={{ fontWeight: 'normal', fontSize: "12pt" }}>Cancelar</p>
                         </IconButton>
-                        
+
                         <IconButton onclick={() => handleFinalizeEdit()} style={{ gridRow: "2/2" }}>
                             <p style={{ fontWeight: 'bold', fontSize: "12pt" }}>Finalizar</p>
                         </IconButton>
                     </div>
-                    
+
                 </ModalComponent> : null
             }
             <Title>{data?.name}</Title>
             <p style={{ color: 'gray', fontWeight: '400', gridColumn: '1/2', gridRow: "2/4", fontSize: '10pt' }}>Unidades: {data?.units}</p>
 
             {User?.permission == 'adm' && !trash ?
-                <IconButton onclick={() => seteditModal(true)} style={{ justifySelf: "end", width: '24px', gridRow: '2/3', gridColumn: "2/3" }}>
+                <IconButton onclick={() => {seteditModal(true)}} style={{ justifySelf: "end", width: '24px', gridRow: '2/3', gridColumn: "2/3" }}>
                     <SquarePen />
                 </IconButton> : null}
 

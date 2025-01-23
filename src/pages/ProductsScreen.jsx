@@ -4,7 +4,7 @@ import ProductComponent from "../components/ProductComponent";
 import { useApp } from "./AppProvider";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { PackagePlus } from "lucide-react";
+import { BarcodeIcon, PackagePlus,} from "lucide-react";
 import IconButton from "../components/IconButton";
 import { useAuth } from "../auth/Authprovider";
 import ModalComponent from "../components/ModalComponent";
@@ -12,6 +12,7 @@ import InputText from "../components/InputText";
 import Toast from "../components/Toast";
 import { Select, Option } from "../components/SelectComponent";
 import { supabase } from "../services/cliente";
+import BarScanner from "../components/BarScanner";
 const Products = styled.div`
 display: flex;
 flex-direction: column;
@@ -38,11 +39,13 @@ export default function ProductsScreen() {
   const [search, setSearch] = useState('')
   const [filteredProducts, setfilteredProducts] = useState([])
   const [addProduct, setaddProduct] = useState(false)
-  const [product, setproduct] = useState({ name: '', units: 0, price: 0, category: '', line_code: -1 })
+  const [product, setproduct] = useState({ name: '', units: 0, price: 0, category: '', line_code: 0 })
   const [ToastError, setToastError] = useState(false)
   const [isAproved, setisAproved] = useState(false)
   const [isError, setisError] = useState(false)
   const [errorMensage, seterrorMensage] = useState('Erro, Produto não cadastrado')
+  const [Barcode,setBarcode] = useState('')
+  const [ShowReader,setShowReader]= useState(false)
   const { User } = useAuth()
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -52,11 +55,16 @@ export default function ProductsScreen() {
 
     return () => clearTimeout(timeoutId)
   }, [search, storeData])
+  const handleBarcodeDetected = (barcode) => {
+    setBarcode(barcode)
+    setShowReader(false)
+    setproduct({...product,line_code:Number(Barcode)})
+};
   const createNewProduct = async () => {
 
 
-    if (product.name.length > 0 && product.price > 0 && product.units > 0 && product.line_code.length > 0 && product.category.length > 0) {
-      const { data, error } = await supabase.from('products').insert({ ...product, store_id: User?.store_id })
+    if (product.name.length > 0 && product.price > 0 && product.units > 0 && product.line_code.toString().length > 0 && product.category.length > 0) {
+      const { error } = await supabase.from('products').insert({ ...product, store_id: User?.store_id })
       if (error) {
         console.log('Error : ', error)
         if (error.code == '23505') {
@@ -105,7 +113,17 @@ export default function ProductsScreen() {
                 <Option disabled selected>Selecionar</Option>
                 {categorys.map((item) => <Option key={item}>{item}</Option>)}
               </Select>
-              <InputText type={'number'} onChange={(e) => setproduct({ ...product, line_code: e.target.value })} label={'Código de barras'} />
+              <InputText type={'number'} onChange={(e) => setproduct({ ...product, line_code: e.target.value })} value={product.line_code} label={'Código de barras'} /> 
+              <BarcodeIcon onClick={()=>setShowReader(true)}></BarcodeIcon>
+              {ShowReader?
+              <ModalComponent>
+                <BarScanner onDetected={handleBarcodeDetected}/>
+                <IconButton onclick={() => setShowReader(false)} style={{ gridRow: "2/2" }}>
+                  <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
+                </IconButton>
+              </ModalComponent>:null
+              
+              }
               <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'space-between', padding: "4px" }}>
                 <IconButton onclick={() => setaddProduct(false)} style={{ gridRow: "2/2" }}>
                   <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
@@ -116,7 +134,7 @@ export default function ProductsScreen() {
               </div>
             </ModalComponent> : null}
 
-          <IconButton onclick={() => { setaddProduct(true), setproduct({ name: '', units: 0, price: 0, category: '', line_code: -1 }) }} style={{ display: 'flex', justifyContent: "center", alignItems: 'center', gap: '6px' }}>
+          <IconButton onclick={() => { setaddProduct(true), setproduct({ name: '', units: 0, price: 0, category: '', line_code: 0 }) }} style={{ display: 'flex', justifyContent: "center", alignItems: 'center', gap: '6px' }}>
             <PackagePlus strokeWidth={1.3} />
             <p>Adicionar </p>
           </IconButton>
