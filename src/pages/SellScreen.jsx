@@ -124,10 +124,10 @@ export default function SellScreen() {
       {Cart.length > 0 ?
         <div style={{ display: 'flex', flexDirection: "column", justifyContent: "space-evenly", padding: "6px", width: "100%", gap: '6px' }}>
           <Title>Total: R$ {Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)}</Title>
-          <Title style={{ color: "gray" }}>Troco : R$ {(exchange - Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)).toFixed(2)}</Title>
+          <Title  style={{ color: "gray" }}>Troco : R$ {(exchange - Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)).toFixed(2)}</Title>
 
           <ContainerL style={{ width: "240px", 'alignSelf': 'center' }}>
-            <InputText type={'Number'} label={'A receber(R$): '} onKeyDown={(e) => handleExchange(e)} />
+            <InputText align={'center'} type={'Number'} label={'A receber(R$): '} onKeyDown={(e) => handleExchange(e)} />
           </ContainerL>
           <div style={{ display: 'flex', justifyContent: "center", width: "100%", gap: "60px", paddingTop: "8px" }}>
             <IconButton style={{ padding: '4px', border: "1px solid ", borderRadius: '4px' }} onclick={() => handleCancel()}>
