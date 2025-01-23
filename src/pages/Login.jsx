@@ -28,7 +28,7 @@ export default function Login() {
 
     return (
         <LoginPage>
-            {toast?<Toast color={'#e02323'} message='Usuário não encontrado'/>:null}
+            {toast?<Toast style={{ justifySelf: 'center' }} color={'#e02323'} message='Usuário não encontrado'/>:null}
             <div style={{ textAlign: 'center' }}>
                 <h1>Adelog</h1>
                 <h3 style={{ color: 'grey' }}>Sistema de Gerenciamento</h3>

@@ -109,15 +109,21 @@ const ProductComponent = ({ data, cart, trash }) => {
         }
 
     }
-    useEffect(() => {
-        console.log(product);
-
-    }, [product]);
+    const deleteProduct= async()=>{
+        const {data:DeleteProduct,error:ErrorDelete} = await supabase.from('products').delete().eq('id',data.id)
+        if(ErrorDelete){
+            console.log("Error : ",ErrorDelete);
+            seterrorUpdate(true)
+            setTimeout(() => {
+                seterrorUpdate(false)
+            }, 1500);
+        }
+    }
     return (
         <ProductContainer>
             {isToastOn ? <Toast style={{ justifySelf: 'center' }} message={'Adicionado ao carrinho'} color={'#008300'} /> : null}
             {errorUpdate ? <Toast style={{ justifySelf: 'center' }} message={errorMensage} color={'#e02323'} /> : null}
-            {isAproved?<Toast style={{ justifySelf: 'center' }}  message={'Produto Atualizado'} color={'#008300'}/>:null}
+            {isAproved?<Toast style={{ justifySelf: 'center' }}  message={'Estoque Atualizado'} color={'#008300'}/>:null}
             {isModalOpen && data.units > 0 ?
                 <ModalComponent>
                     <Title>Unidades de {data.name}:</Title>
@@ -149,13 +155,18 @@ const ProductComponent = ({ data, cart, trash }) => {
                     </Select>
                     <InputText type={'number'} onChange={(e) => setproduct({ ...product, line_code: e.target.value })} label={'Código de barras'} value={product.line_code} />
                     <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'space-between', padding: "4px" }}>
+                    <IconButton onclick={()=>deleteProduct()}>
+                        <Trash color={'#e02323'}/>
+                    </IconButton>
                         <IconButton onclick={() => seteditModal(false)} style={{ gridRow: "2/2" }}>
-                            <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
+                            <p style={{ fontWeight: 'normal', fontSize: "12pt" }}>Cancelar</p>
                         </IconButton>
+                        
                         <IconButton onclick={() => handleFinalizeEdit()} style={{ gridRow: "2/2" }}>
-                            <p style={{ fontWeight: 'bold', marginTop: "8px", fontSize: "12pt" }}>Finalizar</p>
+                            <p style={{ fontWeight: 'bold', fontSize: "12pt" }}>Finalizar</p>
                         </IconButton>
                     </div>
+                    
                 </ModalComponent> : null
             }
             <Title>{data?.name}</Title>
