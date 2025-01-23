@@ -120,7 +120,9 @@ const ProductComponent = ({ data, cart, trash }) => {
         const { data: DeleteProduct, error: ErrorDelete } = await supabase.from('products').delete().eq('id', data.id)
         if (ErrorDelete) {
             console.log("Error : ", ErrorDelete);
-            seterrorUpdate(true)
+            setTimeout(() => {
+                setShowReader(false)
+              }, 500);
             setTimeout(() => {
                 seterrorUpdate(false)
             }, 1500);
