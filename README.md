@@ -5,7 +5,6 @@ Este é um sistema de gerenciamento de loja de conveniência desenvolvido em **R
 ## Tecnologias Usadas 🚀
 
 - ![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black) - Biblioteca JavaScript para construção de interfaces.
-- 
 - ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat&logo=supabase&logoColor=white) - Banco de dados de código aberto baseado em PostgreSQL.
 - ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black) - Linguagem de programação usada no projeto.
 - ![QuaggaJS](https://img.shields.io/badge/QuaggaJS-000000?style=flat&logo=barcode&logoColor=white) - Biblioteca para leitura de códigos de barras.
