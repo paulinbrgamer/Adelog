@@ -24,7 +24,12 @@ export default function Login() {
     const [acessKey, setacessKey] = useState('')
     const {login} = useAuth()
     const [toast, settoast] = useState(false)
-
+    const handleEnter = (e)=>{
+        if(e.key=='Enter'){
+            setacessKey(e.target.value)
+            login({'key':acessKey},settoast)
+        }
+    }
     return (
         <LoginPage>
             <img src="./public/icon.png" alt="Icone Adelog " />
@@ -32,7 +37,7 @@ export default function Login() {
 
             <Container border={'none'} just={'center'} style={{backgroundColor:'transparent',maxWidth:'500px'}}>
                 <CiUser size={60}/>
-                <InputText type='password' onChange={(e)=>setacessKey(e.target.value)} align='center' label='Chave de Acesso' />
+                <InputText type='password' onKeyDown={(e)=>handleEnter(e)} onChange={(e)=>setacessKey(e.target.value)} align='center' label='Chave de Acesso' />
                 <IconButton>
                     <CiLogin onClick={()=>login({'key':acessKey},settoast)}  size={30} />
                 </IconButton>
