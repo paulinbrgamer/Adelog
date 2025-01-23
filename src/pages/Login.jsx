@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { fdInOut } from '../components/FdInOt'
 const LoginPage = styled.div`
     background-repeat:no-repeat;
-    background-image:url(./public/background.jpg);
+    background-image:url(public/background.jpg);
     background-position:center;
     background-size: cover;
     display:flex;
