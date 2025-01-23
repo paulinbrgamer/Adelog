@@ -28,7 +28,7 @@ const Tr = styled.tr`
     transition: all ease 50ms;
   &:hover{
     cursor: pointer;
-     transform : scale(1.05) ;
+     transform : scaleY(1.05) ;
      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     }
 `
