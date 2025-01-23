@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import Quagga from "quagga";
-
+import styled from "styled-components";
+const Div = styled.div`
+    overflow: hidden;
+`
 const BarcodeScanner = ({ onDetected }) => {
     useEffect(() => {
         Quagga.init(
@@ -10,8 +13,8 @@ const BarcodeScanner = ({ onDetected }) => {
                     target: document.querySelector("#scanner"),
                     constraints: {
                         facingMode: "environment", // Câmera traseira
-                        width:320,
-                        height:300
+                        width:1920,
+                        height:1080
                     },
                 },
                 decoder: {
@@ -39,7 +42,7 @@ const BarcodeScanner = ({ onDetected }) => {
         };
     }, [onDetected]);
 
-    return <div id="scanner" style={{ height: "300px" ,position:"relative"}} />;
+    return <Div id="scanner"  />;
 };
 
 export default BarcodeScanner;
