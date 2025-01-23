@@ -17,7 +17,7 @@ const SalesComponent = ()=>{
     const [sales,setSales] = useState([])
     useEffect(() => {
         const fetchSales = async ()=>{
-            const {data,error} = await supabase.from('sales').select("*").eq('user_id',User?.id)
+            const {data,error} = await supabase.from('sales').select("*").eq(User?.permission=='adm'?'store_id':'user_id',User?.permission=='adm'?User.store_id:User?.id)
             if(error){
                 console.log('Error : ',error)
             }else{

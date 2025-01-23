@@ -27,8 +27,6 @@ export const AppProvider =({children}) =>{
     }
     useEffect( () => {
         getStoreData()
-        console.log(storeData);
-        
         const subscription = supabase.channel('products:update').on(
             'postgres_changes',
             {event:'*',schema:'public',table:'products'},
