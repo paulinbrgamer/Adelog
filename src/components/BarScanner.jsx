@@ -10,8 +10,8 @@ const BarcodeScanner = ({ onDetected }) => {
                     target: document.querySelector("#scanner"),
                     constraints: {
                         facingMode: "environment", // Câmera traseira
-                        width:360,
-                        height:200
+                        width:320,
+                        height:300
                     },
                 },
                 decoder: {
@@ -39,7 +39,7 @@ const BarcodeScanner = ({ onDetected }) => {
         };
     }, [onDetected]);
 
-    return <div id="scanner" style={{ height: "300px" }} />;
+    return <div id="scanner" style={{ height: "300px" ,position:"relative"}} />;
 };
 
 export default BarcodeScanner;
