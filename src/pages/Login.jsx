@@ -7,9 +7,11 @@ import InputText from '../components/InputText'
 import Toast from '../components/Toast';
 import styled from 'styled-components';
 import { fdInOut } from '../components/FdInOt'
+import logo from '../../public/icon.png'
+import background from '../../public/background.jpg'
 const LoginPage = styled.div`
     background-repeat:no-repeat;
-    background-image:url(background.jpg);
+    background-image:url(${background});
     background-position:center;
     background-size: cover;
     display:flex;
@@ -32,7 +34,7 @@ export default function Login() {
     }
     return (
         <LoginPage>
-            <img src="icon.png" alt="Icone Adelog " />
+            <img src={logo} alt="Icone Adelog " />
             {toast?<Toast style={{ justifySelf: 'center' }} color={'#e02323'} message='Usuário não encontrado'/>:null}
 
             <Container border={'none'} just={'center'} style={{backgroundColor:'transparent',maxWidth:'500px'}}>

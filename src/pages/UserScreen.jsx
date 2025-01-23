@@ -2,7 +2,7 @@ import { LogOut } from "lucide-react";
 import { useAuth } from "../auth/Authprovider";
 import Container from "../components/Container";
 import IconButton from "../components/IconButton";
-
+import logo from '../../public/icon.png'
 export default function UserScreen() {
   const { User, logout } = useAuth();
 
@@ -44,7 +44,7 @@ export default function UserScreen() {
           <img
             width={120}
             style={{margin:"auto"}}
-            src="icon.png"
+            src={logo}
             alt="Icon"
           />
           <h3
