@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) [ano] [nome do autor]
+Copyright (c) 2025 Paulo Francisco Ávila neto
 
 Permissão é concedida, gratuitamente, a qualquer pessoa que obtenha uma cópia deste software e dos arquivos de documentação associados (o "Software"), para lidar no Software sem restrição, incluindo sem limitação os direitos de usar, copiar, modificar, mesclar, publicar, distribuir, sublicenciar e/ou vender cópias do Software, e para permitir que as pessoas a quem o Software é fornecido faça o mesmo, sujeitas às seguintes condições:
 
