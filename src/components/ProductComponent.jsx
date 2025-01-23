@@ -26,6 +26,7 @@ const ProductContainer = styled.div`
     gap: 4px;
     animation: ${fdInOut} 300ms ease-in-out;
     padding: 10px;
+    transition: background-color ease-in-out 200ms;
     &:hover{
         background-color: #EDEDED;
     }    

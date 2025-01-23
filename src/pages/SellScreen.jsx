@@ -41,6 +41,8 @@ const Products = styled.div`
   overflow-y:scroll;
   padding:10px;
   box-sizing: border-box;
+  border-top: 1px solid lightgray;
+
 `
 export default function SellScreen() {
   const { Cart, setCart,storeData,setStore } = useApp()
