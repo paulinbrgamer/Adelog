@@ -16,54 +16,49 @@ export default function UserScreen() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        backgroundColor: "#f9fafb", // Fundo claro
         borderRadius: "8px",
-        boxShadow:"rgba(0, 0, 0, 0.1) 0px 4px 12px"
+        boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 12px"
       }}
     >
       {/* User Info Section */}
       <Container
-        just="center"
+        just="start"
         border="none"
         style={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          textAlign: "center",
+          textAlign: "censter",
         }}
       >
-        <img
-          style={{
-            objectFit: "cover",
-            objectPosition: "top",
-            borderRadius: "50%",
-            margin: "20px 0",
-          }}
-          width={120}
-          src={
-            User?.permission === "box"
-              ? "https://stories.freepiklabs.com/api/vectors/take-away/bro/render?color=37474FFF&background=complete&hide="
-              : "https://stories.freepiklabs.com/api/vectors/business-plan/pana/render?color=B0BEC5FF&background=complete&hide="
-          }
-          alt="User Avatar"
-        />
-        <h3
-          style={{
-            fontSize: "1.2rem",
-            fontWeight: "600",
-            marginTop: "10px",
-            color: "#374151",
-          }}
-        >
-          {User?.name || "Usuário"}
-        </h3>
+
         <div
           style={{
+            display:'flex',
+            flexDirection:"column",
+            width:'80%',
             marginTop: "10px",
             fontSize: "0.95rem",
             color: "#4b5563",
           }}
         >
+          <img
+            width={120}
+            style={{margin:"auto"}}
+            src="./public/icon.png"
+            alt="Icon"
+          />
+          <h3
+            style={{
+              textAlign:"center",
+              fontSize: "1.2rem",
+              fontWeight: "600",
+              marginTop: "10px",
+              color: "#374151",
+            }}
+          >
+            {User?.name || "Usuário"}
+          </h3>
           <h4 style={{ fontWeight: "600", margin: "5px 0" }}>E-mail:</h4>
           <p>{User?.email || "Não informado"}</p>
           <h4 style={{ fontWeight: "600", margin: "5px 0" }}>Permissão:</h4>

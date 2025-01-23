@@ -11,7 +11,6 @@ align-items: ${(props) => props.$just };
 flex-direction: column;
 justify-content:${(props) => props.$aligh };
 border-radius: 6px;
-opacity: 1;
 animation: ${fdInOut} 300ms ease;
 @media (min-width: 600px) {
     justify-content: ${(props) => props.$aligh?props.$aligh:'center' };

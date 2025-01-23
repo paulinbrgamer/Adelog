@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import styled from 'styled-components'
 const Input = styled.input`
   text-align:${(props)=>props.$align};
-  background-color:white;
+  background-color:transparent;
   font-size:12pt;
   width:90%;
   padding:4px;
