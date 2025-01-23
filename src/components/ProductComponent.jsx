@@ -76,7 +76,10 @@ const ProductComponent = ({ data, cart, trash }) => {
     }
     const handleBarcodeDetected = (barcode) => {
         setBarcode(barcode)
-        setShowReader(false)
+        if(Barcode>0){
+            setShowReader(false)
+      
+          }
         setproduct({...product,line_code:Number(Barcode)})
     };
     const handleDeleteOnCart = () => {
@@ -120,9 +123,7 @@ const ProductComponent = ({ data, cart, trash }) => {
         const { data: DeleteProduct, error: ErrorDelete } = await supabase.from('products').delete().eq('id', data.id)
         if (ErrorDelete) {
             console.log("Error : ", ErrorDelete);
-            setTimeout(() => {
-                setShowReader(false)
-              }, 1000);
+            seterrorUpdate(true)
             setTimeout(() => {
                 seterrorUpdate(false)
             }, 1500);

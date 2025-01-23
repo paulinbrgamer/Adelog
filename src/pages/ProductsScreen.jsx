@@ -56,10 +56,12 @@ export default function ProductsScreen() {
     return () => clearTimeout(timeoutId)
   }, [search, storeData])
   const handleBarcodeDetected = (barcode) => {
+    
     setBarcode(barcode)
-    setTimeout(() => {
+    if(Barcode>0){
       setShowReader(false)
-    }, 1000);
+
+    }
     setproduct({...product,line_code:Number(Barcode)})
 };
   const createNewProduct = async () => {
