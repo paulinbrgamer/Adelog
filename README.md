@@ -37,19 +37,14 @@ Este é um sistema de gerenciamento de loja de conveniência desenvolvido em **R
 
 - Registro de cada venda realizada, permitindo o acompanhamento e gerenciamento de fluxo de saída.
 
-## Tecnologias Utilizadas
+# Demonstração do Projeto.
 
-- **React:** Framework JavaScript para criar interfaces de usuário dinâmicas.
-- **Supabase:** Plataforma backend para banco de dados SQL e autenticação de usuários.
-- **Styled Components:** Biblioteca para estilização de componentes no React.
-- **QuaggaJS:** Biblioteca para leitura de códigos de barras utilizando a câmera do dispositivo.
+- Você pode estar acessando o projeto pelo link : https://adelog.netlify.app/home
+- Chave de acesso demo : 3030
 
 ## Licença
 
 Este projeto está licenciado sob a [MIT License](LICENSE).
 
----
-
-### Autor
 
 
