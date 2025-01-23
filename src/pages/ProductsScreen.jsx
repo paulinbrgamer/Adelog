@@ -61,6 +61,9 @@ export default function ProductsScreen() {
         if(error.code=='23505'){
           seterrorMensage('Erro, Codigo de barras já cadastrado')
         }
+        if(error.code=='22P02'){
+          seterrorMensage('Erro, Campos inválidos')
+        }
         setisError(true)
         setTimeout(() => {
           setisError(false)
