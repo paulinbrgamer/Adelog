@@ -16,6 +16,9 @@ const BarcodeScanner = ({ onDetected }) => {
                         width:1920,
                         height:1080
                     },
+                    locator: {
+                        halfSample: true, // Usa toda a imagem (desabilite para melhorar a precisão)
+                    },
                 },
                 decoder: {
                     readers: [

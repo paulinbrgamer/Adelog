@@ -122,7 +122,7 @@ const ProductComponent = ({ data, cart, trash }) => {
             console.log("Error : ", ErrorDelete);
             setTimeout(() => {
                 setShowReader(false)
-              }, 500);
+              }, 1000);
             setTimeout(() => {
                 seterrorUpdate(false)
             }, 1500);

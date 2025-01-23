@@ -59,7 +59,7 @@ export default function ProductsScreen() {
     setBarcode(barcode)
     setTimeout(() => {
       setShowReader(false)
-    }, 500);
+    }, 1000);
     setproduct({...product,line_code:Number(Barcode)})
 };
   const createNewProduct = async () => {
