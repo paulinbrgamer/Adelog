@@ -19,13 +19,16 @@ const ProductContainer = styled.div`
     display: grid;
     width: 100%;
     border-radius: 4px;
-    margin-bottom: 8px;
     grid-template-rows: 1fr 1fr 1fr;
     grid-template-columns: 5fr 1fr 1fr;
     justify-content: end;
     box-sizing: border-box;
     gap: 4px;
     animation: ${fdInOut} 300ms ease-in-out;
+    padding: 10px;
+    &:hover{
+        background-color: #EDEDED;
+    }    
     @media (min-width:600px){
         grid-template-columns: 8fr 30px 1fr;
     }
