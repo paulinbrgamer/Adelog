@@ -1,9 +1,14 @@
-# Adelog - Sistema de Gerenciamento de Caixa
+# Sistema de Gerenciamento de Mercadinho
 
-Adelog é um sistema de gerenciamento de caixa desenvolvido para facilitar o controle de vendas, cadastro de produtos, e gerenciamento de usuários em um mercadinho. O sistema foi desenvolvido com **React**, **Supabase**, **Styled Components** e **QuaggaJS** para leitura de códigos de barras.
+Este é um sistema de gerenciamento de loja de conveniência desenvolvido em **React** com integração ao **Supabase** para gerenciamento de dados. O projeto permite gerenciar mais de uma loja em um banco de dados.
 
-## Funcionalidades
+## Tecnologias Usadas 🚀
 
+- ![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black) - Biblioteca JavaScript para construção de interfaces.
+- ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat&logo=supabase&logoColor=white) - Banco de dados de código aberto baseado em PostgreSQL.
+- ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black) - Linguagem de programação usada no projeto.
+
+## Funcionalidades 🛠️
 ### Usuários
 
 - **Administrador (adm):**
