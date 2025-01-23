@@ -44,7 +44,7 @@ export default function UserScreen() {
           <img
             width={120}
             style={{margin:"auto"}}
-            src="public/icon.png"
+            src="icon.png"
             alt="Icon"
           />
           <h3
