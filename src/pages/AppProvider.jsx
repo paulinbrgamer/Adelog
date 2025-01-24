@@ -46,7 +46,7 @@ export const AppProvider =({children}) =>{
                             )
                         );
                         break;
-                    case 'DELETE' && payload.new.store_id == User.store_id:
+                    case 'DELETE' && payload.old.store_id == User.store_id:
                         setStore((prevStoreData) =>
                             prevStoreData.filter((data) => data.id !== payload.old.id)
                         );
