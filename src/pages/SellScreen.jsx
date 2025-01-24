@@ -9,6 +9,7 @@ import { supabase } from "../services/cliente";
 import Toast from '../components/Toast'
 import { useAuth } from '../auth/Authprovider'
 import InputText from '../components/InputText'
+import { ScanLineIcon } from 'lucide-react'
 const spin = keyframes`
       0% {
         transform: rotate(0deg);
@@ -45,7 +46,7 @@ const Products = styled.div`
 
 `
 export default function SellScreen() {
-  const { Cart, setCart, storeData, setStore } = useApp()
+  const { Cart, setCart } = useApp()
   const [isFinished, setisFinished] = useState(false)
   const [isError, setisError] = useState(false)
   const [isAproved, setisAproved] = useState(false)
@@ -138,6 +139,9 @@ export default function SellScreen() {
             </IconButton>
           </div>
         </div> : null}
+        <IconButton>
+          <ScanLineIcon/>
+        </IconButton>
     </Container>
   )
 }

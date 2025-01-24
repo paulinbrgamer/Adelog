@@ -4,7 +4,7 @@ import ProductComponent from "../components/ProductComponent";
 import { useApp } from "./AppProvider";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { BarcodeIcon, PackagePlus,} from "lucide-react";
+import { ScanLineIcon, PackagePlus,} from "lucide-react";
 import IconButton from "../components/IconButton";
 import { useAuth } from "../auth/Authprovider";
 import ModalComponent from "../components/ModalComponent";
@@ -118,7 +118,7 @@ export default function ProductsScreen() {
                 {categorys.map((item) => <Option key={item}>{item}</Option>)}
               </Select>
               <InputText type={'number'} onChange={(e) => setproduct({ ...product, line_code: e.target.value })} value={product.line_code} label={'Código de barras'} /> 
-              <BarcodeIcon onClick={()=>setShowReader(true)}></BarcodeIcon>
+              <ScanLineIcon onClick={()=>setShowReader(true)}></ScanLineIcon>
               {ShowReader?
               <ModalComponent>
                 <BarScanner onDetected={handleBarcodeDetected}/>

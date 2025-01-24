@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { fdInOut } from "./FdInOt"
-import { BarcodeIcon, ShoppingCart, SquarePen, Trash } from "lucide-react"
+import { ScanLineIcon, ShoppingCart, SquarePen, Trash } from "lucide-react"
 import ModalComponent from "./ModalComponent"
 import { useState } from "react"
 import { useApp } from "../pages/AppProvider"
@@ -88,7 +88,7 @@ const ProductComponent = ({ data, cart, trash }) => {
     }
     const handleFinalizeEdit = async () => {
         if (product.name.length > 0 && product.price > 0 && product.units >= 0 && product.line_code.toString().length > 0 && product.category.length > 0) {
-            const { data: dataEdit, error: errorEdit } = await supabase.from('products').update({ ...product }).eq('id', data.id)
+            const {  error: errorEdit } = await supabase.from('products').update({ ...product }).eq('id', data.id)
             if (errorEdit) {
                 console.log('Error : ', errorEdit)
                 if (errorEdit.code == '23505') {
@@ -163,7 +163,7 @@ const ProductComponent = ({ data, cart, trash }) => {
                         {categorys.map((item) => <Option selected={product.category == item ? true : false} key={item + "edit"}>{item}</Option>)}
                     </Select>
                     <InputText type={'number'} onChange={(e) => setproduct({ ...product, line_code: e.target.value })} label={'Código de barras'} value={product.line_code} />
-                    <BarcodeIcon onClick={() => setShowReader(true)}></BarcodeIcon>
+                    <ScanLineIcon onClick={() => setShowReader(true)}></ScanLineIcon>
                     {ShowReader ?
                         <ModalComponent>
                             <BarScanner onDetected={handleBarcodeDetected} />
