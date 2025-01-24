@@ -33,20 +33,20 @@ export const AppProvider =({children}) =>{
             (payload)=>{
                 const {eventType} = payload
                 switch (eventType) {
-                    case 'INSERT':
+                    case 'INSERT' && payload.new.store_id == User.store_id :
                         setStore((prevStoreData) =>
                         [...prevStoreData,payload.new]
                         );
                         setStore((prevStoreData)=>prevStoreData.sort((a,b)=>b.name<a.name?1:b.name>a.name?-1:0))
                         break;
-                    case 'UPDATE':
+                    case 'UPDATE' && payload.new.store_id == User.store_id:
                         setStore((prevStoreData) =>
                             prevStoreData.map((data) =>
                                 data.id === payload.new.id ? payload.new : data
                             )
                         );
                         break;
-                    case 'DELETE':
+                    case 'DELETE' && payload.new.store_id == User.store_id:
                         setStore((prevStoreData) =>
                             prevStoreData.filter((data) => data.id !== payload.old.id)
                         );
