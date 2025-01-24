@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { fdInOut } from "./FdInOt"
 import { BarcodeIcon, ShoppingCart, SquarePen, Trash } from "lucide-react"
 import ModalComponent from "./ModalComponent"
-import {  useState } from "react"
+import { useState } from "react"
 import { useApp } from "../pages/AppProvider"
 import UnitsComponent from "./UnitsComponent"
 import IconButton from "./IconButton"
@@ -56,8 +56,8 @@ const ProductComponent = ({ data, cart, trash }) => {
     const [errorMensage, setseterrorMensage] = useState('Produto não cadastrado')
     const [product, setproduct] = useState({ name: data.name, units: data.units, price: data.price, category: data.category, line_code: data.line_code })
     const [editModal, seteditModal] = useState(false)
-    const [Barcode,setBarcode] = useState('')
-    const [ShowReader,setShowReader]= useState(false)
+    const [Barcode, setBarcode] = useState('')
+    const [ShowReader, setShowReader] = useState(false)
     const { Cart, setCart } = useApp()
     const [Units, setUnits] = useState(null)
     const { User } = useAuth()
@@ -76,18 +76,17 @@ const ProductComponent = ({ data, cart, trash }) => {
     }
     const handleBarcodeDetected = (barcode) => {
         setBarcode(barcode)
-        if(Barcode>0){
+        if (Barcode > 0) {
             setShowReader(false)
-      
-          }
-        setproduct({...product,line_code:Number(Barcode)})
+
+        }
+        setproduct({ ...product, line_code: Number(Barcode) })
     };
     const handleDeleteOnCart = () => {
         let newState = Cart?.filter((Obj) => Obj.id != data.id)
         setCart(newState)
     }
     const handleFinalizeEdit = async () => {
-        console.log(product.line_code);
         if (product.name.length > 0 && product.price > 0 && product.units >= 0 && product.line_code.toString().length > 0 && product.category.length > 0) {
             const { data: dataEdit, error: errorEdit } = await supabase.from('products').update({ ...product }).eq('id', data.id)
             if (errorEdit) {
@@ -164,7 +163,7 @@ const ProductComponent = ({ data, cart, trash }) => {
                         {categorys.map((item) => <Option selected={product.category == item ? true : false} key={item + "edit"}>{item}</Option>)}
                     </Select>
                     <InputText type={'number'} onChange={(e) => setproduct({ ...product, line_code: e.target.value })} label={'Código de barras'} value={product.line_code} />
-                    <BarcodeIcon onClick={()=>setShowReader(true)}></BarcodeIcon>
+                    <BarcodeIcon onClick={() => setShowReader(true)}></BarcodeIcon>
                     {ShowReader ?
                         <ModalComponent>
                             <BarScanner onDetected={handleBarcodeDetected} />
@@ -193,7 +192,7 @@ const ProductComponent = ({ data, cart, trash }) => {
             <p style={{ color: 'gray', fontWeight: '400', gridColumn: '1/2', gridRow: "2/4", fontSize: '10pt' }}>Unidades: {data?.units}</p>
 
             {User?.permission == 'adm' && !trash ?
-                <IconButton onclick={() => {seteditModal(true)}} style={{ justifySelf: "end", width: '24px', gridRow: '2/3', gridColumn: "2/3" }}>
+                <IconButton onclick={() => { seteditModal(true) }} style={{ justifySelf: "end", width: '24px', gridRow: '2/3', gridColumn: "2/3" }}>
                     <SquarePen />
                 </IconButton> : null}
 
