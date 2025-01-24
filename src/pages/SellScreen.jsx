@@ -175,8 +175,8 @@ export default function SellScreen() {
       }
       <Container style={{ flexDirection: "row" }} just={'space-around'} border={'none'} aligh={'center'}>
         <Title>Items: {Cart.length}</Title>
-        <IconButton onclick={() => setshowReader(true)}>
-          <ScanLineIcon size={34} />
+        <IconButton style={{marginLeft:'36px'}} onclick={() => setshowReader(true)}>
+          <ScanLineIcon color='orange' size={34} />
         </IconButton>
       </Container>
       <Products>
