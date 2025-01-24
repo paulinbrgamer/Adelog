@@ -52,11 +52,9 @@ export const AppProvider = ({ children }) => {
 
                         break;
                     case 'DELETE':
-                        if (payload.old.store_id == User.store_id) {
                             setStore((prevStoreData) =>
                                 prevStoreData.filter((data) => data.id !== payload.old.id)
                             );
-                        }
 
                         break;
                     default:
