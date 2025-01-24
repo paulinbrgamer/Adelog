@@ -19,11 +19,11 @@ const InputContaier = styled.div`
   justify-content: center;
 
 `
-export default function InputText({align,label,onChange,type,value,onKeyDown}) {
+export default function InputText({align,label,onChange,type,value,onKeyDown,pholder}) {
   return (
     <InputContaier $align={align}>
         <strong>{label}</strong>
-        <Input step={1} min={1} $align={align} onChange={onChange} onKeyDown={onKeyDown} type={type} value={value}/>
+        <Input placeholder={pholder} step={1} min={1} $align={align} onChange={onChange} onKeyDown={onKeyDown} type={type} value={value}/>
     </InputContaier>
   )
 }
