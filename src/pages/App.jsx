@@ -1,5 +1,4 @@
 import NavOptions from '../components/NavOptions'
-import styled from 'styled-components'
 import IconButton from '../components/IconButton'
 import { useState } from 'react'
 import { PackageSearch, User, FileText  , ShoppingCart } from 'lucide-react';
@@ -7,30 +6,19 @@ import UserScreen from './UserScreen'
 import SellScreen from './SellScreen'
 import ProductsScreen from './ProductsScreen'
 import { AppProvider } from './AppProvider';
-import { useAuth } from '../auth/Authprovider';
 import SalesComponent from '../pages/SalesComponent'
+import {AppPage} from '../components/styled/AppPage'
 
-const HomePage = styled.div`
-    display:flex;
-    justify-content:start;
-    align-items: center;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    gap:1dvh;
-    padding-top: 10px;
-    height:98dvh;
-`
 function App() {
   const [currentRendering, setcurrentRendering] = useState('user')
-  const {User:UserData} = useAuth()
   const title = {user:'Dados pessoais',products:'Estoque de Produtos',sell:"Carrinho de compras",sales:"Histórico de vendas"}
-  const handleChangeScreen = (set, value) => {
-    set(value)
+  const handleChangeScreen = (setRender, newRender) => {
+    setRender(newRender)
   }
   
   return (
     <AppProvider>
-      <HomePage  >
+      <AppPage  >
         <h3 style={{padding:"10px"}}>{title[currentRendering]}</h3>
         {currentRendering === 'user' ? <UserScreen /> : currentRendering === 'sell' ? <SellScreen /> :currentRendering==='products'? <ProductsScreen />:<SalesComponent/>}
         
@@ -54,7 +42,7 @@ function App() {
             <p style={{color:currentRendering=='sales'?'black':'gray'}}>Histórico</p>
           </IconButton>
         </NavOptions>
-      </HomePage>
+      </AppPage>
     </AppProvider>
 
   )
