@@ -21,25 +21,17 @@ const fdInOut = keyframes`
       transform: translatey(-110%);
     }
 `
-const ToastContainer = styled.div`
-  align-items:center;
-  justify-content:center;
-  position:absolute;
-  top:20px;
-  padding:10px;
-  border-radius: 6px;
-  width:90%;
-  z-index: 2;
+const Toast = styled.div`
+  position: fixed;
+  width: 80%;
+  top: 20px;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
   text-align: center;
   background-color: ${(props)=>props.$color};
   color:white;
   animation: ${fdInOut} 1.6s ease-in-out;
 `
-function Toast({message,color,style}) {
-
-  return (
-    <ToastContainer style={style} $color={color}>{message}</ToastContainer>
-  )
-}
 
 export default Toast

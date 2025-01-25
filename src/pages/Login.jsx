@@ -5,46 +5,31 @@ import Container from '../components/Container'
 import IconButton from '../components/IconButton'
 import InputText from '../components/InputText'
 import Toast from '../components/Toast';
-import styled from 'styled-components';
-import { fdInOut } from '../components/FdInOt'
 import logo from '../../public/icon.png'
-import background from '../../public/background.jpg'
-const LoginPage = styled.div`
-    background-repeat:no-repeat;
-    background-image:url(${background});
-    background-position:center;
-    background-size: cover;
-    display:flex;
-    justify-content:start;
-    align-items:center;
-    flex-direction:column;
-    padding-top:20dvh;
-    height:80dvh;
-    animation: ${fdInOut} 300ms ease-in-out;
-`
+import { LoginPage } from '../components/styled/LoginPage';
+const customStyleContainer = { backgroundColor: 'transparent', maxWidth: '500px' }
 export default function Login() {
     const [acessKey, setacessKey] = useState('')
-    const {login} = useAuth()
+    const { login } = useAuth()
     const [toast, settoast] = useState(false)
-    const handleEnter = (e)=>{
-        if(e.key=='Enter'){
+    const handleEnter = (e) => {
+        if (e.key == 'Enter') {
             setacessKey(e.target.value)
-            
+            login({ 'key': acessKey }, settoast)
         }
     }
     return (
         <LoginPage>
             <img src={logo} alt="Icone Adelog " />
-            {toast?<Toast style={{ justifySelf: 'center' }} color={'#e02323'} message='Usuário não encontrado'/>:null}
-
-            <Container border={'none'} just={'center'} style={{backgroundColor:'transparent',maxWidth:'500px'}}>
-                <CiUser size={60}/>
-                <InputText type='password' onKeyDown={(e)=>handleEnter(e)} onChange={(e)=>setacessKey(e.target.value)} align='center' label='Chave de Acesso' />
+            {toast &&<Toast $color='red'>Usuário não encontrado</Toast>}
+            <Container border={'none'} just={'center'} style={customStyleContainer}>
+                <CiUser size={60} />
+                <InputText type='password' onKeyDown={(e) => handleEnter(e)} onChange={(e) => setacessKey(e.target.value)} align='center' label='Chave de Acesso' />
                 <IconButton>
-                    <CiLogin onClick={()=>login({'key':acessKey},settoast)}  size={30} />
+                    <CiLogin onClick={() => login({ 'key': acessKey }, settoast)} size={30} />
                 </IconButton>
             </Container>
-            
+
 
         </LoginPage>
     )
