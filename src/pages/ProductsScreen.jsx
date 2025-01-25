@@ -1,4 +1,4 @@
-import Container from "../components/Container";
+import Container from "../components/styled/Container";
 import SearchComponent from "../components/SearchComponent";
 import ProductComponent from "../components/ProductComponent";
 import { useApp } from "./AppProvider";

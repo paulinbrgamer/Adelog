@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useApp } from './AppProvider'
 import ProductComponent from '../components/ProductComponent'
 import { styled, keyframes } from 'styled-components'
-import Container from '../components/Container'
+import  Container from '../components/styled/Container'
 import IconButton from '../components/IconButton'
 import ModalComponent from '../components/ModalComponent'
 import { supabase } from "../services/cliente";

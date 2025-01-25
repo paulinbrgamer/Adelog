@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { CiLogin, CiUser } from "react-icons/ci";
 import { useAuth } from '../auth/Authprovider'
-import Container from '../components/Container'
+import  Container  from '../components/styled/Container';
 import IconButton from '../components/IconButton'
 import InputText from '../components/InputText'
 import Toast from '../components/Toast';
 import logo from '../../public/icon.png'
 import { LoginPage } from '../components/styled/LoginPage';
-const customStyleContainer = { backgroundColor: 'transparent', maxWidth: '500px' }
+const customStyleContainer = { backgroundColor: 'transparent', maxWidth: '500px' ,'align-items': 'center'}
 export default function Login() {
     const [acessKey, setacessKey] = useState('')
     const { login } = useAuth()
@@ -20,9 +20,9 @@ export default function Login() {
     }
     return (
         <LoginPage>
-            <img src={logo} alt="Icone Adelog " />
+            <img src={logo} alt="Icone Adelog "  style={{height:'20dvh'}}/>
             {toast &&<Toast $color='red'>Usuário não encontrado</Toast>}
-            <Container border={'none'} just={'center'} style={customStyleContainer}>
+            <Container  style={customStyleContainer}>
                 <CiUser size={60} />
                 <InputText type='password' onKeyDown={(e) => handleEnter(e)} onChange={(e) => setacessKey(e.target.value)} align='center' label='Chave de Acesso' />
                 <IconButton>

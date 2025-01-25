@@ -2,10 +2,9 @@ import { useEffect, useState } from "react"
 import { useAuth } from "../auth/Authprovider"
 import styled from "styled-components"
 import { supabase } from "../services/cliente"
-import { fdInOut } from "../components/FdInOt"
 import TableComponent from "../components/TableComponent"
 import { useApp } from "./AppProvider"
-import Container from "../components/Container"
+import  Container  from "../components/styled/Container"
 const Title = styled.p`
 font-weight: 600;
 font-size: 12pt ;
