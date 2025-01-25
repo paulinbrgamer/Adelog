@@ -22,24 +22,11 @@ align-items: center;
   border-top: 1px solid lightgray;
 `
 const customContainer = {
-  alignItems:"center",
+  alignItems  :"center",
   heigth: 'calc(100% - 160px)'
 }
 export default function ProductsScreen() {
   //states for ProductForm and create product
-  const categorys =
-    [
-      "Alimentos Frescos",
-      "Alimentos Industrializados",
-      "Bebidas",
-      "Produtos de Higiene e Beleza",
-      "Limpeza",
-      "Produtos Perecíveis",
-      "Pet Shop",
-      "Produtos de Saúde",
-      "Bebês",
-      "Eletrônicos e Utilitários"
-    ]
   const productTemplate = { name: '', units: 0, price: 0, category: '', line_code: 0 }
   const [product, setproduct] = useState(productTemplate)
   const [addProduct, setaddProduct] = useState(false)
@@ -51,7 +38,7 @@ export default function ProductsScreen() {
   const [aproveMensage, setaproveMensage] = useState('')
   const [isLoading,setisLoading] = useState(false)
   //--------States for stock managemant
-  const { storeData } = useApp()
+  const { storeData ,categorys} = useApp()
   const [search, setSearch] = useState('')
   const [filteredProducts, setfilteredProducts] = useState([])
   const { User } = useAuth()
@@ -104,7 +91,7 @@ export default function ProductsScreen() {
     }
   }
   return (
-    <Container shadow={'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'} style={customContainer} >
+    <Container $shadow={'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'} style={customContainer} >
       {ToastError && <Toast $color='red'>{errorMensage}</Toast>}
       {ToastAproved && <Toast $color={'#008300'}>{aproveMensage}</Toast>}
       {User?.permission == 'adm' ?

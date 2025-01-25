@@ -5,6 +5,8 @@ const AppContext = createContext()
 
 export const AppProvider = ({ children }) => {
     const [storeData, setStore] = useState([])
+    const [categorys, setcategorys] = useState([])
+
     const [Cart, setCart] = useState([])
     const { User } = useAuth();
     useEffect(() => {
@@ -25,8 +27,14 @@ export const AppProvider = ({ children }) => {
         }
 
     }
+    const fetchCategorys = async () => {
+        const { data: Categorys } = await supabase.from('category').select('*').eq('store_id', User?.store_id)
+        setcategorys(Categorys.map((item) => item.name));
+
+    }
     useEffect(() => {
         getStoreData()
+        fetchCategorys()
         const subscription = supabase.channel('products:update').on(
             'postgres_changes',
             { event: '*', schema: 'public', table: 'products' },
@@ -70,7 +78,7 @@ export const AppProvider = ({ children }) => {
         }
     }, [User])
     return (
-        <AppContext.Provider value={{ setStore, storeData, getStoreData, Cart, setCart }}>
+        <AppContext.Provider value={{ setStore, storeData, getStoreData, Cart, setCart,categorys }}>
             {children}
         </AppContext.Provider>
     )
