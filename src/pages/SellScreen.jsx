@@ -13,9 +13,6 @@ import { ScanLineIcon, ShoppingCart } from 'lucide-react'
 import BarScanner from '../components/BarScanner'
 import UnitsComponent from '../components/UnitsComponent'
 import { ContainerL, Loading } from '../components/styled/Loading'
-
-
-
 const Title = styled.p`
   font-weight: 600;
   font-size: 14pt ;

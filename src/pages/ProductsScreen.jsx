@@ -22,6 +22,7 @@ align-items: center;
   border-top: 1px solid lightgray;
 `
 const customContainer = {
+  alignItems:"center",
   heigth: 'calc(100% - 160px)'
 }
 export default function ProductsScreen() {
