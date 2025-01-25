@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useApp } from './AppProvider'
 import ProductComponent from '../components/ProductComponent'
-import { styled, keyframes } from 'styled-components'
+import { styled } from 'styled-components'
 import  Container from '../components/styled/Container'
 import IconButton from '../components/IconButton'
 import ModalComponent from '../components/ModalComponent'
@@ -12,28 +12,10 @@ import InputText from '../components/InputText'
 import { ScanLineIcon, ShoppingCart } from 'lucide-react'
 import BarScanner from '../components/BarScanner'
 import UnitsComponent from '../components/UnitsComponent'
+import { ContainerL, Loading } from '../components/styled/Loading'
 
-const spin = keyframes`
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }`
-const Loading = styled.div`
-     width: 50px;
-      height: 50px;
-      border: 5px solid #ccc; /* Cor de fundo do loader */
-      border-top: 5px solid #1f1e1e; /* Cor do movimento */
-      border-radius: 50%;
-      animation: ${spin} 1s linear infinite;
-`
-const ContainerL = styled.div`
-      display: flex;
-      justify-content: center;
-      align-items: center;
-   
-`
+
+
 const Title = styled.p`
   font-weight: 600;
   font-size: 14pt ;

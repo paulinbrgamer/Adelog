@@ -25,10 +25,12 @@ const Toast = styled.div`
   position: fixed;
   width: 80%;
   top: 20px;
+  align-self: center;
   color: white;
   padding: 10px 20px;
   border-radius: 8px;
   text-align: center;
+  z-index: 2;
   background-color: ${(props)=>props.$color};
   color:white;
   animation: ${fdInOut} 1.6s ease-in-out;
