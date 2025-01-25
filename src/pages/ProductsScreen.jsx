@@ -4,7 +4,7 @@ import ProductComponent from "../components/ProductComponent";
 import { useApp } from "./AppProvider";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { ScanLineIcon, PackagePlus,} from "lucide-react";
+import { ScanLineIcon, PackagePlus, } from "lucide-react";
 import IconButton from "../components/IconButton";
 import { useAuth } from "../auth/Authprovider";
 import ModalComponent from "../components/ModalComponent";
@@ -22,6 +22,9 @@ align-items: center;
   padding:10px;
   border-top: 1px solid lightgray;
 `
+const customContainer = {
+  heigth:'calc(100% - 160px)'
+}
 export default function ProductsScreen() {
   const categorys = [
     "Alimentos Frescos",
@@ -44,29 +47,24 @@ export default function ProductsScreen() {
   const [isAproved, setisAproved] = useState(false)
   const [isError, setisError] = useState(false)
   const [errorMensage, seterrorMensage] = useState('Erro, Produto não cadastrado')
-  const [Barcode,setBarcode] = useState('')
-  const [ShowReader,setShowReader]= useState(false)
+  const [Barcode, setBarcode] = useState('')
+  const [ShowReader, setShowReader] = useState(false)
   const { User } = useAuth()
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       const filtered = storeData?.filter((obj) => obj.name.toLowerCase().includes(search.toLowerCase()))
       setfilteredProducts(filtered)
     }, 300);
-
     return () => clearTimeout(timeoutId)
   }, [search, storeData])
   const handleBarcodeDetected = (barcode) => {
-    
     setBarcode(barcode)
-    if(Barcode>0){
+    if (Barcode > 0) {
       setShowReader(false)
-
     }
-    setproduct({...product,line_code:Number(Barcode)})
-};
+    setproduct({ ...product, line_code: Number(Barcode) })
+  };
   const createNewProduct = async () => {
-
-
     if (product.name.length > 0 && product.price > 0 && product.units > 0 && product.line_code.toString().length > 0 && product.category.length > 0) {
       const { error } = await supabase.from('products').insert({ ...product, store_id: User?.store_id })
       if (error) {
@@ -96,10 +94,9 @@ export default function ProductsScreen() {
         setToastError(false)
       }, 1500);
     }
-
   }
   return (
-    <Container shadow={'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'} border={'none'} just={'center'} aligh={'start'} height={'calc(100% - 160px)'} >
+    <Container shadow={'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'} style={customContainer} >
 
       {User?.permission == 'adm' ?
         <>
@@ -117,16 +114,16 @@ export default function ProductsScreen() {
                 <Option disabled selected>Selecionar</Option>
                 {categorys.map((item) => <Option key={item}>{item}</Option>)}
               </Select>
-              <InputText type={'number'} onChange={(e) => setproduct({ ...product, line_code: e.target.value })} value={product.line_code} label={'Código de barras'} /> 
-              <ScanLineIcon onClick={()=>setShowReader(true)}></ScanLineIcon>
-              {ShowReader?
-              <ModalComponent>
-                <BarScanner onDetected={handleBarcodeDetected}/>
-                <IconButton onclick={() => setShowReader(false)} style={{ gridRow: "2/2" }}>
-                  <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
-                </IconButton>
-              </ModalComponent>:null
-              
+              <InputText type={'number'} onChange={(e) => setproduct({ ...product, line_code: e.target.value })} value={product.line_code} label={'Código de barras'} />
+              <ScanLineIcon onClick={() => setShowReader(true)}></ScanLineIcon>
+              {ShowReader ?
+                <ModalComponent>
+                  <BarScanner onDetected={handleBarcodeDetected} />
+                  <IconButton onclick={() => setShowReader(false)} style={{ gridRow: "2/2" }}>
+                    <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
+                  </IconButton>
+                </ModalComponent> : null
+
               }
               <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'space-between', padding: "4px" }}>
                 <IconButton onclick={() => setaddProduct(false)} style={{ gridRow: "2/2" }}>
