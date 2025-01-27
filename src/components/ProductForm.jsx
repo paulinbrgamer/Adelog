@@ -9,7 +9,7 @@ import { useEffect } from "react";
 export const ProductForm = ({ product, setproduct, categorys, setShowReader, ShowReader, handleBarcodeDetected, setaddProduct, createNewProduct, deleteButtom, preData }) => {
     if (preData) {
         useEffect(() => {
-            setproduct({ name: preData.name, units: preData.units, price: preData.price, category: preData.category, line_code: preData.line_code})
+            setproduct({ name: preData.name, units: preData.units, price: preData.price, category: preData.category, line_code: preData.line_code })
         }, []);
         return (
             <>
@@ -34,7 +34,9 @@ export const ProductForm = ({ product, setproduct, categorys, setShowReader, Sho
                     {categorys.map((item) => <Option selected={product.category == item ? true : false} key={item + "edit"}>{item}</Option>)}
                 </Select>
                 <InputText type={'number'} onChange={(e) => setproduct({ ...product, line_code: e.target.value })} label={'Código de barras'} value={product.line_code} />
-                <ScanLineIcon onClick={() => setShowReader(true)} />
+                <IconButton onclick={() => setShowReader(true)} >
+                    <ScanLineIcon />
+                </IconButton>
 
                 {/*Buttons to end form*/}
                 <div
@@ -50,8 +52,9 @@ export const ProductForm = ({ product, setproduct, categorys, setShowReader, Sho
                     {deleteButtom &&
                         <IconButton onclick={() => deleteButtom()}>
                             <Trash color={'#e02323'} />
-                        </IconButton>}
-                    <IconButton onclick={() => { setaddProduct(false), setproduct({ name: '', units: 0, price: 0, category: '', line_code: 0 }) }} style={{ gridRow: '2/2' }}>
+                        </IconButton>
+                    }
+                    <IconButton onclick={() => { setaddProduct(false), setproduct({ name: '', units: 0, price: 0, category: '', line_code: '' }) }} style={{ gridRow: '2/2' }}>
                         <p style={{ fontWeight: 'normal', marginTop: '8px', fontSize: '12pt' }}>Cancelar</p>
                     </IconButton>
                     <IconButton onclick={() => createNewProduct()} style={{ gridRow: '2/2' }}>
@@ -101,8 +104,11 @@ export const ProductForm = ({ product, setproduct, categorys, setShowReader, Sho
                     type={'number'}
                     onChange={(e) => setproduct({ ...product, line_code: e.target.value })}
                     label={'Código de barras'}
+                    value={product.line_code}
                 />
-                <ScanLineIcon onClick={() => setShowReader(true)} />
+                <IconButton onclick={() => setShowReader(true)} >
+                    <ScanLineIcon />
+                </IconButton>
 
                 {/*Buttons to end form*/}
                 <div
@@ -119,7 +125,7 @@ export const ProductForm = ({ product, setproduct, categorys, setShowReader, Sho
                         <IconButton onclick={() => deleteButtom()}>
                             <Trash color={'#e02323'} />
                         </IconButton>}
-                    <IconButton onclick={() => { setaddProduct(false), setproduct({ name: '', units: 0, price: 0, category: '', line_code: 0 }) }} style={{ gridRow: '2/2' }}>
+                    <IconButton onclick={() => { setaddProduct(false), setproduct({ name: '', units: 0, price: 0, category: '', line_code: '' }) }} style={{ gridRow: '2/2' }}>
                         <p style={{ fontWeight: 'normal', marginTop: '8px', fontSize: '12pt' }}>Cancelar</p>
                     </IconButton>
                     <IconButton onclick={() => createNewProduct()} style={{ gridRow: '2/2' }}>
