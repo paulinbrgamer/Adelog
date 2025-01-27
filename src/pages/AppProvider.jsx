@@ -28,8 +28,10 @@ export const AppProvider = ({ children }) => {
 
     }
     const fetchCategorys = async () => {
-        const { data: Categorys } = await supabase.from('category').select('*').eq('store_id', User?.store_id)
-        setcategorys(Categorys.map((item) => item.name));
+        if (User) {
+            const { data: Categorys } = await supabase.from('category').select('*').eq('store_id', User?.store_id)
+            setcategorys(Categorys.map((item) => item.name));
+        }
 
     }
     useEffect(() => {
@@ -78,7 +80,7 @@ export const AppProvider = ({ children }) => {
         }
     }, [User])
     return (
-        <AppContext.Provider value={{ setStore, storeData, getStoreData, Cart, setCart,categorys }}>
+        <AppContext.Provider value={{ setStore, storeData, getStoreData, Cart, setCart, categorys }}>
             {children}
         </AppContext.Provider>
     )

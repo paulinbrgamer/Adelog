@@ -25,8 +25,8 @@ const Toast = styled.div`
   position: fixed;
   width: 80%;
   top: 20px;
-  align-self: center;
   color: white;
+  justify-self: center;
   padding: 10px 20px;
   border-radius: 8px;
   text-align: center;

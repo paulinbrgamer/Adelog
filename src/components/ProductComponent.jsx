@@ -1,17 +1,16 @@
 import styled from "styled-components"
 import { fdInOut } from "./FdInOt"
-import { ScanLineIcon, ShoppingCart, SquarePen, Trash } from "lucide-react"
+import { ShoppingCart, SquarePen, Trash } from "lucide-react"
 import ModalComponent from "./ModalComponent"
-import { useState } from "react"
+import {  useState } from "react"
 import { useApp } from "../pages/AppProvider"
 import UnitsComponent from "./UnitsComponent"
 import IconButton from "./IconButton"
 import Toast from "./Toast"
 import { useAuth } from "../auth/Authprovider"
-import InputText from "./InputText"
-import { Select, Option } from "./SelectComponent"
 import { supabase } from "../services/cliente"
-import BarScanner from "../components/BarScanner";
+import { ProductForm } from "./ProductForm"
+import { ContainerL, Loading } from "./styled/Loading"
 const Title = styled.p`
 font-weight: 600;
 font-size: 12pt ;
@@ -36,31 +35,26 @@ const ProductContainer = styled.div`
     }
 `
 const ProductComponent = ({ data, cart, trash }) => {
-    const categorys = [
-        "Alimentos Frescos",
-        "Alimentos Industrializados",
-        "Bebidas",
-        "Produtos de Higiene e Beleza",
-        "Limpeza",
-        "Produtos Perecíveis",
-        "Pet Shop",
-        "Produtos de Saúde",
-        "Bebês",
-        "Eletrônicos e Utilitários"
-    ]
-    const [isModalOpen, setisModalOpen] = useState(false)
-    const [isAproved, setisAproved] = useState(false)
-    const [isToastOn, setisToastOn] = useState(false)
+    //states for ProductForm and create product
+    const productTemplate = { name: '', units: 0, price: 0, category: '', line_code: '' }
+    const [product, setproduct] = useState(productTemplate)
+    const [addProduct, setaddProduct] = useState(false)
     const [ToastError, setToastError] = useState(false)
-    const [errorUpdate, seterrorUpdate] = useState(false)
-    const [errorMensage, setseterrorMensage] = useState('Produto não cadastrado')
-    const [product, setproduct] = useState({ name: data.name, units: data.units, price: data.price, category: data.category, line_code: data.line_code })
-    const [editModal, seteditModal] = useState(false)
     const [Barcode, setBarcode] = useState('')
     const [ShowReader, setShowReader] = useState(false)
-    const { Cart, setCart } = useApp()
+    const [ToastAproved, setToastAproved] = useState(false)
+    const [errorMensage, seterrorMensage] = useState('Erro, Produto não cadastrado')
+    const [aproveMensage, setaproveMensage] = useState('')
+    const [isLoading, setisLoading] = useState(false)
+    const [isModalOpen, setisModalOpen] = useState(false)
+    const [isToastOn, setisToastOn] = useState(false)
+    const { Cart, setCart, categorys } = useApp()
     const [Units, setUnits] = useState(null)
     const { User } = useAuth()
+    const showToast = (setToastVisible) => {
+        setToastVisible(true);
+        setTimeout(() => setToastVisible(false), 1500); // Exibe por 3 segundos
+    };
     const handleFinalizeUnits = () => {
         if (Units > 0) {
             let newState = Cart?.filter((Obj) => Obj.id != data.id)
@@ -74,65 +68,60 @@ const ProductComponent = ({ data, cart, trash }) => {
         }
 
     }
-    const handleBarcodeDetected = (barcode) => {
-        setBarcode(barcode)
-        if (Barcode > 0) {
-            setShowReader(false)
-
-        }
-        setproduct({ ...product, line_code: Number(Barcode) })
-    };
     const handleDeleteOnCart = () => {
         let newState = Cart?.filter((Obj) => Obj.id != data.id)
         setCart(newState)
     }
-    const handleFinalizeEdit = async () => {
-        if (product.name.length > 0 && product.price > 0 && product.units >= 0 && product.line_code.toString().length > 0 && product.category.length > 0) {
-            const {  error: errorEdit } = await supabase.from('products').update({ ...product }).eq('id', data.id)
-            if (errorEdit) {
-                console.log('Error : ', errorEdit)
-                if (errorEdit.code == '23505') {
-                    setseterrorMensage('Erro, Codigo de barras já cadastrado')
-                }
-                if (errorEdit.code == '22P02') {
-                    setseterrorMensage('Erro, Campos inválidos')
-                }
-                seterrorUpdate(true)
-                setTimeout(() => {
-                    seterrorUpdate(false)
-                }, 1500);
 
-            } else {
-                setisAproved(true)
-                setTimeout(() => {
-                    setisAproved(false)
-                }, 1500);
-                seteditModal(false)
-
-            }
-        } else {
-            setToastError(true)
-            setTimeout(() => {
-                setToastError(false)
-            }, 1500);
-        }
-
-    }
     const deleteProduct = async () => {
         const { error: ErrorDelete } = await supabase.from('products').delete().eq('id', data.id)
         if (ErrorDelete) {
             console.log("Error : ", ErrorDelete);
-            seterrorUpdate(true)
-            setTimeout(() => {
-                seterrorUpdate(false)
-            }, 1500);
+
         }
     }
+    //func executed when Barcode is detected
+    const handleBarcodeDetected = (barcode) => {
+        setBarcode(barcode)
+        if (Barcode > 0) {
+            setShowReader(false)
+        }
+        setproduct({ ...product, line_code: Number(Barcode) })
+    };
+    //func actived when user click on Finalize
+    const createNewProduct = async () => {
+
+        //validar os campos do form
+        if (product.name.length > 0 && product.price > 0 && product.units >= 0 && product.line_code.toString().length > 0 && product.category.length > 0) {
+            setisLoading(true)
+            const { error } = await supabase.from('products').update({ ...product, store_id: User?.store_id }).eq('id',data.id)
+            if (error) {
+                console.log('Error : ', error)
+                if (error.code == '23505') {
+                    seterrorMensage('Erro, Codigo de barras já cadastrado')
+                }
+                if (error.code == '22P02') {
+                    seterrorMensage('Erro, Campos inválidos')
+                }
+                showToast(setToastError)
+                setisLoading(false)
+            }
+            else {
+                setaddProduct(false)
+                setaproveMensage("Produto Cadastrado")
+                showToast(setToastAproved)
+                setisLoading(false)
+            }
+        } else {
+            seterrorMensage('Preencha todos os campos')
+            showToast(setToastError)
+        }
+    }
+
     return (
         <ProductContainer>
-            {isToastOn ? <Toast style={{ justifySelf: 'center' }} message={'Adicionado ao carrinho'} color={'#008300'} /> : null}
-            {errorUpdate ? <Toast style={{ justifySelf: 'center' }} message={errorMensage} color={'#e02323'} /> : null}
-            {isAproved ? <Toast style={{ justifySelf: 'center' }} message={'Estoque Atualizado'} color={'#008300'} /> : null}
+            {ToastError && <Toast $color='red'>{errorMensage}</Toast>}
+            {ToastAproved && <Toast $color={'#008300'}>{aproveMensage}</Toast>}
             {isModalOpen && data.units > 0 ?
                 <ModalComponent>
                     <Title>Unidades de {data.name}:</Title>
@@ -149,50 +138,29 @@ const ProductComponent = ({ data, cart, trash }) => {
                 </ModalComponent> :
                 null
             }
-            {editModal ?
+            {addProduct &&
                 <ModalComponent>
-                    {ToastError ? <Toast message={'Preencha todos os campos'} color={'#e02323'} /> : null}
-                    <h4>Editar Produto </h4>
-                    <InputText label={'Nome'} onChange={(e) => setproduct({ ...product, name: e.target.value })} value={product.name} />
-                    <div style={{ display: "flex", gap: "4px", padding: '4px' }}>
-                        <InputText type={'number'} onChange={(e) => setproduct({ ...product, price: Number(e.target.value) })} label={'Preço(R$)'} value={product.price} />
-                        <InputText type={'number'} onChange={(e) => setproduct({ ...product, units: Number(e.target.value) })} label={'Unidades'} value={product.units} />
-                    </div>
-                    <h4>Categoria</h4>
-                    <Select name="categorias" onChange={(e) => setproduct({ ...product, category: e.target.value })}>
-                        {categorys.map((item) => <Option selected={product.category == item ? true : false} key={item + "edit"}>{item}</Option>)}
-                    </Select>
-                    <InputText type={'number'} onChange={(e) => setproduct({ ...product, line_code: e.target.value })} label={'Código de barras'} value={product.line_code} />
-                    <ScanLineIcon onClick={() => setShowReader(true)}></ScanLineIcon>
-                    {ShowReader ?
-                        <ModalComponent>
-                            <BarScanner onDetected={handleBarcodeDetected} />
-                            <IconButton onclick={() => setShowReader(false)} style={{ gridRow: "2/2" }}>
-                                <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
-                            </IconButton>
-                        </ModalComponent> : null
+                    {isLoading && <ModalComponent><ContainerL> <Loading /></ContainerL></ModalComponent>}
+                    <ProductForm
+                        preData = {data}
+                        product={product}
+                        setproduct={setproduct}
+                        categorys={categorys}
+                        setShowReader={setShowReader}
+                        ShowReader={ShowReader}
+                        handleBarcodeDetected={handleBarcodeDetected}
+                        setaddProduct={setaddProduct}
+                        createNewProduct={createNewProduct}
+                        deleteButtom={deleteProduct}
+                    />
 
-                    }
-                    <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'space-between', padding: "4px" }}>
-                        <IconButton onclick={() => deleteProduct()}>
-                            <Trash color={'#e02323'} />
-                        </IconButton>
-                        <IconButton onclick={() => seteditModal(false)} style={{ gridRow: "2/2" }}>
-                            <p style={{ fontWeight: 'normal', fontSize: "12pt" }}>Cancelar</p>
-                        </IconButton>
-
-                        <IconButton onclick={() => handleFinalizeEdit()} style={{ gridRow: "2/2" }}>
-                            <p style={{ fontWeight: 'bold', fontSize: "12pt" }}>Finalizar</p>
-                        </IconButton>
-                    </div>
-
-                </ModalComponent> : null
+                </ModalComponent>
             }
             <Title>{data?.name}</Title>
             <p style={{ color: 'gray', fontWeight: '400', gridColumn: '1/2', gridRow: "2/4", fontSize: '10pt' }}>Unidades: {data?.units}</p>
 
             {User?.permission == 'adm' && !trash ?
-                <IconButton onclick={() => { seteditModal(true) }} style={{ justifySelf: "end", width: '24px', gridRow: '2/3', gridColumn: "2/3" }}>
+                <IconButton onclick={() => { setaddProduct(true) }} style={{ justifySelf: "end", width: '24px', gridRow: '2/3', gridColumn: "2/3" }}>
                     <SquarePen />
                 </IconButton> : null}
 

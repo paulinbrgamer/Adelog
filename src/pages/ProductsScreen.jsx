@@ -27,7 +27,7 @@ const customContainer = {
 }
 export default function ProductsScreen() {
   //states for ProductForm and create product
-  const productTemplate = { name: '', units: 0, price: 0, category: '', line_code: 0 }
+  const productTemplate = { name: '', units: 0, price: 0, category: '', line_code: '' }
   const [product, setproduct] = useState(productTemplate)
   const [addProduct, setaddProduct] = useState(false)
   const [ToastError, setToastError] = useState(false)
