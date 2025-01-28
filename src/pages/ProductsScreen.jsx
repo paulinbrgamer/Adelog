@@ -65,7 +65,7 @@ export default function ProductsScreen() {
   //func actived when user click on Finalize
   const createNewProduct = async () => {
     //validar os campos do form
-    if (product.name.length > 0 && product.price > 0 && product.units > 0 && product.line_code.toString().length > 0 && product.category.length > 0) {
+    if (product.name.length > 0 && product.price > 0 && product.units > 0 && product.line_code.toString().length > 0 && product.category.toString().length > 0) {
       setisLoading(true)
       const { error } = await supabase.from('products').insert({ ...product, store_id: User?.store_id })
       if (error) {
