@@ -47,7 +47,6 @@ const ProductComponent = ({ data, cart, trash }) => {
     const [aproveMensage, setaproveMensage] = useState('')
     const [isLoading, setisLoading] = useState(false)
     const [isModalOpen, setisModalOpen] = useState(false)
-    const [isToastOn, setisToastOn] = useState(false)
     const { Cart, setCart, categorys } = useApp()
     const [Units, setUnits] = useState(null)
     const { User } = useAuth()
@@ -61,10 +60,8 @@ const ProductComponent = ({ data, cart, trash }) => {
             newState.push({ ...data, units: Units, price: Number(Units * data.price) })
             setCart(newState)
             setisModalOpen(false)
-            setisToastOn(true)
-            setTimeout(() => {
-                setisToastOn(false)
-            }, 1500);
+            setaproveMensage('Adicionado ao carrinho')
+            showToast(setToastAproved)
         }
 
     }
