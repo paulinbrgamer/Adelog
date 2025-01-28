@@ -23,7 +23,7 @@ align-items: center;
 `
 const customContainer = {
   alignItems  :"center",
-  heigth: 'calc(100% - 160px)'
+  height:"calc(100% - 160px)"
 }
 export default function ProductsScreen() {
   //states for ProductForm and create product
@@ -90,12 +90,9 @@ export default function ProductsScreen() {
       showToast(setToastError)
     }
   }
-  useEffect(() => {
-    console.log(product);
-    
-  }, [product]);
+
   return (
-    <Container $shadow={'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'} style={customContainer} >
+    <Container  style={customContainer} >
       {ToastError && <Toast $color='red'>{errorMensage}</Toast>}
       {ToastAproved && <Toast $color={'#008300'}>{aproveMensage}</Toast>}
       {User?.permission == 'adm' ?

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useApp } from './AppProvider'
 import ProductComponent from '../components/ProductComponent'
 import { styled } from 'styled-components'
-import  Container from '../components/styled/Container'
+import Container from '../components/styled/Container'
 import IconButton from '../components/IconButton'
 import ModalComponent from '../components/ModalComponent'
 import { supabase } from "../services/cliente";
@@ -24,29 +24,32 @@ const Products = styled.div`
   overflow-y:scroll;
   padding:10px;
   box-sizing: border-box;
-  border-top: 1px solid lightgray;
 
 `
+const styleMainContainer = {
+  alignItems: 'center',
+  height:"calc(100% - 160px)"
+}
 export default function SellScreen() {
   const { Cart, setCart, storeData } = useApp()
   const [isFinished, setisFinished] = useState(false)
-  const [isError, setisError] = useState(false)
-  const [isAproved, setisAproved] = useState(false)
+  const [ToastAproved, setToastAproved] = useState(false)
+  const [ToastError, setToastError] = useState(false)
+  const [errorMensage, seterrorMensage] = useState('Erro, Produto não cadastrado')
+  const [aproveMensage, setaproveMensage] = useState('')
   const [ShowReader, setshowReader] = useState(false)
   const [productSelected, setproductSelected] = useState(null)
   const [modalAddUnits, setmodalAddUnits] = useState(false)
   const [Units, setUnits] = useState(null)
-  const [errorToastBarCode,seterrorToastBarCode] = useState(false)
-  const [errorToastBarCodeMensage,seterrorToastBarCodeMensage] = useState('')
   const { User } = useAuth()
   const [exchange, setExchange] = useState(0)
+  const showToast = (setToastVisible) => {
+    setToastVisible(true);
+    setTimeout(() => setToastVisible(false), 1500); // Exibe por 3 segundos
+  };
   useEffect(() => {
-
     setExchange(Cart?.reduce((acc, obj) => acc += obj.price, 0).toFixed(2))
   }, [Cart]);
-  const handleCancel = () => {
-    setCart([])
-  }
   const handleExchange = (e) => {
     if (e.key == 'Enter') {
       if (Number(e.target.value) < Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)) {
@@ -59,22 +62,19 @@ export default function SellScreen() {
     setisFinished(true)
     let errorCart = []
     Cart.forEach(async (item) => {
-      const { data, error } = await supabase.rpc('decrement_stock', { product_id: item.id, quantity: item.units })
+      const { error } = await supabase.rpc('decrement_stock', { product_id: item.id, quantity: item.units })
       if (error) {
         errorCart.push(item)
         setisFinished(false)
-        setisError(true)
-        setTimeout(() => {
-          setisError(false)
-
-        }, 1500);
+        seterrorMensage('Erro, Venda não registrada')
+        showToast(setToastError)
       }
       else {
         const { id, name, category, line_code, ...rest } = item
         const date = new Date()
 
         const sale = { ...rest, id_product: id, user_id: User.id, store_id: User.store_id, date: date.toISOString() }
-        const { data: newsale, error: saleError } = await supabase.from('sales').insert([sale])
+        const { error: saleError } = await supabase.from('sales').insert([sale])
         if (saleError) {
           console.log('Error sale : ', saleError)
 
@@ -82,41 +82,39 @@ export default function SellScreen() {
 
         setTimeout(() => {
           setisFinished(false)
-          setisAproved(true)
+          setaproveMensage('Venda Registrada')
+          showToast(setToastAproved)
 
         }, 800);
-        setTimeout(() => {
-          setisAproved(false)
-        }, 1500);
+
       }
     });
     setCart(errorCart)
   }
   const handleBarcodeDetected = (barcode) => {
-    if(storeData.filter(item => item.line_code == barcode && item.units>0).length==0){
-      seterrorToastBarCodeMensage('Produto Indisponivel')
-      seterrorToastBarCode(true)
-      setTimeout(() => {
-        seterrorToastBarCode(false)
-      }, 1500);
-    }else{
-      setproductSelected(...storeData.filter(item => item.line_code == barcode))
+    if (storeData.filter(item => item.line_code == barcode && item.units > 0).length == 0) {
+      seterrorMensage('Produto Indisponivel')
+      showToast(setToastError)
+      setmodalAddUnits(false)
+    } else {
+      setproductSelected(...storeData.filter(item => item.line_code == barcode&& item.units > 0))
+      setmodalAddUnits(true)
+
     }
-    console.log(productSelected);
     setshowReader(false)
-    setmodalAddUnits(true)
   }
   const handleFinalizeUnits = () => {
     if (Units > 0) {
-        let newState = Cart?.filter((Obj) => Obj.id != productSelected.id)
-        newState.push({ ...productSelected, units: Units, price: Number(Units * productSelected.price) })
-        setCart(newState)
-        setmodalAddUnits(false)
+      let newState = Cart?.filter((Obj) => Obj.id != productSelected.id)
+      newState.push({ ...productSelected, units: Units, price: Number(Units * productSelected.price) })
+      setCart(newState)
+      setmodalAddUnits(false)
+      setproductSelected(null)
     }
 
-}
+  }
   return (
-    <Container shadow={'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'} border={'none'} just={'center'} aligh={'start'} height={'calc(100% - 160px)'}>
+    <Container style={styleMainContainer} >
       {ShowReader ?
         <ModalComponent>
           <BarScanner onDetected={handleBarcodeDetected} />
@@ -133,9 +131,8 @@ export default function SellScreen() {
           </ContainerL>
         </ModalComponent> : null
       }
-      {isAproved ? <Toast message={'Venda Concluida'} color={'#008300'} /> : null}
-      {isError ? <Toast message={'Erro, Venda não registrada'} color={'#e02323'} /> : null}
-      {errorToastBarCode ? <Toast message={errorToastBarCodeMensage} color={'orange'} /> : null}
+      {ToastError && <Toast $color='red'>{errorMensage}</Toast>}
+      {ToastAproved && <Toast $color={'#008300'}>{aproveMensage}</Toast>}
       {modalAddUnits && productSelected?.units > 0 ?
         <ModalComponent>
           <Title>Unidades de {productSelected.name}:</Title>
@@ -152,9 +149,9 @@ export default function SellScreen() {
         </ModalComponent> :
         null
       }
-      <Container style={{ flexDirection: "row" }} just={'space-around'} border={'none'} aligh={'center'}>
-        <Title>Items: {Cart.length}</Title>
-        <IconButton style={{marginLeft:'36px'}} onclick={() => setshowReader(true)}>
+      <Container style={{ flexDirection: "row", borderBottom: '1px solid lightgray', borderRadius: '0px' }} >
+        <Title >Items: {Cart.length}</Title>
+        <IconButton style={{ marginLeft: '36px' }} onclick={() => setshowReader(true)}>
           <ScanLineIcon color='orange' size={34} />
         </IconButton>
       </Container>
@@ -173,7 +170,7 @@ export default function SellScreen() {
             </div>
           </ContainerL>
           <div style={{ display: 'flex', justifyContent: "center", width: "100%", gap: "60px", paddingTop: "8px" }}>
-            <IconButton style={{ padding: '4px', border: "1px solid ", borderRadius: '4px' }} onclick={() => handleCancel()}>
+            <IconButton style={{ padding: '4px', border: "1px solid ", borderRadius: '4px' }} onclick={() => setCart([])}>
               <p style={{ fontWeight: 'normal', fontSize: "12pt" }}>Cancelar</p>
             </IconButton>
             <IconButton onclick={() => handleFinalize()} style={{ padding: '6px', border: "1px solid ", borderRadius: '4px', backgroundColor: "black" }}>
