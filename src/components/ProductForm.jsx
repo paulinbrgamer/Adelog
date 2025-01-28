@@ -4,15 +4,19 @@ import { Select, Option } from "./SelectComponent";
 import BarcodeScanner from "./BarScanner";
 import ModalComponent from "./ModalComponent";
 import IconButton from "./IconButton";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { ContainerL, Loading } from "./styled/Loading";
+
 
 export const ProductForm = ({ product, setproduct, categorys, setShowReader, ShowReader, handleBarcodeDetected, setaddProduct, createNewProduct, deleteButtom, preData }) => {
+    const [isLoading,setisLoading] = useState(false)
     if (preData) {
         useEffect(() => {
             setproduct({ name: preData.name, units: preData.units, price: preData.price, category: preData.category, line_code: preData.line_code })
         }, []);
         return (
             <>
+            {/*Loading Modal logic*/}
                 {/*Scanner Modal logic*/}
                 {ShowReader && (
                     <ModalComponent>

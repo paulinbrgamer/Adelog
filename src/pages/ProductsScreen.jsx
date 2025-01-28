@@ -22,8 +22,8 @@ align-items: center;
   border-top: 1px solid lightgray;
 `
 const customContainer = {
-  alignItems  :"center",
-  height:"calc(100% - 160px)"
+  alignItems: "center",
+  height: "calc(100% - 160px)"
 }
 export default function ProductsScreen() {
   //states for ProductForm and create product
@@ -36,9 +36,9 @@ export default function ProductsScreen() {
   const [ToastAproved, setToastAproved] = useState(false)
   const [errorMensage, seterrorMensage] = useState('Erro, Produto não cadastrado')
   const [aproveMensage, setaproveMensage] = useState('')
-  const [isLoading,setisLoading] = useState(false)
+  const [isLoading, setisLoading] = useState(false)
   //--------States for stock managemant
-  const { storeData ,categorys} = useApp()
+  const { storeData, categorys } = useApp()
   const [search, setSearch] = useState('')
   const [filteredProducts, setfilteredProducts] = useState([])
   const { User } = useAuth()
@@ -92,14 +92,14 @@ export default function ProductsScreen() {
   }
 
   return (
-    <Container  style={customContainer} >
+    <Container style={customContainer} >
+      {isLoading && <ModalComponent><ContainerL> <Loading /></ContainerL></ModalComponent>}
       {ToastError && <Toast $color='red'>{errorMensage}</Toast>}
       {ToastAproved && <Toast $color={'#008300'}>{aproveMensage}</Toast>}
       {User?.permission == 'adm' ?
         <>
           {addProduct ?
             <ModalComponent>
-              {isLoading && <ModalComponent><ContainerL> <Loading/></ContainerL></ModalComponent> }
               <ProductForm
                 product={product}
                 setproduct={setproduct}

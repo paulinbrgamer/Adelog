@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { fdInOut } from "./FdInOt"
 import { ShoppingCart, SquarePen, Trash } from "lucide-react"
 import ModalComponent from "./ModalComponent"
-import {  useState } from "react"
+import { useState } from "react"
 import { useApp } from "../pages/AppProvider"
 import UnitsComponent from "./UnitsComponent"
 import IconButton from "./IconButton"
@@ -71,11 +71,14 @@ const ProductComponent = ({ data, cart, trash }) => {
     }
 
     const deleteProduct = async () => {
+        setisLoading(true)
         const { error: ErrorDelete } = await supabase.from('products').delete().eq('id', data.id)
         if (ErrorDelete) {
             console.log("Error : ", ErrorDelete);
 
         }
+        setaddProduct(false)
+        setisLoading(false)
     }
     //func executed when Barcode is detected
     const handleBarcodeDetected = (barcode) => {
@@ -91,7 +94,7 @@ const ProductComponent = ({ data, cart, trash }) => {
         //validar os campos do form
         if (product.name.length > 0 && product.price > 0 && product.units >= 0 && product.line_code.toString().length > 0 && product.category.length > 0) {
             setisLoading(true)
-            const { error } = await supabase.from('products').update({ ...product, store_id: User?.store_id }).eq('id',data.id)
+            const { error } = await supabase.from('products').update({ ...product, store_id: User?.store_id }).eq('id', data.id)
             if (error) {
                 console.log('Error : ', error)
                 if (error.code == '23505') {
@@ -119,6 +122,7 @@ const ProductComponent = ({ data, cart, trash }) => {
         <ProductContainer>
             {ToastError && <Toast $color='red'>{errorMensage}</Toast>}
             {ToastAproved && <Toast $color={'#008300'}>{aproveMensage}</Toast>}
+            {isLoading && <ModalComponent><ContainerL> <Loading /></ContainerL></ModalComponent>}
             {isModalOpen && data.units > 0 ?
                 <ModalComponent>
                     <Title>Unidades de {data.name}:</Title>
@@ -137,9 +141,8 @@ const ProductComponent = ({ data, cart, trash }) => {
             }
             {addProduct &&
                 <ModalComponent>
-                    {isLoading && <ModalComponent><ContainerL> <Loading /></ContainerL></ModalComponent>}
                     <ProductForm
-                        preData = {data}
+                        preData={data}
                         product={product}
                         setproduct={setproduct}
                         categorys={categorys}
