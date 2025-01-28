@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useContext, useLayoutEffect } from "react";
 import { supabase } from "../services/cliente";
 import { useNavigate } from "react-router-dom";
 const AuthContext = createContext()
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('user')
         navegate('/')
     }
-    useEffect(() => {
+    useLayoutEffect(() => {
         const session = JSON.parse(localStorage.getItem('user'))
         if (!session) {
             navegate('/')
