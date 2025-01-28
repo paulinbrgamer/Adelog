@@ -22,7 +22,6 @@ export const AuthProvider = ({ children }) => {
             navegate('/home')
             setUser(data)
             localStorage.setItem('user', JSON.stringify(data))
-
         }
     }
     const logout = () => {
@@ -38,6 +37,7 @@ export const AuthProvider = ({ children }) => {
         else {
             login({ 'key': session.key }, null)
         }
+        
     }, [])
     const values = { User, login, logout }
     return (

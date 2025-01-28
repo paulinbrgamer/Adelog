@@ -2,19 +2,17 @@ import { useEffect, createContext, useState, useContext } from "react";
 import { useAuth } from "../auth/Authprovider";
 import { supabase } from "../services/cliente";
 const AppContext = createContext()
-
 export const AppProvider = ({ children }) => {
     const [storeData, setStore] = useState([])
     const [categorys, setcategorys] = useState([])
-
     const [Cart, setCart] = useState([])
     const { User } = useAuth();
     useEffect(() => {
-        console.log("-----Alteração do data")
-        console.log(storeData);
+        console.log("-----Alteração do Cart")
+        console.log(Cart);
         console.log(" ")
 
-    }, [storeData]);
+    }, [Cart]);
     const getStoreData = async () => {
         if (User) {
             const { data: dataStore, error: Storeerror } = await supabase.from('products').select('*').eq('store_id', User.store_id)
@@ -30,7 +28,7 @@ export const AppProvider = ({ children }) => {
     const fetchCategorys = async () => {
         if (User) {
             const { data: Categorys } = await supabase.from('category').select('*').eq('store_id', User?.store_id)
-            setcategorys(Categorys.map((item) => item.name));
+            setcategorys(Categorys);
         }
 
     }

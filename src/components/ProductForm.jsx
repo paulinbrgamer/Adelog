@@ -32,7 +32,7 @@ export const ProductForm = ({ product, setproduct, categorys, setShowReader, Sho
                 </div>
                 <h4>Categoria</h4>
                 <Select name="categorias" onChange={(e) => setproduct({ ...product, category: e.target.value })}>
-                    {categorys.map((item) => <Option selected={product.category == item ? true : false} key={item + "edit"}>{item}</Option>)}
+                    {categorys.map((item) => <Option selected={product.category == item.id ? true : false} key={item.id + "edit"} value={item.id}>{item.name}</Option>)}
                 </Select>
                 <InputText type={'number'} onChange={(e) => setproduct({ ...product, line_code: e.target.value })} label={'Código de barras'} value={product.line_code} />
                 <IconButton onclick={() => setShowReader(true)} >
@@ -98,7 +98,7 @@ export const ProductForm = ({ product, setproduct, categorys, setShowReader, Sho
                         Selecionar
                     </Option>
                     {categorys.map((item) => (
-                        <Option key={item}>{item}</Option>
+                        <Option key={item.id} value={item.id}>{item.name}</Option>
                     ))}
                 </Select>
                 <InputText

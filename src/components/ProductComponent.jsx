@@ -94,6 +94,7 @@ const ProductComponent = ({ data, cart, trash }) => {
         //validar os campos do form
         if (product.name.length > 0 && product.price > 0 && product.units >= 0 && product.line_code.toString().length > 0 && product.category.length > 0) {
             setisLoading(true)
+
             const { error } = await supabase.from('products').update({ ...product, store_id: User?.store_id }).eq('id', data.id)
             if (error) {
                 console.log('Error : ', error)
