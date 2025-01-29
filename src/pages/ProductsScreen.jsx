@@ -96,7 +96,7 @@ export default function ProductsScreen() {
       {isLoading && <ModalComponent><ContainerL> <Loading /></ContainerL></ModalComponent>}
       {ToastError && <Toast $color='red'>{errorMensage}</Toast>}
       {ToastAproved && <Toast $color={'#008300'}>{aproveMensage}</Toast>}
-      <Container style={{display:"flex",}}>
+      <Container style={{display:"flex",flexDirection:"row"}}>
         <SearchComponent onChange={setSearch} />
       {User?.permission == 'adm' ?
         <>
