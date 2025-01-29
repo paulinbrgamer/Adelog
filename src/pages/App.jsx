@@ -1,16 +1,17 @@
 import NavOptions from '../components/NavOptions'
 import IconButton from '../components/IconButton'
 import { useState } from 'react'
-import { PackageSearch, User, FileText, ShoppingCart } from 'lucide-react';
+import { PackageSearch, CircleUserRound, FileText, ShoppingCart } from 'lucide-react';
 import UserScreen from './UserScreen'
 import SellScreen from './SellScreen'
 import ProductsScreen from './ProductsScreen'
 import { AppProvider } from './AppProvider';
 import SalesComponent from '../pages/SalesComponent'
 import { AppPage } from '../components/styled/AppPage'
+import Container from '../components/styled/Container';
 
 function App() {
-  const [currentRendering, setcurrentRendering] = useState('user')
+  const [currentRendering, setcurrentRendering] = useState('products')
   const title = { user: 'Dados pessoais', products: 'Estoque de Produtos', sell: "Carrinho de compras", sales: "Histórico de vendas" }
   const handleChangeScreen = (setRender, newRender) => {
     setRender(newRender)
@@ -19,19 +20,19 @@ function App() {
   return (
     <AppProvider>
       <AppPage  >
-        <h3 style={{ padding: "10px" }}>{title[currentRendering]}</h3>
+        <Container style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
+          <h3 style={{ padding: "10px" }}>{title[currentRendering]}</h3>
+          <IconButton  onclick={() => handleChangeScreen(setcurrentRendering, 'user')}>
+            <CircleUserRound
+              size={30}
+              strokeWidth={1}
+            />
+          </IconButton>
+        </Container>
+
         {currentRendering === 'user' ? <UserScreen /> : currentRendering === 'sell' ? <SellScreen /> : currentRendering === 'products' ? <ProductsScreen /> : <SalesComponent />}
 
         <NavOptions>
-          <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'user')}>
-            <User
-              size={26}
-              strokeWidth={1}
-              stroke={'gray'}
-              fill={ChangeStyleNav(currentRendering, 'user')}
-              color={currentRendering == 'user' ? 'black' : 'gray'} />
-            <p style={{ color: currentRendering == 'user' ? 'black' : 'gray' }}>Conta</p>
-          </IconButton>
 
           <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'products')}>
             <PackageSearch

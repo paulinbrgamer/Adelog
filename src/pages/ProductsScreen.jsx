@@ -96,6 +96,8 @@ export default function ProductsScreen() {
       {isLoading && <ModalComponent><ContainerL> <Loading /></ContainerL></ModalComponent>}
       {ToastError && <Toast $color='red'>{errorMensage}</Toast>}
       {ToastAproved && <Toast $color={'#008300'}>{aproveMensage}</Toast>}
+      <Container style={{display:"flex",}}>
+        <SearchComponent onChange={setSearch} />
       {User?.permission == 'adm' ?
         <>
           {addProduct ?
@@ -115,12 +117,12 @@ export default function ProductsScreen() {
             : null}
           <IconButton onclick={() => { setaddProduct(true), setproduct(productTemplate) }} style={{ display: 'flex', justifyContent: "center", alignItems: 'center', gap: '6px' }}>
             <PackagePlus strokeWidth={1.3} />
-            <p>Adicionar </p>
           </IconButton>
         </>
         : null
-      }
-      <SearchComponent onChange={setSearch} />
+      } 
+      </Container>
+      
       <Products >
         {search ? filteredProducts?.map((obj, id) =>
           <ProductComponent cart key={obj?.id || id} data={obj} />
