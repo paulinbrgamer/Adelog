@@ -33,7 +33,7 @@ function App() {
         {currentRendering === 'user' ? <UserScreen /> : currentRendering === 'sell' ? <SellScreen /> : currentRendering === 'products' ? <ProductsScreen /> : <SalesComponent />}
 
         <NavOptions>
-
+          
           <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'products')}>
             <PackageSearch
               size={26}

@@ -1,4 +1,3 @@
-import {React} from 'react'
 import {styled,keyframes} from 'styled-components'
 
 const fdInOut = keyframes`
@@ -22,14 +21,13 @@ const fdInOut = keyframes`
     }
 `
 const Toast = styled.div`
-  position: fixed;
-  width: 80%;
+  position: absolute;
   top: 20px;
   color: white;
-  justify-self: center;
   padding: 10px 20px;
   border-radius: 8px;
   text-align: center;
+  justify-self: center;
   z-index: 2;
   background-color: ${(props)=>props.$color};
   color:white;

@@ -10,6 +10,12 @@ cursor: pointer;
 &:active {
       transform: translateY(2px);
     }
+    @media (min-width:900px) {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      gap: 10px;
+    }
 
 `
 export default function IconButton({children,onclick,style}) {

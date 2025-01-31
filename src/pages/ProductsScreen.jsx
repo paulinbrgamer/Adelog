@@ -23,7 +23,7 @@ align-items: center;
 `
 const customContainer = {
   alignItems: "center",
-  height: "calc(100% - 160px)"
+  minHeight: 0,
 }
 export default function ProductsScreen() {
   //states for ProductForm and create product

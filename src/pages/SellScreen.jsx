@@ -28,7 +28,7 @@ const Products = styled.div`
 `
 const styleMainContainer = {
   alignItems: 'center',
-  height:"calc(100% - 160px)"
+  minHeight: 0,
 }
 export default function SellScreen() {
   const { Cart, setCart, storeData } = useApp()

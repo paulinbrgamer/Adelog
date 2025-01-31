@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react"
 import { useAuth } from "../auth/Authprovider"
-import styled from "styled-components"
 import { supabase } from "../services/cliente"
 import TableComponent from "../components/TableComponent"
 import { useApp } from "./AppProvider"
 import Container from "../components/styled/Container"
 const ContainerStyle = {
     overflow: 'scroll',
-    height: "calc(100% - 160px)"
+    minHeight: 0,
 }
 
 const SalesComponent = () => {

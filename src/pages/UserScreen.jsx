@@ -38,7 +38,9 @@ export default function UserScreen() {
     transition: "background-color 0.3s ease",
   }
   const ContainerStyle = {
-    alignItems: "center"
+    overflowY:'scroll',
+    alignItems: "center",
+    minHeight: 0,
   }
   return (
     <Container style={ContainerStyle} >
