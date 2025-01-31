@@ -30,6 +30,20 @@ const styleMainContainer = {
   alignItems: 'center',
   minHeight: 0,
 }
+const ContainerInfoCart = styled.div`
+  box-sizing: border-box;
+  align-content: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  @media (min-width: 900px) {
+    justify-content: space-between;
+    border-top: 1px solid lightgray;
+  padding: 30px;
+
+  }
+`
 export default function SellScreen() {
   const { Cart, setCart, storeData } = useApp()
   const [isFinished, setisFinished] = useState(false)
@@ -161,15 +175,16 @@ export default function SellScreen() {
         )}
       </Products>
       {Cart.length > 0 ?
-        <div style={{ display: 'flex', flexDirection: "column", justifyContent: "space-evenly", padding: "6px", width: "100%", gap: '6px' }}>
-          <Title>Total: R$ {Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)}</Title>
-          <ContainerL style={{ width: "240px", 'alignSelf': 'center' }}>
+        
+          <ContainerInfoCart style={{display:"flex",flexDirection:"row",flexWrap:"wrap"}}>
+          <ContainerL style={{  'alignSelf': 'center' ,gap:"20px"}}>
+          <Title >Total: R$ {Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)}</Title>
             <div >
               <InputText pholder='a receber' align={'center'} type={'Number'} onKeyDown={(e) => handleExchange(e)} />
               <Title style={{ color: "gray", fontSize: "10pt" }}>Troco : R$ {(exchange - Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)).toFixed(2)}</Title>
             </div>
           </ContainerL>
-          <div style={{ display: 'flex', justifyContent: "center", width: "100%", gap: "60px", paddingTop: "8px" }}>
+          <div style={{ display: 'flex', justifyContent: "center", gap: "60px", paddingTop: "8px" }}>
             <IconButton style={{ padding: '4px', border: "1px solid ", borderRadius: '4px' }} onclick={() => setCart([])}>
               <p style={{ fontWeight: 'normal', fontSize: "12pt" }}>Cancelar</p>
             </IconButton>
@@ -177,7 +192,9 @@ export default function SellScreen() {
               <p style={{ fontWeight: 'normal', fontSize: "12pt", color: 'white' }}>Finalizar</p>
             </IconButton>
           </div>
-        </div> : null}
+          
+          
+        </ContainerInfoCart> : null}
 
     </Container>
   )

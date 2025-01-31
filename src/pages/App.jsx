@@ -8,8 +8,12 @@ import ProductsScreen from './ProductsScreen'
 import { AppProvider } from './AppProvider';
 import SalesComponent from '../pages/SalesComponent'
 import { AppPage } from '../components/styled/AppPage'
-import Container from '../components/styled/Container';
-
+import styled from 'styled-components';
+const ContainerTitle = styled.div`
+  @media (min-width: 900px) {
+    border-bottom: 1px solid lightgrey;
+  }
+`
 function App() {
   const [currentRendering, setcurrentRendering] = useState('products')
   const title = { user: 'Dados pessoais', products: 'Estoque de Produtos', sell: "Carrinho de compras", sales: "Histórico de vendas" }
@@ -20,7 +24,7 @@ function App() {
   return (
     <AppProvider>
       <AppPage  >
-        <Container style={{display:"flex",flexDirection:"row",justifyContent:"space-between",justifySelf:"start",width:'100%'}}>
+        <ContainerTitle style={{display:"flex",flexDirection:"row",justifyContent:"space-between",justifySelf:"center",width:'100%'}}>
           <h3 style={{ padding: "10px" }}>{title[currentRendering]}</h3>
           <IconButton  onclick={() => handleChangeScreen(setcurrentRendering, 'user')}>
             <CircleUserRound
@@ -28,7 +32,7 @@ function App() {
               strokeWidth={1}
             />
           </IconButton>
-        </Container>
+        </ContainerTitle>
 
         {currentRendering === 'user' ? <UserScreen /> : currentRendering === 'sell' ? <SellScreen /> : currentRendering === 'products' ? <ProductsScreen /> : <SalesComponent />}
 

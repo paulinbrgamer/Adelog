@@ -42,7 +42,7 @@ const Tr = styled.tr`
   transition: all ease 150ms;
   &:hover {
     cursor: pointer;
-    transform: scale(1.02); /* Leve aumento ao passar o mouse */
+    transform: scale(1.05); /* Leve aumento ao passar o mouse */
     box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 8px; /* Sombra mais intensa */
     background-color: #f1f5f9; /* Cor de fundo ao passar o mouse */
   }
