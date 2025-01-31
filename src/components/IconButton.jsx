@@ -12,7 +12,7 @@ cursor: pointer;
     }
     @media (min-width:900px) {
       display: flex;
-      justify-content: start;
+      justify-content: center;
       align-items: center;
       gap: 10px;
     }

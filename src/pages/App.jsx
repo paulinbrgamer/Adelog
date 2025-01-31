@@ -20,7 +20,7 @@ function App() {
   return (
     <AppProvider>
       <AppPage  >
-        <Container style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
+        <Container style={{display:"flex",flexDirection:"row",justifyContent:"space-between",justifySelf:"start",width:'100%'}}>
           <h3 style={{ padding: "10px" }}>{title[currentRendering]}</h3>
           <IconButton  onclick={() => handleChangeScreen(setcurrentRendering, 'user')}>
             <CircleUserRound
