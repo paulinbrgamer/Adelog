@@ -9,7 +9,7 @@ const low = keyframes`
       opacity: 1;
       right:5%;
     }
-    85% {
+    75% {
       opacity: 1;
       right:5%;
     }
