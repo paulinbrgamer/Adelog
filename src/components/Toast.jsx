@@ -1,5 +1,24 @@
 import {styled,keyframes} from 'styled-components'
+const low = keyframes`
+    0% {
+      opacity: 0;
+      right:-100%;
+    }
 
+    15% {
+      opacity: 1;
+      right:5%;
+    }
+    85% {
+      opacity: 1;
+      right:5%;
+    }
+
+    100% {
+      opacity: 0;
+      right:-100%;
+    }
+`
 const fdInOut = keyframes`
  0% {
       opacity: 0;
@@ -22,7 +41,6 @@ const fdInOut = keyframes`
 `
 const Toast = styled.div`
   position: absolute;
-  top: 20px;
   color: white;
   padding: 10px 20px;
   border-radius: 8px;
@@ -32,6 +50,11 @@ const Toast = styled.div`
   background-color: ${(props)=>props.$color};
   color:white;
   animation: ${fdInOut} 1.6s ease-in-out;
+
+  @media (min-width:900px){
+  animation: ${low} 1.6s ease-in-out;
+  bottom:2%;
+  }
 `
 
 export default Toast
