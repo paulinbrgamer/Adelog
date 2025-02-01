@@ -49,10 +49,16 @@ export default function UserScreen() {
         <h3 style={h3Style}>
           {User?.name || "Usuário"}
         </h3>
-        <h4 style={h4Style} >E-mail:</h4>
-        <p>{User?.email || "Não informado"}</p>
-        <h4 style={h4Style}>Permissão:</h4>
-        <p>{User?.permission || "Desconhecida"}</p>
+        <div style={{margin:"auto",padding:"10px",display:"flex",alignContent:'center',flexDirection:"column"}}>
+          <div style={{display:"flex",gap:10,alignItems:"center"}}>
+          <h4 style={h4Style} >E-mail:</h4>
+          <p style={{color:'#ffae18'}}>{User?.email || "Não informado"}</p>
+        </div>
+       <div style={{display:"flex",gap:10,alignItems:"center"}}>
+          <h4 style={h4Style}>Permissão:</h4>
+        <p style={{color:'#ffae18'}}>{User?.permission || "Desconhecida"}</p>
+       </div>
+        </div>
       </div>
       <IconButton
         onclick={() => logout()}
