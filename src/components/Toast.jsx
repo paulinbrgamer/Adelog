@@ -2,30 +2,30 @@ import {styled,keyframes} from 'styled-components'
 const low = keyframes`
     0% {
       opacity: 0;
-      right:-100%;
+      right:-5%;
     }
 
-    15% {
+    25% {
       opacity: 1;
-      right:5%;
+      right:2%;
     }
     75% {
       opacity: 1;
-      right:5%;
+      right:2%;
     }
 
     100% {
       opacity: 0;
-      right:-100%;
+      right:-10%;
     }
 `
 const fdInOut = keyframes`
- 0% {
+    0% {
       opacity: 0;
       transform: translatey(-100%);
     }
 
-    15% {
+    25% {
       opacity: 1;
       transform: translatey(0);
     }
