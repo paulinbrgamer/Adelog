@@ -13,9 +13,9 @@ import { supabase } from "../services/cliente";
 import { ProductForm } from "../components/ProductForm";
 import { ContainerL, Loading } from "../components/styled/Loading";
 const Products = styled.div`
-display: flex;
-flex-direction: column;
-align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width:90%;
   overflow-y:scroll;
   padding:10px;
