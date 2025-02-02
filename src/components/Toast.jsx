@@ -5,11 +5,11 @@ const low = keyframes`
       right:-5%;
     }
 
-    25% {
+    15% {
       opacity: 1;
       right:2%;
     }
-    75% {
+    85% {
       opacity: 1;
       right:2%;
     }
@@ -22,21 +22,21 @@ const low = keyframes`
 const fdInOut = keyframes`
     0% {
       opacity: 0;
-      transform: translatey(-100%);
+      top:-110%;
     }
 
     25% {
       opacity: 1;
-      transform: translatey(0);
+      top:5%;
     }
     85% {
       opacity: 1;
-      transform: translatey(0);
+      top:5%;
     }
 
     100% {
       opacity: 0;
-      transform: translatey(-110%);
+      top:-110%;
     }
 `
 const Toast = styled.div`
