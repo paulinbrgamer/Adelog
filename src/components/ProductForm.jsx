@@ -6,7 +6,6 @@ import ModalComponent from "./ModalComponent";
 import IconButton from "./IconButton";
 import { useEffect } from "react";
 
-
 export const ProductForm = ({ product, setproduct, categorys, setShowReader, ShowReader, handleBarcodeDetected, setaddProduct, createNewProduct, deleteButtom, preData ,title}) => {
     if (preData) {
         useEffect(() => {
@@ -24,13 +23,15 @@ export const ProductForm = ({ product, setproduct, categorys, setShowReader, Sho
                     </ModalComponent>
                 )}
                 {/*Form of product data*/}
-                <h4>{title}</h4>
+                <header style={{borderBottom:"1px solid gray",width:'100%',textAlign:"center",padding:"10px"}}>
+                <h3>{title}</h3>
+                </header>
                 <InputText label={'Nome'} onChange={(e) => setproduct({ ...product, name: e.target.value })} value={product.name} />
                 <div style={{ display: 'flex', gap: '4px', padding: '4px' }}>
                     <InputText type={'number'} onChange={(e) => setproduct({ ...product, price: Number(e.target.value) })} label={'Preço(R$)'} value={product.price} />
                     <InputText type={'number'} onChange={(e) => setproduct({ ...product, units: Number(e.target.value) })} label={'Unidades'} value={product.units} />
                 </div>
-                <h4>Categoria</h4>
+                <h3 style={{fontSize:"12pt",fontWeight:"500",paddingBottom:'4px',alignSelf:"start"}}>Categoria</h3>
                 <Select name="categorias" onChange={(e) => setproduct({ ...product, category: e.target.value })}>
                     {categorys.map((item) => <Option selected={product.category == item.id ? true : false} key={item.id + "edit"} value={item.id}>{item.name}</Option>)}
                 </Select>
@@ -67,7 +68,7 @@ export const ProductForm = ({ product, setproduct, categorys, setShowReader, Sho
     }
     else {
         return (
-            <>
+            <div style={{display:"flex",flexDirection:"column",gap:"10px",alignItems:"center"}}>
                 {/*Scanner Modal logic*/}
                 {ShowReader && (
                     <ModalComponent>
@@ -78,21 +79,25 @@ export const ProductForm = ({ product, setproduct, categorys, setShowReader, Sho
                     </ModalComponent>
                 )}
                 {/*Form of product data*/}
-                <h4>Cadastrar produto</h4>
-                <InputText label={'Nome'} onChange={(e) => setproduct({ ...product, name: e.target.value })} />
+                <header style={{borderBottom:"1px solid gray",width:'100%',textAlign:"center",padding:"10px"}}>
+                <h3>{title}</h3>
+                </header>
+                <InputText label={'Nome'} pholder={'Digite o nome do produto'} onChange={(e) => setproduct({ ...product, name: e.target.value })} />
                 <div style={{ display: 'flex', gap: '4px', padding: '4px' }}>
                     <InputText
                         type={'number'}
+                        pholder={'R$ 0,00'}
                         onChange={(e) => setproduct({ ...product, price: Number(e.target.value) })}
                         label={'Preço(R$)'}
                     />
                     <InputText
                         type={'number'}
+                        pholder={'0'}
                         onChange={(e) => setproduct({ ...product, units: Number(e.target.value) })}
                         label={'Unidades'}
                     />
                 </div>
-                <h4>Categoria</h4>
+                <h3 style={{fontSize:"12pt",fontWeight:"500",paddingBottom:'4px',alignSelf:"start"}}>Categoria</h3>
                 <Select name="categorias" onChange={(e) => setproduct({ ...product, category: e.target.value })}>
                     <Option disabled selected>
                         Selecionar
@@ -102,6 +107,7 @@ export const ProductForm = ({ product, setproduct, categorys, setShowReader, Sho
                     ))}
                 </Select>
                 <InputText
+                    pholder={'Digite ou escaneie o código '}
                     type={'number'}
                     onChange={(e) => setproduct({ ...product, line_code: e.target.value })}
                     label={'Código de barras'}
@@ -133,7 +139,7 @@ export const ProductForm = ({ product, setproduct, categorys, setShowReader, Sho
                         <p style={{ fontWeight: 'bold', marginTop: '8px', fontSize: '12pt' }}>Finalizar</p>
                     </IconButton>
                 </div>
-            </>
+            </div>
         );
     }
 

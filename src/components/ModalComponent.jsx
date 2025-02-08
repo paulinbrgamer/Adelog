@@ -26,7 +26,7 @@ const Modal = styled.div`
     animation: ${fdInOut} 300ms ease;
 `
 const ModalContent = styled.div`
-    border-radius: 4px;
+    border-radius: 10px;
     position: relative;
     width: clamp(100px,95%,300px);
     bottom: 5%;
@@ -35,7 +35,7 @@ const ModalContent = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
+    padding: 20px;
     gap: 10px;
 
 `

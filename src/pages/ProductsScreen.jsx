@@ -71,6 +71,19 @@ const HeaderProducts = styled.div`
       align-items: center;
   }
 `
+const CreateProduct = styled.button`
+  cursor: pointer;
+  background-color: #2563eb;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  border: none;
+  justify-content:center;
+  align-items:center;
+  &:hover{
+    background-color: #0d56f3;
+  }
+`
 export default function ProductsScreen() {
   //states for ProductForm and create product
   const productTemplate = { name: '', units: 0, price: 0, category: '', line_code: '' }
@@ -143,9 +156,8 @@ export default function ProductsScreen() {
       {ToastError && <Toast $color='red'>{errorMensage}</Toast>}
       {ToastAproved && <Toast $color={'#008300'}>{aproveMensage}</Toast>}
       <TitleContainer>
-        
-        <Container style={{flexDirection:"row",width:'fit-content',gap:'10px',backgroundColor:'transparent'}}>
         <h2 style={{color:'rgb(31 ,41, 55)'}}>Estoque de Produtos</h2>
+        <Container style={{flexDirection:"row",width:'fit-content',gap:'10px',backgroundColor:'transparent'}}>
 
         {User?.permission == 'adm' ?
         <>
@@ -165,14 +177,15 @@ export default function ProductsScreen() {
 
             </ModalComponent>
             : null}
-          <IconButton onclick={() => { setaddProduct(true), setproduct(productTemplate) }} style={{ display: 'flex', justifyContent: "center", alignItems: 'center' }}>
-            <PackagePlus strokeWidth={1.3} />
-          </IconButton>
+          <CreateProduct onClick={() => { setaddProduct(true), setproduct(productTemplate) }} >
+           <p style={{color:"white"}}> + Novo produto</p>
+          </CreateProduct>
         </>
         : null
       } 
-      </Container>
       <SearchComponent onChange={setSearch} />
+
+      </Container>
       </TitleContainer>
       <HeaderProducts>
         <p>Produto</p>

@@ -8,4 +8,5 @@ export const Select = styled.select`
     border-radius: 6px;
     padding: 8px;
     font-size: 12pt;
+    background-color:transparent;
 `

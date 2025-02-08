@@ -4,12 +4,15 @@ const Input = styled.input`
   text-align:${(props)=>props.$align};
   background-color:transparent;
   font-size:12pt;
-  width:90%;
-  padding:4px;
-  border:none;
-  border-bottom:1px solid black;
+  width:100%;
+  padding:8px;
+  border-radius:6px;
+  text-indent: 8px;
+  border:1px solid gray;
   outline:none;
   margin-bottom:10px;
+  box-sizing: border-box;
+
 `
 const InputContaier = styled.div`
   display:flex;
@@ -22,7 +25,7 @@ const InputContaier = styled.div`
 export default function InputText({align,label,onChange,type,value,onKeyDown,pholder}) {
   return (
     <InputContaier $align={align}>
-        <strong>{label}</strong>
+      <h3 style={{fontSize:"12pt",fontWeight:"500",paddingBottom:'4px'}}>{label}</h3>
         <Input placeholder={pholder} step={1} min={1} $align={align} onChange={onChange} onKeyDown={onKeyDown} type={type} value={value}/>
     </InputContaier>
   )
