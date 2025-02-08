@@ -12,6 +12,7 @@ import Toast from "../components/Toast";
 import { supabase } from "../services/cliente";
 import { ProductForm } from "../components/ProductForm";
 import { ContainerL, Loading } from "../components/styled/Loading";
+import { fdInOut } from "../components/FdInOt";
 const Products = styled.div`
   display: flex;
   flex-direction: column;
@@ -20,11 +21,12 @@ const Products = styled.div`
   overflow-y:scroll;
   border-top: 1px solid lightgray;
   @media (min-width: 900px){
+    border-top-left-radius: 0px;
     height: 80dvh;
     border: none;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
-    border-radius: 12px;
-    padding: 10px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
     background-color: #ffffff;
   }
 `
@@ -36,16 +38,38 @@ const customContainer = {
 }
 const TitleContainer = styled.div`
   display:flex;
-flex-direction:row;
-justify-content:center;
-width:100%;
-align-items:center;
-background-color:transparent;
-flex-wrap:wrap;
+  flex-direction:row;
+  justify-content:center;
+  width:100%;
+  align-items:center;
+  background-color:transparent;
+  flex-wrap:wrap;
 @media (min-width: 900px){
   justify-content:space-between;
   padding: 20px;
 }
+`
+const HeaderProducts = styled.div`
+
+  display: none;
+  border-radius: 4px;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 5fr 1fr 1fr;
+  justify-content: end;
+  box-sizing: border-box;
+  gap: 4px;
+  animation: ${fdInOut} 300ms ease-in-out;
+  padding: 10px;
+  transition: background-color ease-in-out 200ms;
+  @media (min-width:900px){
+      display: grid;
+      background-color: #f4f4f4;
+      width: 100%;
+      grid-template-columns: 8fr 80px 80px 40px 40px;
+      grid-template-rows: 1fr;
+      gap: 15px;
+      align-items: center;
+  }
 `
 export default function ProductsScreen() {
   //states for ProductForm and create product
@@ -148,11 +172,14 @@ export default function ProductsScreen() {
         : null
       } 
       </Container>
-
       <SearchComponent onChange={setSearch} />
-
       </TitleContainer>
-      
+      <HeaderProducts>
+        <p>Produto</p>
+        <p style={{textAlign:"center"}}>Unidades</p>
+        <p style={{textAlign:"center"}}>Preço</p>
+        <p style={{textAlign:"center",gridColumn:"4/6"}}>Ações</p>
+      </HeaderProducts>
       <Products >
         {search ? filteredProducts?.map((obj, id) =>
           <ProductComponent cart key={obj?.id || id} data={obj} />

@@ -25,15 +25,16 @@ const UnitsLabel = styled.p`
     @media (min-width: 900px) {
         grid-column: 2/3;
         grid-row:1/2;
+        text-align: center;
     }
 `
 const PriceLabel = styled.p`
     font-weight: 600;
     font-size: 12pt ;
     color:  rgb(31 ,41, 55) ;
-    grid-column:2/4;
+    grid-column:3/4;
     grid-row:1/2;
-    text-align:end;
+    text-align:center;
     align-content:start;
     text-wrap:nowrap;
 `
@@ -62,6 +63,12 @@ const CartButton = styled.button`
     @media (min-width: 900px) {
         grid-column: 5/6;
         grid-row:1/2;
+    }
+`
+const Unidade = styled.p`
+    display: none;
+    @media (max-width: 900px){
+        display: block;
     }
 `
 const TrashButton = styled.button`
@@ -97,7 +104,7 @@ const ProductContainer = styled.div`
     @media (min-width:900px){
         grid-template-columns: 8fr 80px 80px 40px 40px;
         grid-template-rows: 1fr;
-        gap: 30px;
+        gap: 15px;
         align-items: center;
     }
 `
@@ -226,7 +233,7 @@ const ProductComponent = ({ data, cart, trash }) => {
                 </ModalComponent>
             }
             <Title>{data?.name}</Title>
-            <UnitsLabel>Unidades: {data?.units}</UnitsLabel>
+            <UnitsLabel><Unidade>Unidades:</Unidade>{data?.units}</UnitsLabel>
             {User?.permission == 'adm' && !trash ?
                 <EditButton onClick={() => { setaddProduct(true) }}>
                     <SquarePen size={20} color="gray"/>
