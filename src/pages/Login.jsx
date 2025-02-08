@@ -7,7 +7,7 @@ import InputText from '../components/InputText'
 import Toast from '../components/Toast';
 import logo from '../../public/icon.png'
 import { LoginPage } from '../components/styled/LoginPage';
-const customStyleContainer = { backgroundColor: 'transparent', maxWidth: '500px' ,'align-items': 'center'}
+const customStyleContainer = { backgroundColor: 'transparent', maxWidth: '400px' ,'align-items': 'center'}
 export default function Login() {
     const [acessKey, setacessKey] = useState('')
     const { login } = useAuth()

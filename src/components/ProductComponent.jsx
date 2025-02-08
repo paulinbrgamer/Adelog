@@ -14,8 +14,72 @@ import { ContainerL, Loading } from "./styled/Loading"
 const Title = styled.p`
 font-weight: 600;
 font-size: 12pt ;
+color:  rgb(31 ,41, 55) ;
     `
+const UnitsLabel = styled.p`
+    color:gray;
+    font-weight:400;
+    grid-column:1/2;
+    grid-row:2/4;
+    font-size:10pt;
+    @media (min-width: 900px) {
+        grid-column: 2/3;
+        grid-row:1/2;
+    }
+`
+const PriceLabel = styled.p`
+    font-weight: 600;
+    font-size: 12pt ;
+    color:  rgb(31 ,41, 55) ;
+    grid-column:2/4;
+    grid-row:1/2;
+    text-align:end;
+    align-content:start;
+    text-wrap:nowrap;
+`
+const EditButton = styled.button`
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    justify-self:end;
+    width:20px;
+    grid-row:2/3;
+    grid-column:2/3;
+    @media (min-width: 900px) {
+        grid-column: 4/5;
+        grid-row:1/2;
+    }
+`
+const CartButton = styled.button`
+    border: none;
+    cursor: pointer;
+    padding:4px;
+    background-color:black;
+    border-radius:4px;
+    grid-row:2/3;
+    grid-column:3/4;
+    margin-left:auto;
+    @media (min-width: 900px) {
+        grid-column: 5/6;
+        grid-row:1/2;
+    }
+`
+const TrashButton = styled.button`
+     border: none;
+     cursor: pointer;
+     padding: 4px;
+     background-color:rgb(224, 35, 35) ;
+     border-radius: 4px;
+     grid-row: 2/3;
+     grid-column: 2/4;
+     margin-left: auto;
+     @media (min-width: 900px) {
+        grid-column: 5/6;
+        grid-row:1/2;
+    }
+`
 const ProductContainer = styled.div`
+
     display: grid;
     width: 100%;
     border-radius: 4px;
@@ -30,8 +94,11 @@ const ProductContainer = styled.div`
     &:hover{
         background-color: #EDEDED;
     }    
-    @media (min-width:600px){
-        grid-template-columns: 8fr 30px 1fr;
+    @media (min-width:900px){
+        grid-template-columns: 8fr 80px 80px 40px 40px;
+        grid-template-rows: 1fr;
+        gap: 30px;
+        align-items: center;
     }
 `
 const ProductComponent = ({ data, cart, trash }) => {
@@ -153,29 +220,30 @@ const ProductComponent = ({ data, cart, trash }) => {
                         setaddProduct={setaddProduct}
                         createNewProduct={createNewProduct}
                         deleteButtom={deleteProduct}
+                        title={'Editar Produto'}
                     />
 
                 </ModalComponent>
             }
             <Title>{data?.name}</Title>
-            <p style={{ color: 'gray', fontWeight: '400', gridColumn: '1/2', gridRow: "2/4", fontSize: '10pt' }}>Unidades: {data?.units}</p>
-
+            <UnitsLabel>Unidades: {data?.units}</UnitsLabel>
             {User?.permission == 'adm' && !trash ?
-                <IconButton onclick={() => { setaddProduct(true) }} style={{ justifySelf: "end", width: '24px', gridRow: '2/3', gridColumn: "2/3" }}>
-                    <SquarePen />
-                </IconButton> : null}
+                <EditButton onClick={() => { setaddProduct(true) }}>
+                    <SquarePen size={20} color="gray"/>
+                </EditButton> : null
+            }
 
             {data?.units > 0 && cart ?
-                <IconButton onclick={() => setisModalOpen(true)} style={{ padding: '4px', backgroundColor: 'black', borderRadius: '4px', gridRow: '2/3', gridColumn: "3/4", marginLeft: 'auto' }}>
+                <CartButton onClick={() => setisModalOpen(true)} >
                     <ShoppingCart size={22} color="white" />
-                </IconButton>
+                </CartButton>
                 : trash ?
-                    <IconButton onclick={() => handleDeleteOnCart()} style={{ padding: '4px', backgroundColor: 'rgb(224, 35, 35)', borderRadius: '4px', gridRow: '2/3', gridColumn: "2/4", marginLeft: 'auto' }}>
+                    <TrashButton onClick={() => handleDeleteOnCart()} >
                         <Trash size={22} color="white" />
-                    </IconButton>
-
-                    : null}
-            <Title style={{ gridColumn: '2/4', gridRow: "1/2", textAlign: 'end', alignContent: "start", textWrap: "nowrap" }}>R$ {data?.price.toFixed(2)}</Title>
+                    </TrashButton>
+                : null
+            }
+            <PriceLabel >R$ {data?.price.toFixed(2)}</PriceLabel>
         </ProductContainer>
     )
 }

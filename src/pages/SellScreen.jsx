@@ -163,6 +163,7 @@ export default function SellScreen() {
         </ModalComponent> :
         null
       }
+      <h2 style={{color:'rgb(31 ,41, 55)'}}>Carrinho de Produtos</h2>
       <Container style={{ flexDirection: "row", borderBottom: '1px solid lightgray', borderRadius: '0px' }} >
         <Title >Items: {Cart.length}</Title>
         <IconButton style={{ marginLeft: '36px' }} onclick={() => setshowReader(true)}>

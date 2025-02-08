@@ -7,7 +7,7 @@ import IconButton from "./IconButton";
 import { useEffect } from "react";
 
 
-export const ProductForm = ({ product, setproduct, categorys, setShowReader, ShowReader, handleBarcodeDetected, setaddProduct, createNewProduct, deleteButtom, preData }) => {
+export const ProductForm = ({ product, setproduct, categorys, setShowReader, ShowReader, handleBarcodeDetected, setaddProduct, createNewProduct, deleteButtom, preData ,title}) => {
     if (preData) {
         useEffect(() => {
             setproduct({ name: preData.name, units: preData.units, price: preData.price, category: preData.category, line_code: preData.line_code })
@@ -24,7 +24,7 @@ export const ProductForm = ({ product, setproduct, categorys, setShowReader, Sho
                     </ModalComponent>
                 )}
                 {/*Form of product data*/}
-                <h4>Cadastrar produto</h4>
+                <h4>{title}</h4>
                 <InputText label={'Nome'} onChange={(e) => setproduct({ ...product, name: e.target.value })} value={product.name} />
                 <div style={{ display: 'flex', gap: '4px', padding: '4px' }}>
                     <InputText type={'number'} onChange={(e) => setproduct({ ...product, price: Number(e.target.value) })} label={'Preço(R$)'} value={product.price} />

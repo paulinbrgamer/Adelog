@@ -16,15 +16,37 @@ const Products = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width:90%;
+  width:100%;
   overflow-y:scroll;
-  padding:10px;
   border-top: 1px solid lightgray;
+  @media (min-width: 900px){
+    height: 80dvh;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+    border-radius: 12px;
+    padding: 10px;
+    background-color: #ffffff;
+  }
 `
 const customContainer = {
+  backgroundColor:'transparent',
   alignItems: "center",
   minHeight: 0,
+  width:'clamp(100px,90%,1300px)'
 }
+const TitleContainer = styled.div`
+  display:flex;
+flex-direction:row;
+justify-content:center;
+width:100%;
+align-items:center;
+background-color:transparent;
+flex-wrap:wrap;
+@media (min-width: 900px){
+  justify-content:space-between;
+  padding: 20px;
+}
+`
 export default function ProductsScreen() {
   //states for ProductForm and create product
   const productTemplate = { name: '', units: 0, price: 0, category: '', line_code: '' }
@@ -96,9 +118,12 @@ export default function ProductsScreen() {
       {isLoading && <ModalComponent><ContainerL> <Loading /></ContainerL></ModalComponent>}
       {ToastError && <Toast $color='red'>{errorMensage}</Toast>}
       {ToastAproved && <Toast $color={'#008300'}>{aproveMensage}</Toast>}
-      <Container style={{display:"flex",flexDirection:"row"}}>
-        <SearchComponent onChange={setSearch} />
-      {User?.permission == 'adm' ?
+      <TitleContainer>
+        
+        <Container style={{flexDirection:"row",width:'fit-content',gap:'10px',backgroundColor:'transparent'}}>
+        <h2 style={{color:'rgb(31 ,41, 55)'}}>Estoque de Produtos</h2>
+
+        {User?.permission == 'adm' ?
         <>
           {addProduct ?
             <ModalComponent>
@@ -111,17 +136,22 @@ export default function ProductsScreen() {
                 handleBarcodeDetected={handleBarcodeDetected}
                 setaddProduct={setaddProduct}
                 createNewProduct={createNewProduct}
+                title={'Cadastrar Produto'}
               />
 
             </ModalComponent>
             : null}
-          <IconButton onclick={() => { setaddProduct(true), setproduct(productTemplate) }} style={{ display: 'flex', justifyContent: "center", alignItems: 'center', gap: '6px' }}>
+          <IconButton onclick={() => { setaddProduct(true), setproduct(productTemplate) }} style={{ display: 'flex', justifyContent: "center", alignItems: 'center' }}>
             <PackagePlus strokeWidth={1.3} />
           </IconButton>
         </>
         : null
       } 
       </Container>
+
+      <SearchComponent onChange={setSearch} />
+
+      </TitleContainer>
       
       <Products >
         {search ? filteredProducts?.map((obj, id) =>

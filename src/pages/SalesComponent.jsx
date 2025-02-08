@@ -7,6 +7,8 @@ import Container from "../components/styled/Container"
 const ContainerStyle = {
     overflow: 'scroll',
     minHeight: 0,
+    width:'90%',
+    padding:10,
 }
 
 const SalesComponent = () => {
@@ -35,6 +37,7 @@ const SalesComponent = () => {
 
     return (
         <Container style={ContainerStyle} >
+            <h2 style={{color:'rgb(31 ,41, 55)'}}>Histórico de Vendas</h2>
             <TableComponent data={sales} header={['Nome', 'Unidades', 'Total(R$)', 'Data']} />
         </Container>
     )

@@ -5,7 +5,6 @@ display:flex;
 justify-content:space-around;
 bottom:0px;
 width:100%;
-padding: 10px;
 box-sizing: border-box;
 border-top: 1px solid lightgray;
 background-color: #ffffff;
@@ -13,12 +12,12 @@ background-color: #ffffff;
 @media (min-width: 900px) {
     flex-direction: column;
     justify-content: start;
-    padding-top: 5dvh;
-    gap: 30px;
+    gap: 20px;
     grid-column: 1/2;
     grid-row : 1/3;
-    border-right: 1px solid lightgray;
-
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    box-sizing: border-box;
+    padding: 10px;
   }
 `
 export default function NavOptions({children}) {

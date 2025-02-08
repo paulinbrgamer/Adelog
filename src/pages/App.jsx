@@ -8,62 +8,43 @@ import ProductsScreen from './ProductsScreen'
 import { AppProvider } from './AppProvider';
 import SalesComponent from '../pages/SalesComponent'
 import { AppPage } from '../components/styled/AppPage'
-import styled from 'styled-components';
-const ContainerTitle = styled.div`
-  @media (min-width: 900px) {
-    border-bottom: 1px solid lightgrey;
-  }
-`
 function App() {
   const [currentRendering, setcurrentRendering] = useState('products')
-  const title = { user: 'Dados pessoais', products: 'Estoque de Produtos', sell: "Carrinho de compras", sales: "Histórico de vendas" }
   const handleChangeScreen = (setRender, newRender) => {
     setRender(newRender)
   }
-  const ChangeStyleNav = (current, target) => current == target ? 'black' : 'white'
+  const ChangeStyleNav = (current, target) => current == target ? 'rgb(239 246 255)' : 'white'
   return (
     <AppProvider>
       <AppPage  >
-        <ContainerTitle style={{display:"flex",flexDirection:"row",justifyContent:"space-between",justifySelf:"center",width:'100%'}}>
-          <h3 style={{ padding: "10px" }}>{title[currentRendering]}</h3>
-          <IconButton  onclick={() => handleChangeScreen(setcurrentRendering, 'user')}>
-            <CircleUserRound
-              size={30}
-              strokeWidth={1}
-            />
-          </IconButton>
-        </ContainerTitle>
 
         {currentRendering === 'user' ? <UserScreen /> : currentRendering === 'sell' ? <SellScreen /> : currentRendering === 'products' ? <ProductsScreen /> : <SalesComponent />}
-
         <NavOptions>
-          
-          <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'products')}>
+          <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'products')} style={{ backgroundColor: ChangeStyleNav(currentRendering, 'products'), padding: "8px" }}>
             <PackageSearch
               size={26}
-              strokeWidth={1}
-              stroke={'gray'}
-              fill={ChangeStyleNav(currentRendering, 'products')} color={currentRendering == 'products' ? 'black' : 'gray'} />
-            <p style={{ color: currentRendering == 'products' ? 'black' : 'gray' }}>Produtos</p>
+              strokeWidth={1.5}
+              color={currentRendering == 'products' ? 'blue' : 'gray'} />
           </IconButton>
-
-          <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'sell')}>
+          <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'sell')} style={{ backgroundColor: ChangeStyleNav(currentRendering, 'sell'), padding: "8px" }}>
             <ShoppingCart
               size={26}
-              stroke={'gray'}
-              strokeWidth={1.3}
+              strokeWidth={1.5}
               fill={ChangeStyleNav(currentRendering, 'sell')}
-              color={currentRendering == 'sell' ? 'black' : 'gray'} />
-            <p style={{ color: currentRendering == 'sell' ? 'black' : 'gray' }}>Carrinho</p>
+              color={currentRendering == 'sell' ? 'blue' : 'gray'} />
           </IconButton>
-          <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'sales')}>
+          <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'sales')} style={{ backgroundColor: ChangeStyleNav(currentRendering, 'sales'), padding: "8px" }}>
             <FileText
               size={26}
-              stroke={'gray'}
-              strokeWidth={1.3}
+              strokeWidth={1.5}
               fill={ChangeStyleNav(currentRendering, 'sales')}
-              color={currentRendering == 'sales' ? 'black' : 'gray'} />
-            <p style={{ color: currentRendering == 'sales' ? 'black' : 'gray' }}>Histórico</p>
+              color={currentRendering == 'sales' ? 'blue' : 'gray'} />
+          </IconButton>
+          <IconButton onclick={() => handleChangeScreen(setcurrentRendering, 'user')}>
+            <CircleUserRound style={{ padding: '10px' }}
+              size={32}
+              strokeWidth={1}
+            />
           </IconButton>
         </NavOptions>
       </AppPage>
