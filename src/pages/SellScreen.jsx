@@ -55,7 +55,7 @@ const ContainerInfoCart = styled.div`
   padding: 10px;
   align-self: center;
   @media (min-width: 900px) {
-    width: 50%;
+    width: clamp(100px,40%,500px);
     justify-content: space-between;
     border-top: 1px solid lightgray;
     padding: 30px;
