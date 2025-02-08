@@ -34,7 +34,7 @@ const customContainer = {
   backgroundColor:'transparent',
   alignItems: "center",
   minHeight: 0,
-  width:'clamp(100px,90%,1300px)'
+  width:'clamp(100px,90%,1800px)'
 }
 const TitleContainer = styled.div`
   display:flex;
