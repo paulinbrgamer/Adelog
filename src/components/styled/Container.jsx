@@ -2,7 +2,7 @@ import {styled} from 'styled-components'
 import { fdInOut } from '../FdInOt'
  const Container = styled.div`
 background-color: white;
-width: clamp(100px,90%,1800px);
+width: clamp(100px,90%,1600px);
 display: flex;
 flex-direction: column;
 border-radius: 6px;

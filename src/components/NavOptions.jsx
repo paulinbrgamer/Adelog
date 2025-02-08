@@ -6,7 +6,7 @@ justify-content:space-around;
 bottom:0px;
 width:100%;
 box-sizing: border-box;
-border-top: 1px solid lightgray;
+box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 background-color: #ffffff;
 
 @media (min-width: 900px) {
@@ -15,7 +15,7 @@ background-color: #ffffff;
     gap: 20px;
     grid-column: 1/2;
     grid-row : 1/3;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     box-sizing: border-box;
     padding: 10px;
   }

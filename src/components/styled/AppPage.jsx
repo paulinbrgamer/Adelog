@@ -5,7 +5,7 @@ export const AppPage = styled.div`
     height: 100dvh;
     grid-template-rows: 1fr auto;
     @media (min-width:900px) {
-        grid-template-columns: 70px 1fr;
+        grid-template-columns: 60px 1fr;
         background-color:#f9fafb;
     }
 `

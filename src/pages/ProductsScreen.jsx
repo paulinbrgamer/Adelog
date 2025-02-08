@@ -4,7 +4,7 @@ import ProductComponent from "../components/ProductComponent";
 import { useApp } from "./AppProvider";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { PackagePlus, } from "lucide-react";
+import { PackagePlus, Plus, } from "lucide-react";
 import IconButton from "../components/IconButton";
 import { useAuth } from "../auth/Authprovider";
 import ModalComponent from "../components/ModalComponent";
@@ -34,7 +34,6 @@ const customContainer = {
   backgroundColor:'transparent',
   alignItems: "center",
   minHeight: 0,
-  width:'clamp(100px,90%,1800px)'
 }
 const TitleContainer = styled.div`
   display:flex;
@@ -75,6 +74,7 @@ export const HeaderProducts = styled.div`
 `
 export const CreateProduct = styled.button`
   cursor: pointer;
+  display: flex;
   background-color: #2563eb;
   padding: 10px;
   border-radius: 10px;
@@ -180,7 +180,8 @@ export default function ProductsScreen() {
             </ModalComponent>
             : null}
           <CreateProduct onClick={() => { setaddProduct(true), setproduct(productTemplate) }} >
-           <p style={{color:"white"}}> + Novo produto</p>
+          <Plus color="white"/>
+           <p style={{color:"white",fontSize:"10pt"}}> Novo produto</p>
           </CreateProduct>
         </>
         : null

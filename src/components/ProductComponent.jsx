@@ -13,7 +13,7 @@ import { ProductForm } from "./ProductForm"
 import { ContainerL, Loading } from "./styled/Loading"
 const Title = styled.p`
 font-weight: 600;
-font-size: 12pt ;
+font-size: 11pt ;
 color:  rgb(31 ,41, 55) ;
     `
 const UnitsLabel = styled.p`
@@ -26,6 +26,7 @@ const UnitsLabel = styled.p`
         grid-column: 2/3;
         grid-row:1/2;
         text-align: center;
+        font-size: 11pt ;
     }
 `
 const PriceLabel = styled.p`
@@ -37,6 +38,7 @@ const PriceLabel = styled.p`
     text-align:center;
     align-content:start;
     text-wrap:nowrap;
+    font-size: 11pt ;
 `
 const EditButton = styled.button`
     border: none;

@@ -14,7 +14,6 @@ const Table = styled.table`
 const Tbody = styled.tbody``;
 
 const Thead = styled.thead`
-  position: sticky;
   top: 0;
   z-index: 1;
   background-color: #f8fafc; /* Cabeçalho com cor distinta */
