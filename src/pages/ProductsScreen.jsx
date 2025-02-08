@@ -49,7 +49,7 @@ const TitleContainer = styled.div`
   padding: 20px;
 }
 `
-const HeaderProducts = styled.div`
+export const HeaderProducts = styled.div`
 
   display: none;
   border-radius: 4px;
@@ -63,7 +63,9 @@ const HeaderProducts = styled.div`
   transition: background-color ease-in-out 200ms;
   @media (min-width:900px){
       display: grid;
-      background-color: #f4f4f4;
+      background-color: white;
+      border-radius: 0px;
+      border-bottom: 1px solid lightgray;
       width: 100%;
       grid-template-columns: 8fr 80px 80px 40px 40px;
       grid-template-rows: 1fr;
@@ -71,7 +73,7 @@ const HeaderProducts = styled.div`
       align-items: center;
   }
 `
-const CreateProduct = styled.button`
+export const CreateProduct = styled.button`
   cursor: pointer;
   background-color: #2563eb;
   padding: 10px;
@@ -188,10 +190,10 @@ export default function ProductsScreen() {
       </Container>
       </TitleContainer>
       <HeaderProducts>
-        <p>Produto</p>
-        <p style={{textAlign:"center"}}>Unidades</p>
-        <p style={{textAlign:"center"}}>Preço</p>
-        <p style={{textAlign:"center",gridColumn:"4/6"}}>Ações</p>
+        <p style={{color:"gray"}}>Produto</p>
+        <p style={{textAlign:"center",color:"gray"}}>Unidades</p>
+        <p style={{textAlign:"center",color:"gray"}}>Preço</p>
+        <p style={{textAlign:"center",gridColumn:"4/6",color:"gray"}}>Ações</p>
       </HeaderProducts>
       <Products >
         {search ? filteredProducts?.map((obj, id) =>

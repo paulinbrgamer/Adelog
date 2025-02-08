@@ -13,23 +13,39 @@ import { ScanLineIcon, ShoppingCart } from 'lucide-react'
 import BarScanner from '../components/BarScanner'
 import UnitsComponent from '../components/UnitsComponent'
 import { ContainerL, Loading } from '../components/styled/Loading'
+import { CreateProduct, HeaderProducts } from './ProductsScreen'
 const Title = styled.p`
   font-weight: 600;
   font-size: 14pt ;
   text-align: center;
     `
 const Products = styled.div`
-  width:90%;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width:100%;
   overflow-y:scroll;
-  padding:10px;
-  box-sizing: border-box;
+  border-top: 1px solid lightgray;
+  height: 80dvh;
+  @media (min-width: 900px){
+    border-top-left-radius: 0px;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    background-color: #ffffff;
+  }
 
 `
 const styleMainContainer = {
-  alignItems: 'center',
   minHeight: 0,
+  backgroundColor: "transparent"
 }
+const GridOptions = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+`
 const ContainerInfoCart = styled.div`
   box-sizing: border-box;
   align-content: center;
@@ -37,13 +53,16 @@ const ContainerInfoCart = styled.div`
   gap: 10px;
   width: 100%;
   padding: 10px;
+  align-self: center;
   @media (min-width: 900px) {
+    width: 50%;
     justify-content: space-between;
     border-top: 1px solid lightgray;
-  padding: 30px;
-
+    padding: 30px;
+    
   }
 `
+
 export default function SellScreen() {
   const { Cart, setCart, storeData } = useApp()
   const [isFinished, setisFinished] = useState(false)
@@ -111,7 +130,7 @@ export default function SellScreen() {
       showToast(setToastError)
       setmodalAddUnits(false)
     } else {
-      setproductSelected(...storeData.filter(item => item.line_code == barcode&& item.units > 0))
+      setproductSelected(...storeData.filter(item => item.line_code == barcode && item.units > 0))
       setmodalAddUnits(true)
 
     }
@@ -163,40 +182,43 @@ export default function SellScreen() {
         </ModalComponent> :
         null
       }
-      <h2 style={{color:'rgb(31 ,41, 55)'}}>Carrinho de Produtos</h2>
-      <Container style={{ flexDirection: "row", borderBottom: '1px solid lightgray', borderRadius: '0px' }} >
-        <Title >Items: {Cart.length}</Title>
-        <IconButton style={{ marginLeft: '36px' }} onclick={() => setshowReader(true)}>
-          <ScanLineIcon color='orange' size={34} />
-        </IconButton>
+      <Container style={{ backgroundColor: "transparent", flexDirection: "row", alignItems: "center" }}>
+        <h2 style={{ color: 'rgb(31 ,41, 55)', padding: "10px", alignSelf: "start" }}>Carrinho de Produtos</h2>
+        <CreateProduct style={{ marginLeft: '36px' }} onClick={() => setshowReader(true)}>
+          <p style={{ color: "white" }}>Adicionar ao carrinho</p>
+        </CreateProduct>
       </Container>
+      
+      <HeaderProducts>
+        <p style={{ color: "gray" }}>Produto</p>
+        <p style={{ textAlign: "center", color: "gray" }}>Unidades</p>
+        <p style={{ textAlign: "center", color: "gray" }}>Preço</p>
+        <p style={{ textAlign: "center", gridColumn: "4/6", color: "gray" }}>Ações</p>
+      </HeaderProducts>
       <Products>
         {Cart.map((item) =>
           <ProductComponent trash key={item.id + 'cart'} data={item} />
         )}
       </Products>
       {Cart.length > 0 ?
-        
-          <ContainerInfoCart style={{display:"flex",flexDirection:"row",flexWrap:"wrap"}}>
-          <ContainerL style={{  'alignSelf': 'center' ,gap:"20px"}}>
-          <Title >Total: R$ {Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)}</Title>
-            <div >
-              <InputText pholder='a receber' align={'center'} type={'Number'} onKeyDown={(e) => handleExchange(e)} />
-              <Title style={{ color: "gray", fontSize: "10pt" }}>Troco : R$ {(exchange - Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)).toFixed(2)}</Title>
-            </div>
-          </ContainerL>
-          <div style={{ display: 'flex', justifyContent: "center", gap: "60px", paddingTop: "8px" }}>
-            <IconButton style={{ padding: '4px', border: "1px solid ", borderRadius: '4px' }} onclick={() => setCart([])}>
+        <ContainerInfoCart>
+          <InputText pholder='Valor a receber(R$)' align={'center'} type={'Number'} onKeyDown={(e) => handleExchange(e)} />
+
+          <GridOptions>
+            <Title style={{ color: "gray", fontSize: "12pt" }}>Total: R$ {Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)}</Title>
+            <Title style={{ color: "gray", fontSize: "12pt" }}>Troco : R$ {(exchange - Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)).toFixed(2)}</Title>
+
+            <IconButton style={{ padding: '6px', border: "1px solid ", borderRadius: '4px' }} onclick={() => setCart([])}>
               <p style={{ fontWeight: 'normal', fontSize: "12pt" }}>Cancelar</p>
             </IconButton>
+
             <IconButton onclick={() => handleFinalize()} style={{ padding: '6px', border: "1px solid ", borderRadius: '4px', backgroundColor: "black" }}>
               <p style={{ fontWeight: 'normal', fontSize: "12pt", color: 'white' }}>Finalizar</p>
             </IconButton>
-          </div>
-          
-          
-        </ContainerInfoCart> : null}
-
+          </GridOptions>
+        </ContainerInfoCart> 
+        : null
+      }
     </Container>
   )
 }

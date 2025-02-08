@@ -99,7 +99,7 @@ const ProductContainer = styled.div`
     padding: 10px;
     transition: background-color ease-in-out 200ms;
     &:hover{
-        background-color: #EDEDED;
+        background-color: #faf9f9;
     }    
     @media (min-width:900px){
         grid-template-columns: 8fr 80px 80px 40px 40px;
