@@ -29,16 +29,6 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('user')
         navegate('/')
     }
-    useEffect(() => {
-        const session = JSON.parse(localStorage.getItem('user'))
-        if (!session) {
-            navegate('/')
-        }
-        else {
-            login({ 'key': session.key }, null)
-        }
-        
-    }, [])
     const values = { User, login, logout }
     return (
         <AuthContext.Provider value={values}>
