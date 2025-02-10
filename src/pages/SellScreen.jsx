@@ -9,7 +9,7 @@ import { supabase } from "../services/cliente";
 import Toast from '../components/Toast'
 import { useAuth } from '../auth/Authprovider'
 import InputText from '../components/InputText'
-import { ScanLineIcon, ShoppingCart } from 'lucide-react'
+import { ScanBarcode, ScanLineIcon, ShoppingCart } from 'lucide-react'
 import BarScanner from '../components/BarScanner'
 import UnitsComponent from '../components/UnitsComponent'
 import { ContainerL, Loading } from '../components/styled/Loading'
@@ -184,7 +184,8 @@ export default function SellScreen() {
       }
       <Container style={{ backgroundColor: "transparent", flexDirection: "row", alignItems: "center" }}>
         <h2 style={{ color: 'rgb(31 ,41, 55)', padding: "10px", alignSelf: "start" }}>Carrinho de Produtos</h2>
-        <CreateProduct style={{ marginLeft: '36px' }} onClick={() => setshowReader(true)}>
+        <ScanBarcode color='gray' style={{cursor:"pointer"}} onClick={() => setshowReader(true)}></ScanBarcode>
+        <CreateProduct style={{ marginLeft: '36px' }} >
           <p style={{ color: "white" }}>Adicionar ao carrinho</p>
         </CreateProduct>
       </Container>

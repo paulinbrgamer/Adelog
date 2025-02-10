@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useContext } from "react";
 import { supabase } from "../services/cliente";
 import { useNavigate } from "react-router-dom";
 const AuthContext = createContext()
@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
             navegate('/home')
             setUser(data)
             localStorage.setItem('user', JSON.stringify(data))
+
         }
     }
     const logout = () => {
@@ -29,12 +30,11 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('user')
         navegate('/')
     }
-    const values = { User, login, logout }
+    const values = { User, login, logout,setUser }
     return (
         <AuthContext.Provider value={values}>
             {children}
         </AuthContext.Provider>
     )
-
 }
 export const useAuth = () => useContext(AuthContext)
