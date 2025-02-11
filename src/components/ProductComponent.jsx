@@ -185,7 +185,7 @@ const ProductComponent = ({ data, cart, trash }) => {
             }
             else {
                 setaddProduct(false)
-                setaproveMensage("Produto Cadastrado")
+                setaproveMensage("Produto Atualizado")
                 showToast(setToastAproved)
                 setisLoading(false)
             }
