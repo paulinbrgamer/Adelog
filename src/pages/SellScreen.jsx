@@ -73,6 +73,7 @@ export default function SellScreen() {
   const [ShowReader, setshowReader] = useState(false)
   const [productSelected, setproductSelected] = useState(null)
   const [modalAddUnits, setmodalAddUnits] = useState(false)
+  const [ModalAddCart,setModalAddCart] = useState(false)
   const [Units, setUnits] = useState(null)
   const { User } = useAuth()
   const [exchange, setExchange] = useState(0)
@@ -143,20 +144,31 @@ export default function SellScreen() {
       setCart(newState)
       setmodalAddUnits(false)
       setproductSelected(null)
+      setModalAddCart(false)
     }
 
   }
   return (
     <Container style={styleMainContainer} >
-      {ShowReader ?
+      {ModalAddCart &&
+      <ModalComponent>
+        {ShowReader ?
         <ModalComponent>
           <BarScanner onDetected={handleBarcodeDetected} />
           <IconButton onclick={() => setshowReader(false)} style={{ gridRow: "2/2" }}>
             <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
           </IconButton>
         </ModalComponent> : null
-
+       }
+        <InputText type={'number'} onChange={(e) => handleBarcodeDetected(e.target.value)} label={'Código de barras'} >
+        <ScanBarcode color='gray' style={{cursor:"pointer",alignSelf:'center'}} onClick={() => setshowReader(true)}/>
+        </InputText>
+        <IconButton onclick={() => setModalAddCart(false)} style={{ gridRow: "2/2" }}>
+            <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
+        </IconButton>
+      </ModalComponent>
       }
+      
       {isFinished ?
         <ModalComponent>
           <ContainerL>
@@ -170,7 +182,7 @@ export default function SellScreen() {
         <ModalComponent>
           <Title>Unidades de {productSelected.name}:</Title>
           <ShoppingCart />
-          <UnitsComponent data={productSelected} set={setUnits} finalize={handleFinalizeUnits()}/>
+          <UnitsComponent data={productSelected} set={setUnits} finalize={handleFinalizeUnits}/>
           <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'space-between', padding: "4px" }}>
             <IconButton onclick={() => setmodalAddUnits(false)} style={{ gridRow: "2/2" }}>
               <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
@@ -179,13 +191,11 @@ export default function SellScreen() {
               <p style={{ fontWeight: 'bold', marginTop: "8px", fontSize: "12pt" }}>Finalizar</p>
             </IconButton>
           </div>
-        </ModalComponent> :
-        null
+        </ModalComponent> :null
       }
       <Container style={{ backgroundColor: "transparent", flexDirection: "row", alignItems: "center" }}>
         <h2 style={{ color: 'rgb(31 ,41, 55)', padding: "10px", alignSelf: "start" }}>Carrinho de Produtos</h2>
-        <ScanBarcode color='gray' style={{cursor:"pointer"}} onClick={() => setshowReader(true)}></ScanBarcode>
-        <CreateProduct style={{ marginLeft: '36px' }} >
+        <CreateProduct onClick={()=>setModalAddCart(true)} style={{ marginLeft: '36px' }} >
           <p style={{ color: "white" }}>Adicionar ao carrinho</p>
         </CreateProduct>
       </Container>
