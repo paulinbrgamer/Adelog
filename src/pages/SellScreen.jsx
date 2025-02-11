@@ -170,7 +170,7 @@ export default function SellScreen() {
         <ModalComponent>
           <Title>Unidades de {productSelected.name}:</Title>
           <ShoppingCart />
-          <UnitsComponent data={productSelected} set={setUnits} />
+          <UnitsComponent data={productSelected} set={setUnits} finalize={handleFinalizeUnits()}/>
           <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'space-between', padding: "4px" }}>
             <IconButton onclick={() => setmodalAddUnits(false)} style={{ gridRow: "2/2" }}>
               <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>

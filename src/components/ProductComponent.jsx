@@ -204,7 +204,7 @@ const ProductComponent = ({ data, cart, trash }) => {
                 <ModalComponent>
                     <Title>Unidades de {data.name}:</Title>
                     <ShoppingCart />
-                    <UnitsComponent data={data} set={setUnits} />
+                    <UnitsComponent data={data} set={setUnits} finalize={handleFinalizeUnits} />
                     <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'space-between', padding: "4px" }}>
                         <IconButton onclick={() => setisModalOpen(false)} style={{ gridRow: "2/2" }}>
                             <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
