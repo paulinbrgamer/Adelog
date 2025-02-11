@@ -21,6 +21,8 @@ const low = keyframes`
 `
 const fdInOut = keyframes`
     0% {
+      left: 50%;
+      transform: translateX(-50%);
       opacity: 0;
       top:-110%;
     }
@@ -35,6 +37,8 @@ const fdInOut = keyframes`
     }
 
     100% {
+      left: 50%;
+      transform: translateX(-50%);
       opacity: 0;
       top:-110%;
     }
