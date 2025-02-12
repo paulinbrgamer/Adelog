@@ -8,9 +8,9 @@ export default function UserScreen() {
   const divStyle = {
     display: 'flex',
     flexDirection: "column",
-    width: '80%',
+    width: '100%',
     marginTop: "10px",
-    fontSize: "0.95rem",
+    fontSize: "0.85rem",
     color: "#4b5563",
   }
   const h3Style = {
@@ -38,9 +38,8 @@ export default function UserScreen() {
     transition: "background-color 0.3s ease",
   }
   const ContainerStyle = {
-    overflowY:'scroll',
+    width: '100%',
     alignItems: "center",
-    minHeight: 0,
   }
   return (
     <Container style={ContainerStyle} >
