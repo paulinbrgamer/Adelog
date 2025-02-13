@@ -84,7 +84,7 @@ const SalesComponent = () => {
         } else {
             const SortedDate = data.sort((a, b) => new Date(b.date) - new Date(a.date))
             setSales(SortedDate.map(item => {
-                const date = new Date(item.date).toLocaleString()
+                const date = new Date(item.date).toLocaleString('pt-br')
                 const nameItem = storeData.filter((product) => item.id_product == product.id)
                 item['name'] = nameItem[0]?.name
                 item.date = date
@@ -117,11 +117,11 @@ const SalesComponent = () => {
             </History>
             <HistoryContainer>
                {sales.map(e=>
-               <History>
+               <History key={e.id}>
                 <p >{e.name ||'Apagado'}</p>
                 <p style={{textAlign:"center",color:"gray"}}>{e.units}</p>
                 <p style={{textAlign:"center"}}>{e.price}</p>
-                <p style={{textAlign:"center"}}>{new Date(e.date).toLocaleString('pt-Br')}</p>
+                <p style={{textAlign:"center"}}>{e.date}</p>
                </History>)}
             </HistoryContainer>
         </Container>
