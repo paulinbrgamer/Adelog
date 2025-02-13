@@ -32,7 +32,7 @@ export const ProductForm = ({ product, setproduct, categorys, setShowReader, Sho
                     <InputText type={'number'} onChange={(e) => setproduct({ ...product, units: Number(e.target.value) })} label={'Unidades'} value={product.units} />
                 </div>
                 <h3 style={{fontSize:"12pt",fontWeight:"500",paddingBottom:'4px',alignSelf:"start"}}>Categoria</h3>
-                <Select name="categorias" onChange={(e) => setproduct({ ...product, category: e.target.value })}>
+                <Select style={{width:"100%"}} name="categorias" onChange={(e) => setproduct({ ...product, category: e.target.value })}>
                     {categorys.map((item) => <Option selected={product.category == item.id ? true : false} key={item.id + "edit"} value={item.id}>{item.name}</Option>)}
                 </Select>
                 <InputText type={'number'} onChange={(e) => setproduct({ ...product, line_code: e.target.value })} label={'Código de barras'} value={product.line_code} />
@@ -98,7 +98,7 @@ export const ProductForm = ({ product, setproduct, categorys, setShowReader, Sho
                     />
                 </div>
                 <h3 style={{fontSize:"12pt",fontWeight:"500",paddingBottom:'4px',alignSelf:"start"}}>Categoria</h3>
-                <Select name="categorias" onChange={(e) => setproduct({ ...product, category: e.target.value })}>
+                <Select style={{width:"100%"}} name="categorias" onChange={(e) => setproduct({ ...product, category: e.target.value })}>
                     <Option disabled selected>
                         Selecionar
                     </Option>

@@ -24,7 +24,7 @@ function App() {
         {isModalUser &&
           <ModalComponent>
             <IconButton onclick={() => setisModalUser(false)} style={{ alignSelf: 'end' }}>
-              <p style={{ fontWeight: 'normal', fontSize: "12pt" }}><X/></p>
+              <p style={{ fontWeight: 'normal', fontSize: "12pt" }}><X size={20}color='gray'/></p>
             </IconButton>
             <UserScreen />
 

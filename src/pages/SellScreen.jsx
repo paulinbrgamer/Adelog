@@ -194,7 +194,7 @@ export default function SellScreen() {
         </ModalComponent> :null
       }
       <Container style={{ backgroundColor: "transparent", flexDirection: "row", alignItems: "center" }}>
-        <h2 style={{ color: 'rgb(31 ,41, 55)', padding: "10px", alignSelf: "start" }}>Carrinho de Produtos</h2>
+        <h2 style={{ color: 'rgb(31 ,41, 55)', padding: "10px", alignSelf: "start",fontWeight:"500" }}>Carrinho de Produtos</h2>
         <CreateProduct onClick={()=>setModalAddCart(true)} style={{ marginLeft: '36px' }} >
           <p style={{ color: "white" }}>Adicionar ao carrinho</p>
         </CreateProduct>

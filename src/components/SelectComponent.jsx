@@ -3,7 +3,7 @@ export const Option = styled.option`
 font-size: 12pt;
 `
 export const Select = styled.select`
-    width: 95%;
+    cursor: pointer;
     border: 1px solid;
     border-radius: 6px;
     padding: 8px;

@@ -158,7 +158,7 @@ export default function ProductsScreen() {
       {ToastError && <Toast $color='red'>{errorMensage}</Toast>}
       {ToastAproved && <Toast $color={'#008300'}>{aproveMensage}</Toast>}
       <TitleContainer>
-        <h2 style={{color:'rgb(31 ,41, 55)'}}>Estoque de Produtos</h2>
+        <h2 style={{color:'rgb(31 ,41, 55)',fontWeight:"500"}}>Estoque de Produtos</h2>
         <Container style={{flexDirection:"row",width:'fit-content',gap:'10px',backgroundColor:'transparent'}}>
 
         {User?.permission == 'adm' ?

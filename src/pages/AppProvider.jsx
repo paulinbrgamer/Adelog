@@ -7,12 +7,7 @@ export const AppProvider = ({ children }) => {
     const [categorys, setcategorys] = useState([])
     const [Cart, setCart] = useState([])
     const { User } = useAuth();
-    useEffect(() => {
-        console.log("-----Alteração do Cart")
-        console.log(Cart);
-        console.log(" ")
 
-    }, [Cart]);
     const getStoreData = async () => {
         if (User) {
             const { data: dataStore, error: Storeerror } = await supabase.from('products').select('*').eq('store_id', User.store_id)
