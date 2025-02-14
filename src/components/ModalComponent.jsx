@@ -28,7 +28,7 @@ const Modal = styled.div`
 const ModalContent = styled.div`
     border-radius: 10px;
     position: relative;
-    width: clamp(100px,95%,300px);
+    width: clamp(100px,90%,300px);
     bottom: 5%;
     background-color: white;
     display: flex;
@@ -39,10 +39,10 @@ const ModalContent = styled.div`
     gap: 10px;
 
 `
-const ModalComponent = ({children})=>{
+const ModalComponent = ({children,style})=>{
     return ReactDOM.createPortal(
         <Modal>
-            <ModalContent>
+            <ModalContent style={style}>
                 {children}
 
             </ModalContent>

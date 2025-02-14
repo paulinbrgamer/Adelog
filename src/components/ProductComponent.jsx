@@ -168,7 +168,7 @@ const ProductComponent = ({ data, cart, trash }) => {
     const createNewProduct = async () => {
 
         //validar os campos do form
-        if (product.name.length > 0 && product.price > 0 && product.units >= 0 && product.line_code.toString().length > 0 && product.category.toString().length > 0) {
+        if (product.name.length > 0 && product.price > 0 && product.brute_price > 0 && product.units >= 0 && product.line_code.toString().length > 0 && product.category.toString().length > 0) {
             setisLoading(true)
 
             const { error } = await supabase.from('products').update({ ...product, store_id: User?.store_id }).eq('id', data.id)
@@ -217,7 +217,7 @@ const ProductComponent = ({ data, cart, trash }) => {
                 null
             }
             {addProduct &&
-                <ModalComponent>
+                <ModalComponent style={{width:'clamp(100px,90%,600px)'}}>
                     <ProductForm
                         preData={data}
                         product={product}

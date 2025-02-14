@@ -104,7 +104,7 @@ export default function SellScreen() {
         showToast(setToastError)
       }
       else {
-        const { id, name, category, line_code, ...rest } = item
+        const { id, name, category, line_code,brute_price, ...rest } = item
         const date = new Date()
 
         const sale = { ...rest, id_product: id, user_id: User.id, store_id: User.store_id, date: date.toISOString() }

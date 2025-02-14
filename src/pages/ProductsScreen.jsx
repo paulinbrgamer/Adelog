@@ -4,8 +4,7 @@ import ProductComponent from "../components/ProductComponent";
 import { useApp } from "./AppProvider";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { PackagePlus, Plus, } from "lucide-react";
-import IconButton from "../components/IconButton";
+import { Plus, } from "lucide-react";
 import { useAuth } from "../auth/Authprovider";
 import ModalComponent from "../components/ModalComponent";
 import Toast from "../components/Toast";
@@ -88,7 +87,7 @@ export const CreateProduct = styled.button`
 `
 export default function ProductsScreen() {
   //states for ProductForm and create product
-  const productTemplate = { name: '', units: 0, price: 0, category: '', line_code: '' }
+  const productTemplate = { name: '', units: 0, price: null, category: '', line_code: '',brute_price:null }
   const [product, setproduct] = useState(productTemplate)
   const [addProduct, setaddProduct] = useState(false)
   const [ToastError, setToastError] = useState(false)
@@ -126,7 +125,7 @@ export default function ProductsScreen() {
   //func actived when user click on Finalize
   const createNewProduct = async () => {
     //validar os campos do form
-    if (product.name.length > 0 && product.price > 0 && product.units > 0 && product.line_code.toString().length > 0 && product.category.toString().length > 0) {
+    if (product.name.length > 0 && product.price > 0&& product.brute_price > 0 && product.units > 0 && product.line_code.toString().length > 0 && product.category.toString().length > 0) {
       setisLoading(true)
       const { error } = await supabase.from('products').insert({ ...product, store_id: User?.store_id })
       if (error) {
@@ -164,7 +163,7 @@ export default function ProductsScreen() {
         {User?.permission == 'adm' ?
         <>
           {addProduct ?
-            <ModalComponent>
+            <ModalComponent style={{width:'clamp(100px,90%,600px)'}}>
               <ProductForm
                 product={product}
                 setproduct={setproduct}

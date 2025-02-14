@@ -27,7 +27,7 @@ const History = styled.div`
     box-sizing: border-box;
     padding: 10px;
     display: grid;
-    grid-template-columns: 14fr 1fr 1fr 2fr;
+    grid-template-columns: 14fr 1fr 1fr 3fr;
     background-color: white;
     &:hover{
         background-color: #faf9f9;
@@ -112,7 +112,7 @@ const SalesComponent = () => {
             <History style={{width:"100%",borderBottom: '1px solid lightgray'}}>
             <p style={{color:"gray"}}>Produto</p>
                 <p style={{textAlign:"center",color:"gray"}}>Itens</p>
-                <p style={{textAlign:"center",color:"gray"}}>Total</p>
+                <p style={{textAlign:"center",color:"gray"}}>Total(R$)</p>
                 <p style={{textAlign:"center",color:"gray"}}>Data</p>
             </History>
             <HistoryContainer>
