@@ -10,21 +10,24 @@ export const AuthProvider = ({ children }) => {
         setTimeout(() => setToastVisible(false), 1500); // Exibe por 3 segundos
     };
     const login = async (userData, settoast) => {
-        const { data, error } = await supabase.from('users').select('*').eq('key', `${userData.key}`).single()
-        if (error) {
-            if (settoast) {
-                showToast(settoast)
+        if(userData){
+            const { data, error } = await supabase.from('users').select('*').eq('key', `${userData.key}`).single()
+            if (error) {
+                if (settoast) {
+                    showToast(settoast)
+                }
+                console.log('Erro ao buscar os dados: ', error);
+                setUser({ user: false })
             }
-            console.log('Erro ao buscar os dados: ', error);
-            setUser({ user: false })
-        }
-        else {
-            navegate('/home')
-            setUser(data)
-            localStorage.setItem('user', JSON.stringify(data))
+            else {
+                navegate('/home')
+                setUser(data)
+                localStorage.setItem('user', JSON.stringify(data))
 
+            }
         }
     }
+    
     const logout = () => {
         setUser(null)
         localStorage.removeItem('user')

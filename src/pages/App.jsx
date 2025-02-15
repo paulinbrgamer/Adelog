@@ -11,7 +11,7 @@ import { AppPage } from '../components/styled/AppPage'
 import Badge from '../components/Badge';
 import ModalComponent from '../components/ModalComponent';
 function App() {
-  const [currentRendering, setcurrentRendering] = useState('products')
+  const [currentRendering, setcurrentRendering] = useState('sales')
   const [isModalUser, setisModalUser] = useState(false)
   const handleChangeScreen = (setRender, newRender) => {
     setRender(newRender)
