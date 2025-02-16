@@ -5,7 +5,7 @@ import { PackageSearch, CircleUserRound, FileText, ShoppingCart, X } from 'lucid
 import UserScreen from './UserScreen'
 import SellScreen from './SellScreen'
 import ProductsScreen from './ProductsScreen'
-import { AppProvider, useApp } from './AppProvider';
+import { AppProvider } from './AppProvider';
 import SalesComponent from '../pages/SalesComponent'
 import { AppPage } from '../components/styled/AppPage'
 import Badge from '../components/Badge';
