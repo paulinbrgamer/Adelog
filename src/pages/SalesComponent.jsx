@@ -4,7 +4,7 @@ import { supabase } from "../services/cliente"
 import { useApp } from "./AppProvider"
 import Container from "../components/styled/Container"
 import { Select, Option } from "../components/SelectComponent";
-import { CalendarDays, Package2, ShoppingBasket, TrendingUp } from "lucide-react"
+import { CalendarDays, ChartCandlestick, DollarSign, ShoppingBag, ShoppingBasket, Store } from "lucide-react"
 import styled from "styled-components"
 import Card from "../components/Card"
 import CartIcon from '../components/styled/CartIcon'
@@ -39,7 +39,7 @@ const CardsContainer = styled.div`
 `
 const SalesComponent = () => {
     const { User } = useAuth()
-    const { storeData,categorys } = useApp()
+    const { storeData, categorys } = useApp()
     const [sales, setSales] = useState([])
     const [filter, setFilter] = useState('day')
     const [MostSale, setMostSale] = useState([])
@@ -107,18 +107,21 @@ const SalesComponent = () => {
             return acc
         }, {})
         const MCategory = sales?.reduce((acc, data) => {
-            const idSale = storeData.filter(e=>e.id == data.id_product)[0]
-            if(idSale){
-                
-                acc[idSale.category] = (acc[idSale.category] || 0) + data.units
+            const idSale = storeData.filter(e => e.id == data.id_product)[0]
+            if (idSale) {
+                const nameP = categorys.filter(e => e.id === idSale.category)[0]
+                acc[nameP.name] = (acc[nameP.name] || 0) + data.units
             }
             return acc
         }, {})
-        console.log(MCategory);
-        setMostSale(Object.entries(Mapcount).sort(([,a],[,b])=> b-a).reduce((acc,data)=>{
+        setMostCategory(Object.entries(MCategory).sort(([, a], [, b]) => b - a).reduce((acc, data) => {
             acc[data[0]] = data[1]
             return acc
-        },{}))
+        }, {}))
+        setMostSale(Object.entries(Mapcount).sort(([, a], [, b]) => b - a).reduce((acc, data) => {
+            acc[data[0]] = data[1]
+            return acc
+        }, {}))
 
     }, [sales])
 
@@ -139,9 +142,19 @@ const SalesComponent = () => {
                 </Select>
             </div>
             <CardsContainer>
-                <Card Icon={<CartIcon $color={'rgba(0, 255, 85, 0.032)'}><ShoppingBasket strokeWidth={1.4} size={28} color="rgb(0, 182, 76)" /></CartIcon>} data={sales.length} title={'Vendas Realizadas'} />
-                <Card Icon={<CartIcon $color={'rgba(247, 0, 255, 0.032)'}><TrendingUp strokeWidth={1.4} size={28} color="rgb(197, 0, 223)" /></CartIcon>} data={Object.keys(MostSale)[0]} title={'Produto Mais Vendido'} />
-                
+                <Card Icon={<CartIcon $color={'rgba(252, 122, 0, 0.05)'}><ChartCandlestick strokeWidth={1.4} size={28} color="rgb(252, 122, 0)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
+                    acc += data.price
+                    return acc
+                }, 0).toFixed(2)} title={'Receita Total'} />
+                <Card Icon={<CartIcon $color={'rgba(0, 252, 97, 0.05)'}><DollarSign strokeWidth={1.4} size={28} color="rgb(0, 252, 97)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
+                    acc += data.profit
+                    return acc
+                }, 0).toFixed(2)} title={'Lucro Total'} />
+                <Card Icon={<CartIcon $color={'rgba(247, 0, 255, 0.05)'}><Store strokeWidth={1.4} size={28} color="rgb(197, 0, 223)" /></CartIcon>} data={sales.length} title={'Vendas Realizadas'} />
+                <Card Icon={<CartIcon $color={'rgba(0, 119, 255, 0.05)'}><ShoppingBag strokeWidth={1.4} size={28} color="rgb(0, 104, 223)" /></CartIcon>} data={Object.keys(MostCategory)[0]} title={'Categoria  Mais Vendida'} />
+                <Card Icon={<CartIcon $color={'rgba(0, 253, 84, 0.05)'}><ShoppingBasket strokeWidth={1.4} size={28} color="rgb(0, 190, 63)" /></CartIcon>} data={Object.keys(MostSale)[0]} title={'Produto Mais Vendido'} />
+
+
             </CardsContainer>
             <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500", alignSelf: "start" }}>Histórico de Vendas</h3>
             <History style={{ width: "100%", borderBottom: '1px solid lightgray' }}>
@@ -153,7 +166,7 @@ const SalesComponent = () => {
             <HistoryContainer>
                 {sales.map(e =>
                     <History key={e.id}>
-                        <p >{e.name || 'Apagado'}</p>
+                        <p style={{ color: e.name ? null : 'red' }}>{e.name || 'Excluído'}</p>
                         <p style={{ textAlign: "center", color: "gray" }}>{e.units}</p>
                         <p style={{ textAlign: "center" }}>{e.price}</p>
                         <p style={{ textAlign: "center" }}>{e.date}</p>

@@ -27,7 +27,6 @@ function App() {
               <p style={{ fontWeight: 'normal', fontSize: "12pt" }}><X size={20}color='gray'/></p>
             </IconButton>
             <UserScreen />
-
           </ModalComponent>
         }
         <NavOptions>
@@ -62,8 +61,6 @@ function App() {
         </NavOptions>
       </AppPage>
     </AppProvider>
-
   )
 }
-
 export default App

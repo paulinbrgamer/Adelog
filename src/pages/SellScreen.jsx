@@ -107,7 +107,7 @@ export default function SellScreen() {
         const { id, name, category, line_code,brute_price, ...rest } = item
         const date = new Date()
 
-        const sale = { ...rest, id_product: id, user_id: User.id, store_id: User.store_id, date: date.toISOString() }
+        const sale = { ...rest, id_product: id, user_id: User.id, store_id: User.store_id,profit:rest.price-brute_price, date: date.toISOString() }
         const { error: saleError } = await supabase.from('sales').insert([sale])
         if (saleError) {
           console.log('Error sale : ', saleError)
