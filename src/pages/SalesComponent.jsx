@@ -8,11 +8,7 @@ import { CalendarDays, Package2, ShoppingBasket, TrendingUp } from "lucide-react
 import styled from "styled-components"
 import Card from "../components/Card"
 import CartIcon from '../components/styled/CartIcon'
-const Title = styled.p`
-font-weight: 600;
-font-size: 11pt ;
-color:  rgb(31 ,41, 55) ;
-    `
+
 const ContainerStyle = {
     alignItems: 'center',
     backgroundColor: "transparent",
@@ -46,7 +42,8 @@ const SalesComponent = () => {
     const { storeData } = useApp()
     const [sales, setSales] = useState([])
     const [filter, setFilter] = useState('day')
-    const [MostSale, setMostSale] = useState('')
+    const [MostSale, setMostSale] = useState([])
+    const [MostCategory, setMostCategory] = useState([])
     const FilterSalles = () => {
         const todayFilter = () => {
             const today = new Date();
@@ -103,20 +100,16 @@ const SalesComponent = () => {
             }
         }
     }
-    //Verificar qual é o produto que mais vende
     useEffect(() => {
+        //Verificar qual é o produto que mais vende
         const Mapcount = sales?.reduce((acc, data) => {
             acc[data.name] = (acc[data.name] || 0) + data.units
             return acc
         }, {})
-        const theMost = Object.keys(Mapcount).reduce((acc, data) => {
-            if (Mapcount[data] >= acc[1]) {
-                acc[1] = Mapcount[data]
-                acc[0] = data
-            }
+        setMostSale(Object.entries(Mapcount).sort(([,a],[,b])=> b-a).reduce((acc,data)=>{
+            acc[data[0]] = data[1]
             return acc
-        }, ['', 0])
-        setMostSale(theMost[0])
+        },{}))
 
     }, [sales])
 
@@ -138,7 +131,8 @@ const SalesComponent = () => {
             </div>
             <CardsContainer>
                 <Card Icon={<CartIcon $color={'rgba(0, 255, 85, 0.032)'}><ShoppingBasket strokeWidth={1.4} size={28} color="rgb(0, 182, 76)" /></CartIcon>} data={sales.length} title={'Vendas Realizadas'} />
-                <Card Icon={<CartIcon $color={'rgba(247, 0, 255, 0.032)'}><TrendingUp strokeWidth={1.4} size={28} color="rgb(197, 0, 223)" /></CartIcon>} data={MostSale} title={'Produto Mais Vendido'} />
+                <Card Icon={<CartIcon $color={'rgba(247, 0, 255, 0.032)'}><TrendingUp strokeWidth={1.4} size={28} color="rgb(197, 0, 223)" /></CartIcon>} data={Object.keys(MostSale)[0]} title={'Produto Mais Vendido'} />
+                
             </CardsContainer>
             <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500", alignSelf: "start" }}>Histórico de Vendas</h3>
             <History style={{ width: "100%", borderBottom: '1px solid lightgray' }}>
