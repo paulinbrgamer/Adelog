@@ -39,7 +39,7 @@ const CardsContainer = styled.div`
 `
 const SalesComponent = () => {
     const { User } = useAuth()
-    const { storeData } = useApp()
+    const { storeData,categorys } = useApp()
     const [sales, setSales] = useState([])
     const [filter, setFilter] = useState('day')
     const [MostSale, setMostSale] = useState([])
@@ -106,6 +106,15 @@ const SalesComponent = () => {
             acc[data.name] = (acc[data.name] || 0) + data.units
             return acc
         }, {})
+        const MCategory = sales?.reduce((acc, data) => {
+            const idSale = storeData.filter(e=>e.id == data.id_product)[0]
+            if(idSale){
+                
+                acc[idSale.category] = (acc[idSale.category] || 0) + data.units
+            }
+            return acc
+        }, {})
+        console.log(MCategory);
         setMostSale(Object.entries(Mapcount).sort(([,a],[,b])=> b-a).reduce((acc,data)=>{
             acc[data[0]] = data[1]
             return acc
