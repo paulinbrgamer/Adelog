@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react"
+import { Children, useEffect, useState } from "react"
 import { useAuth } from "../auth/Authprovider"
 import { supabase } from "../services/cliente"
 import { useApp } from "./AppProvider"
 import { Select, Option } from "../components/SelectComponent";
-import { CalendarDays, ChartCandlestick, DollarSign, ShoppingBag, ShoppingBasket, Store } from "lucide-react"
+import { CalendarDays, ChartCandlestick, ChevronDown, DollarSign, ShoppingBag, ShoppingBasket, Store } from "lucide-react"
 import styled,{createGlobalStyle } from "styled-components"
 import Card from "../components/Card"
 import CartIcon from '../components/styled/CartIcon'
@@ -21,15 +21,24 @@ const Container = styled.div`
   padding: 0px 5%;
   overflow-y: scroll;
 `
-const HistoryContainer = styled.div`
+
+const HistoryContainer = ({children,drop})=>{
+   const HistoryC = styled.div`
     width: 100%;
-    min-height: 0;
-`
+    overflow: hidden;
+    height: ${drop?'fit-content':'0px'};
+    ` 
+    return(
+        <HistoryC>
+            {children}
+        </HistoryC>
+    )
+}
 const History = styled.div`
     box-sizing: border-box;
     padding: 10px;
     display: grid;
-    grid-template-columns: 10fr 2fr 2fr 100px;
+    grid-template-columns: 10fr 2fr 2fr 2fr;
     background-color: white;
     &:hover{
         background-color: #faf9f9;
@@ -48,6 +57,7 @@ const SalesComponent = () => {
     const [filter, setFilter] = useState('day')
     const [MostSale, setMostSale] = useState([])
     const [MostCategory, setMostCategory] = useState([])
+    const [isHistoriOpen,setisHistoriOpen] = useState(false)
     const FilterSalles = () => {
         const todayFilter = () => {
             const today = new Date();
@@ -162,14 +172,17 @@ const SalesComponent = () => {
 
 
             </CardsContainer>
+            <div style={{display:"flex",alignItems:"center",gap:'4px'}}>
             <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500", alignSelf: "start" }}>Histórico de Vendas</h3>
+            <ChevronDown style={{cursor:"pointer",transform: isHistoriOpen?'rotate(180deg)':null}} color="rgb(129, 129, 129)" onClick={()=>isHistoriOpen?setisHistoriOpen(false):setisHistoriOpen(true)}>da</ChevronDown>
+            </div>
             <History style={{ width: "100%", borderBottom: '1px solid lightgray' }}>
                 <p style={{ color: "gray" }}>Produto</p>
                 <p style={{ textAlign: "center", color: "gray" }}>Itens</p>
                 <p style={{ textAlign: "center", color: "gray" }}>Total(R$)</p>
                 <p style={{ textAlign: "center", color: "gray" }}>Data</p>
             </History>
-            <HistoryContainer>
+            <HistoryContainer drop={isHistoriOpen}>
                 {sales.map(e =>
                     <History key={e.id}>
                         <p style={{ color: e.name ? null : 'red' }}>{e.name || 'Excluído'}</p>
