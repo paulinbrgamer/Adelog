@@ -29,7 +29,7 @@ const History = styled.div`
     box-sizing: border-box;
     padding: 10px;
     display: grid;
-    grid-template-columns: 14fr 1fr 1fr 3fr;
+    grid-template-columns: 10fr 2fr 2fr 100px;
     background-color: white;
     &:hover{
         background-color: #faf9f9;
