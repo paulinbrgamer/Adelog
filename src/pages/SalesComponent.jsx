@@ -157,6 +157,7 @@ const SalesComponent = () => {
                     <Option value="year">Ano</Option>
                 </Select>
             </div>
+            {User?.permission==='adm' &&
             <CardsContainer>
                 <Card Icon={<CartIcon $color={'rgba(252, 122, 0, 0.05)'}><ChartCandlestick strokeWidth={1.4} size={28} color="rgb(252, 122, 0)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
                     acc += data.price
@@ -172,6 +173,8 @@ const SalesComponent = () => {
 
 
             </CardsContainer>
+            }
+
             <div style={{display:"flex",alignItems:"center",gap:'4px'}}>
             <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500", alignSelf: "start" }}>Histórico de Vendas</h3>
             <ChevronDown style={{cursor:"pointer",transform: isHistoriOpen?'rotate(180deg)':null}} color="rgb(129, 129, 129)" onClick={()=>isHistoriOpen?setisHistoriOpen(false):setisHistoriOpen(true)}>da</ChevronDown>
