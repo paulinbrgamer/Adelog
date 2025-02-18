@@ -133,7 +133,7 @@ const ProductComponent = ({ data, cart, trash }) => {
     const handleFinalizeUnits = () => {
         if (Units > 0) {
             let newState = Cart?.filter((Obj) => Obj.id != data.id)
-            newState.push({ ...data, units: Units, price: Number(Units * data.price) })
+            newState.push({ ...data, units: Units, price: Number(Units * data.price),brute_price:Number(Units * data.brute_price) })
             setCart(newState)
             setisModalOpen(false)
             setaproveMensage('Adicionado ao carrinho')
