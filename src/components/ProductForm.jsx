@@ -1,4 +1,4 @@
-import { ScanLineIcon, Trash } from "lucide-react";
+import { ScanLineIcon, Trash ,X} from "lucide-react";
 import InputText from "./InputText";
 import { Select, Option } from "./SelectComponent";
 import BarcodeScanner from "./BarScanner";

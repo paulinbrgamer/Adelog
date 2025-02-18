@@ -9,7 +9,7 @@ import { supabase } from "../services/cliente";
 import Toast from '../components/Toast'
 import { useAuth } from '../auth/Authprovider'
 import InputText from '../components/InputText'
-import { Plus, ScanBarcode, ScanLineIcon, ShoppingCart } from 'lucide-react'
+import { Plus, ScanBarcode, ScanLineIcon, ShoppingCart, X } from 'lucide-react'
 import BarScanner from '../components/BarScanner'
 import UnitsComponent from '../components/UnitsComponent'
 import { ContainerL, Loading } from '../components/styled/Loading'
@@ -165,13 +165,14 @@ export default function SellScreen() {
           </SecondaryButtom>
         </ModalComponent> : null
        }
-       <div >
+       <div style={{display:"flex",flexDirection:"column"}} >
+       <X color='gray' size={20} style={{cursor:"pointer",alignSelf:"end"}} onClick={() => setModalAddCart(false)} >
+            <p >Cancelar</p>
+        </X>
         <InputText type={'number'} onChange={(e) => handleBarcodeDetected(e.target.value)} label={'Código de barras'} pholder={'Digite o código de barras'} >
         <ScanBarcode color='gray' style={{cursor:"pointer",alignSelf:'center',padding:'8px'}} onClick={() => setshowReader(true)}/>
         </InputText>
-        <SecondaryButtom style={{marginLeft:"auto"}} onClick={() => setModalAddCart(false)} >
-            <p >Cancelar</p>
-        </SecondaryButtom>
+
        </div>
       </ModalComponent>
       }
