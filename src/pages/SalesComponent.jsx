@@ -2,24 +2,28 @@ import { useEffect, useState } from "react"
 import { useAuth } from "../auth/Authprovider"
 import { supabase } from "../services/cliente"
 import { useApp } from "./AppProvider"
-import Container from "../components/styled/Container"
 import { Select, Option } from "../components/SelectComponent";
 import { CalendarDays, ChartCandlestick, DollarSign, ShoppingBag, ShoppingBasket, Store } from "lucide-react"
-import styled from "styled-components"
+import styled,{createGlobalStyle } from "styled-components"
 import Card from "../components/Card"
 import CartIcon from '../components/styled/CartIcon'
-
-const ContainerStyle = {
-    alignItems: 'center',
-    backgroundColor: "transparent",
-    minHeight: 0,
-    width: '90%',
-}
+const GlobalStyle = createGlobalStyle`
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
+`;
+const Container = styled.div`
+  align-items: center;
+  background-color: transparent;
+  min-height: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0px 5%;
+  overflow-y: scroll;
+`
 const HistoryContainer = styled.div`
     width: 100%;
     min-height: 0;
-    overflow-y: scroll;
-    max-height: 60dvh;
 `
 const History = styled.div`
     box-sizing: border-box;
@@ -130,7 +134,9 @@ const SalesComponent = () => {
     }, [User, storeData, filter])
 
     return (
-        <Container style={ContainerStyle} >
+        <>
+        <GlobalStyle/>
+        <Container  >
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
                 <h2 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Análise de Vendas</h2>
                 <CalendarDays color="gray" style={{ marginLeft: 'auto', padding: "6px" }} />
@@ -173,6 +179,7 @@ const SalesComponent = () => {
                     </History>)}
             </HistoryContainer>
         </Container>
+        </>
 
     )
 }

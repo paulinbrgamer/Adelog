@@ -33,6 +33,9 @@ const customContainer = {
   backgroundColor:'transparent',
   alignItems: "center",
   minHeight: 0,
+  width: '100%',
+  boxSizing: 'border-box',
+  padding: '0px 5%'
 }
 const TitleContainer = styled.div`
   display:flex;

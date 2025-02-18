@@ -39,7 +39,10 @@ const Products = styled.div`
 `
 const styleMainContainer = {
   minHeight: 0,
-  backgroundColor: "transparent"
+  backgroundColor: "transparent",
+  width: '100%',
+  boxSizing: 'border-box',
+  padding: '0px 5%'
 }
 const GridOptions = styled.div`
   display: grid;
@@ -193,8 +196,8 @@ export default function SellScreen() {
           </div>
         </ModalComponent> :null
       }
-      <Container style={{ backgroundColor: "transparent", flexDirection: "row", alignItems: "center" }}>
-        <h2 style={{ color: 'rgb(31 ,41, 55)', padding: "10px", alignSelf: "start",fontWeight:"500" }}>Carrinho de Produtos</h2>
+      <Container style={{ backgroundColor: "transparent", flexDirection: "row", alignItems: "center" ,padding: "20px 0px"}}>
+        <h2 style={{ color: 'rgb(31 ,41, 55)', alignSelf: "start",fontWeight:"500" }}>Carrinho de Produtos</h2>
         <CreateProduct onClick={()=>setModalAddCart(true)} style={{ marginLeft: '36px' }} >
           <p style={{ color: "white" }}>Adicionar ao carrinho</p>
         </CreateProduct>
