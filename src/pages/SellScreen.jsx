@@ -9,15 +9,17 @@ import { supabase } from "../services/cliente";
 import Toast from '../components/Toast'
 import { useAuth } from '../auth/Authprovider'
 import InputText from '../components/InputText'
-import { ScanBarcode, ScanLineIcon, ShoppingCart } from 'lucide-react'
+import { Plus, ScanBarcode, ScanLineIcon, ShoppingCart } from 'lucide-react'
 import BarScanner from '../components/BarScanner'
 import UnitsComponent from '../components/UnitsComponent'
 import { ContainerL, Loading } from '../components/styled/Loading'
-import { CreateProduct, HeaderProducts } from './ProductsScreen'
+import { HeaderProducts } from './ProductsScreen'
+import MainButtom from '../components/styled/MainButtom'
+import SecondaryButtom from '../components/styled/SecondaryButtom'
 const Title = styled.p`
-  font-weight: 600;
-  font-size: 14pt ;
-  text-align: center;
+font-weight: 600;
+font-size: 11pt ;
+color:  rgb(31 ,41, 55) ;
     `
 const Products = styled.div`
   display: flex;
@@ -158,17 +160,19 @@ export default function SellScreen() {
         {ShowReader ?
         <ModalComponent>
           <BarScanner onDetected={handleBarcodeDetected} />
-          <IconButton onclick={() => setshowReader(false)} style={{ gridRow: "2/2" }}>
-            <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
-          </IconButton>
+          <SecondaryButtom onClick={() => setshowReader(false)} style={{marginLeft:"auto"}}>
+            <p>Cancelar</p>
+          </SecondaryButtom>
         </ModalComponent> : null
        }
-        <InputText type={'number'} onChange={(e) => handleBarcodeDetected(e.target.value)} label={'Código de barras'} >
-        <ScanBarcode color='gray' style={{cursor:"pointer",alignSelf:'center'}} onClick={() => setshowReader(true)}/>
+       <div >
+        <InputText type={'number'} onChange={(e) => handleBarcodeDetected(e.target.value)} label={'Código de barras'} pholder={'Digite o código de barras'} >
+        <ScanBarcode color='gray' style={{cursor:"pointer",alignSelf:'center',padding:'8px'}} onClick={() => setshowReader(true)}/>
         </InputText>
-        <IconButton onclick={() => setModalAddCart(false)} style={{ gridRow: "2/2" }}>
-            <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
-        </IconButton>
+        <SecondaryButtom style={{marginLeft:"auto"}} onClick={() => setModalAddCart(false)} >
+            <p >Cancelar</p>
+        </SecondaryButtom>
+       </div>
       </ModalComponent>
       }
       
@@ -186,21 +190,22 @@ export default function SellScreen() {
           <Title>Unidades de {productSelected.name}:</Title>
           <ShoppingCart />
           <UnitsComponent data={productSelected} set={setUnits} finalize={handleFinalizeUnits}/>
-          <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'space-between', padding: "4px" }}>
-            <IconButton onclick={() => setmodalAddUnits(false)} style={{ gridRow: "2/2" }}>
-              <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
-            </IconButton>
-            <IconButton onclick={() => handleFinalizeUnits()} style={{ gridRow: "2/2" }}>
-              <p style={{ fontWeight: 'bold', marginTop: "8px", fontSize: "12pt" }}>Finalizar</p>
-            </IconButton>
+          <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'end', padding: "4px",gap:"12px" }}>
+            <SecondaryButtom onClick={() => setmodalAddUnits(false)} >
+              <p>Cancelar</p>
+            </SecondaryButtom>
+            <MainButtom onClick={() => handleFinalizeUnits()} >
+              <p style={{ fontSize: "11pt" }}>Finalizar</p>
+            </MainButtom>
           </div>
         </ModalComponent> :null
       }
       <Container style={{ backgroundColor: "transparent", flexDirection: "row", alignItems: "center" ,padding: "20px 0px"}}>
         <h2 style={{ color: 'rgb(31 ,41, 55)', alignSelf: "start",fontWeight:"500" }}>Carrinho de Produtos</h2>
-        <CreateProduct onClick={()=>setModalAddCart(true)} style={{ marginLeft: '36px' }} >
-          <p style={{ color: "white" }}>Adicionar ao carrinho</p>
-        </CreateProduct>
+        <MainButtom onClick={()=>setModalAddCart(true)} style={{ marginLeft: '36px' }} >
+        <Plus size={20} color="white"/>
+          <p>Adicionar ao carrinho</p>
+        </MainButtom>
       </Container>
       
       <HeaderProducts>
@@ -222,13 +227,13 @@ export default function SellScreen() {
             <Title style={{ color: "gray", fontSize: "12pt" }}>Total: R$ {Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)}</Title>
             <Title style={{ color: "gray", fontSize: "12pt" }}>Troco : R$ {(exchange - Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)).toFixed(2)}</Title>
 
-            <IconButton style={{ padding: '6px', border: "1px solid ", borderRadius: '4px' }} onclick={() => setCart([])}>
-              <p style={{ fontWeight: 'normal', fontSize: "12pt" }}>Cancelar</p>
-            </IconButton>
+            <SecondaryButtom  onClick={() => setCart([])}>
+              <p >Cancelar</p>
+            </SecondaryButtom>
 
-            <IconButton onclick={() => handleFinalize()} style={{ padding: '6px', border: "1px solid ", borderRadius: '4px', backgroundColor: "black" }}>
-              <p style={{ fontWeight: 'normal', fontSize: "12pt", color: 'white' }}>Finalizar</p>
-            </IconButton>
+            <MainButtom onClick={() => handleFinalize()} >
+              <p style={{fontSize:'12pt'}} >Finalizar</p>
+            </MainButtom>
           </GridOptions>
         </ContainerInfoCart> 
         : null

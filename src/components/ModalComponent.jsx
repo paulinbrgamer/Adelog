@@ -3,15 +3,14 @@ import ReactDOM from 'react-dom';
 const fdInOut = keyframes`
      0% {
       opacity: 0;
-
     }
     100% {
       opacity: 1;
-
     }
 `
 const Modal = styled.div`
-    background-color: #80808073;
+    background-color: #808080ac;
+    
     display: flex;
     align-items: center;
     justify-content: center;
@@ -26,7 +25,8 @@ const Modal = styled.div`
     animation: ${fdInOut} 300ms ease;
 `
 const ModalContent = styled.div`
-    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    border-radius: 4px;
     position: relative;
     width: clamp(100px,90%,300px);
     bottom: 5%;
@@ -35,7 +35,7 @@ const ModalContent = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 20px;
+    padding: 10px;
     gap: 10px;
 
 `

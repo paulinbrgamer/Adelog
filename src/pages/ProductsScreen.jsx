@@ -12,6 +12,7 @@ import { supabase } from "../services/cliente";
 import { ProductForm } from "../components/ProductForm";
 import { ContainerL, Loading } from "../components/styled/Loading";
 import { fdInOut } from "../components/FdInOt";
+import MainButtom from "../components/styled/MainButtom";
 const Products = styled.div`
   display: flex;
   flex-direction: column;
@@ -72,20 +73,6 @@ export const HeaderProducts = styled.div`
       grid-template-rows: 1fr;
       gap: 15px;
       align-items: center;
-  }
-`
-export const CreateProduct = styled.button`
-  cursor: pointer;
-  display: flex;
-  background-color: #2563eb;
-  padding: 10px;
-  border-radius: 10px;
-  font-weight: bold;
-  border: none;
-  justify-content:center;
-  align-items:center;
-  &:hover{
-    background-color: #0d56f3;
   }
 `
 export default function ProductsScreen() {
@@ -181,10 +168,10 @@ export default function ProductsScreen() {
 
             </ModalComponent>
             : null}
-          <CreateProduct onClick={() => { setaddProduct(true), setproduct(productTemplate) }} >
-          <Plus color="white"/>
-           <p style={{color:"white",fontSize:"10pt"}}> Novo produto</p>
-          </CreateProduct>
+          <MainButtom onClick={() => { setaddProduct(true), setproduct(productTemplate) }} >
+          <Plus size={20} color="white"/>
+           <p> Novo produto</p>
+          </MainButtom>
         </>
         : null
       } 

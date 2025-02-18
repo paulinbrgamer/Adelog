@@ -4,7 +4,7 @@ import { Search } from "lucide-react";
 const Container = styled.div`
     padding: 8px;
     border: 1px solid #d9dadd;
-    border-radius: 8px;
+    border-radius: 4px;
     display: flex;
     justify-content: space-between;
     outline-color: black;

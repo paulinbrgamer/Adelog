@@ -11,6 +11,8 @@ import { useAuth } from "../auth/Authprovider"
 import { supabase } from "../services/cliente"
 import { ProductForm } from "./ProductForm"
 import { ContainerL, Loading } from "./styled/Loading"
+import MainButtom from "./styled/MainButtom"
+import SecondaryButtom from "./styled/SecondaryButtom"
 const Title = styled.p`
 font-weight: 600;
 font-size: 11pt ;
@@ -205,13 +207,13 @@ const ProductComponent = ({ data, cart, trash }) => {
                     <Title>Unidades de {data.name}:</Title>
                     <ShoppingCart />
                     <UnitsComponent data={data} set={setUnits} finalize={handleFinalizeUnits} />
-                    <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'space-between', padding: "4px" }}>
-                        <IconButton onclick={() => setisModalOpen(false)} style={{ gridRow: "2/2" }}>
-                            <p style={{ fontWeight: 'normal', marginTop: "8px", fontSize: "12pt" }}>Cancelar</p>
-                        </IconButton>
-                        <IconButton onclick={() => handleFinalizeUnits()} style={{ gridRow: "2/2" }}>
-                            <p style={{ fontWeight: 'bold', marginTop: "8px", fontSize: "12pt" }}>Finalizar</p>
-                        </IconButton>
+                    <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'end', padding: "4px" ,gap:'12px'}}>
+                        <SecondaryButtom onClick={() => setisModalOpen(false)} style={{ gridRow: "2/2" }}>
+                            <p>Cancelar</p>
+                        </SecondaryButtom>
+                        <MainButtom onClick={() => handleFinalizeUnits()} style={{ gridRow: "2/2" }}>
+                            <p style={{fontSize:"12pt"}} >Finalizar</p>
+                        </MainButtom>
                     </div>
                 </ModalComponent> :
                 null

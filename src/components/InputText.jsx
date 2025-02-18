@@ -6,11 +6,10 @@ const Input = styled.input`
   font-size:12pt;
   width:100%;
   padding:8px;
-  border-radius:6px;
+  border-radius:4px;
   text-indent: 8px;
   border:1px solid gray;
   outline:none;
-  margin-bottom:10px;
   box-sizing: border-box;
 
 `
@@ -30,7 +29,7 @@ export default function InputText({align,label,onChange,type,value,onKeyDown,pho
   return (
 
     <InputContaier $align={align}>
-      <h3 style={{fontSize:"12pt",fontWeight:"500",paddingBottom:'4px'}}>{label}</h3>
+      <h3 style={{fontSize:"12pt",fontWeight:"500",color:"rgb(31, 41, 55)"}}>{label}</h3>
         < Input ref={input} placeholder={pholder} step={1} min={1} $align={align} onChange={onChange} onKeyDown={onKeyDown} type={type} value={value}></Input>
         {children}
     </InputContaier>
