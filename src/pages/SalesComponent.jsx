@@ -135,7 +135,9 @@ const SalesComponent = () => {
             const idSale = storeData.filter(e => e.id == data.id_product)[0]
             if (idSale) {
                 const nameP = categorys.filter(e => e.id === idSale.category)[0]
-                acc[nameP.name] = (acc[nameP.name] || 0) + data.units
+                if(nameP){
+                    acc[nameP.name] = (acc[nameP.name] || 0) + data.units
+                }
             }
             return acc
         }, {})
@@ -194,13 +196,13 @@ const SalesComponent = () => {
 
                         <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Gráficos</h3>
                         <ChartsContainer>
-                            <BarComponent color={"#ffc400"} title={'Categorias Vendidas'}
-                                data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas }))}
+                            <BarComponent color={"#ffc400"} title={'10 Categorias mais vendidas'}
+                                data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e,id)=>id<10&&e)}
                             />
-                            <BarComponent color={"#7c02ee"} title={'Venda de produtos'}
-                                data={Object.entries(MostSale).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas }))}
+                            <BarComponent color={"#7c02ee"} title={'10 Produtos mais vendidos'}
+                                data={Object.entries(MostSale).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e,id)=>id<10&&e)}
                             />
-                            <LinearComponent color={"#0260ee"} title={'Relação (Hora/Nº de Vendas)'} 
+                            <LinearComponent color={"#0260ee"} title={'Relação (Hora/nº de Vendas)'} 
                                 data={Object.entries(salesTimes).map(([produto, vendas]) => ({ Produto: Number(produto), Vendas: vendas }))}/>
                         </ChartsContainer>
 
