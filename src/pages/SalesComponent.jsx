@@ -1,12 +1,15 @@
-import { Children, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useAuth } from "../auth/Authprovider"
 import { supabase } from "../services/cliente"
 import { useApp } from "./AppProvider"
 import { Select, Option } from "../components/SelectComponent";
 import { CalendarDays, ChartCandlestick, ChevronDown, DollarSign, ShoppingBag, ShoppingBasket, Store } from "lucide-react"
-import styled,{createGlobalStyle } from "styled-components"
+import styled, { createGlobalStyle } from "styled-components"
 import Card from "../components/Card"
 import CartIcon from '../components/styled/CartIcon'
+import BarComponent from "../components/BarComponent";
+import ScatterComponent from "../components/LinearComponent";
+import LinearComponent from "../components/LinearComponent";
 const GlobalStyle = createGlobalStyle`
   ::-webkit-scrollbar {
     width: 0px;
@@ -21,14 +24,20 @@ const Container = styled.div`
   padding: 0px 5%;
   overflow-y: scroll;
 `
+const ChartsContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 20px;
 
-const HistoryContainer = ({children,drop})=>{
-   const HistoryC = styled.div`
+`
+const HistoryContainer = ({ children, drop }) => {
+    const HistoryC = styled.div`
     width: 100%;
     overflow: hidden;
-    height: ${drop?'fit-content':'0px'};
-    ` 
-    return(
+    height: ${drop ? 'fit-content' : '0px'};
+    `
+    return (
         <HistoryC>
             {children}
         </HistoryC>
@@ -50,6 +59,7 @@ const CardsContainer = styled.div`
     gap: 20px;
     width: 100%;
 `
+
 const SalesComponent = () => {
     const { User } = useAuth()
     const { storeData, categorys } = useApp()
@@ -57,7 +67,8 @@ const SalesComponent = () => {
     const [filter, setFilter] = useState('day')
     const [MostSale, setMostSale] = useState([])
     const [MostCategory, setMostCategory] = useState([])
-    const [isHistoriOpen,setisHistoriOpen] = useState(false)
+    const [isHistoriOpen, setisHistoriOpen] = useState(false)
+    const [salesTimes,setsalesTimes] = useState([])
     const FilterSalles = () => {
         const todayFilter = () => {
             const today = new Date();
@@ -136,7 +147,13 @@ const SalesComponent = () => {
             acc[data[0]] = data[1]
             return acc
         }, {}))
-
+        setsalesTimes(sales?.reduce((acc, data) => {
+            let [dataPart, horaPart] = data.date.split(", ");
+            const [hora, min, seg] = horaPart.split(":").map(Number);
+            acc[hora] = (acc[hora] || 0) + data.units
+            return acc
+        }, {}))
+        
     }, [sales])
 
     useEffect(() => {
@@ -145,56 +162,72 @@ const SalesComponent = () => {
 
     return (
         <>
-        <GlobalStyle/>
-        <Container  >
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-                <h2 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Análise de Vendas</h2>
-                <CalendarDays color="gray" style={{ marginLeft: 'auto', padding: "6px" }} />
-                <Select onChange={(e) => setFilter(e.target.value)} style={{ border: "none", color: "gray", textAlign: "center", backgroundColor: "white" }}>
-                    <Option value="day">Dia</Option>
-                    <Option value="week">Semana</Option>
-                    <Option value="month">Mes</Option>
-                    <Option value="year">Ano</Option>
-                </Select>
-            </div>
-            {User?.permission==='adm' &&
-            <CardsContainer>
-                <Card Icon={<CartIcon $color={'rgba(252, 122, 0, 0.05)'}><ChartCandlestick strokeWidth={1.4} size={28} color="rgb(252, 122, 0)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
-                    acc += data.price
-                    return acc
-                }, 0).toFixed(2)} title={'Receita Total'} />
-                <Card Icon={<CartIcon $color={'rgba(0, 252, 97, 0.05)'}><DollarSign strokeWidth={1.4} size={28} color="rgb(0, 252, 97)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
-                    acc += data.profit
-                    return acc
-                }, 0).toFixed(2)} title={'Lucro Total'} />
-                <Card Icon={<CartIcon $color={'rgba(247, 0, 255, 0.05)'}><Store strokeWidth={1.4} size={28} color="rgb(197, 0, 223)" /></CartIcon>} data={sales.length} title={'Vendas Realizadas'} />
-                <Card Icon={<CartIcon $color={'rgba(0, 119, 255, 0.05)'}><ShoppingBag strokeWidth={1.4} size={28} color="rgb(0, 104, 223)" /></CartIcon>} data={Object.keys(MostCategory)[0]} title={'Categoria  Mais Vendida'} />
-                <Card Icon={<CartIcon $color={'rgba(0, 253, 84, 0.05)'}><ShoppingBasket strokeWidth={1.4} size={28} color="rgb(0, 190, 63)" /></CartIcon>} data={Object.keys(MostSale)[0]} title={'Produto Mais Vendido'} />
+            <GlobalStyle />
+            <Container  >
+                <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+                    <h2 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Análise de Vendas</h2>
+                    <CalendarDays color="gray" style={{ marginLeft: 'auto', padding: "6px" }} />
+                    <Select onChange={(e) => setFilter(e.target.value)} style={{ border: "none", color: "gray", textAlign: "center", backgroundColor: "white" }}>
+                        <Option value="day">Dia</Option>
+                        <Option value="week">Semana</Option>
+                        <Option value="month">Mes</Option>
+                        <Option value="year">Ano</Option>
+                    </Select>
+                </div>
+                {User?.permission === 'adm' &&
+                    <>
+                        <CardsContainer>
+                            <Card Icon={<CartIcon $color={'rgba(252, 122, 0, 0.05)'}><ChartCandlestick strokeWidth={1.4} size={28} color="rgb(252, 122, 0)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
+                                acc += data.price
+                                return acc
+                            }, 0).toFixed(2)} title={'Receita Total'} />
+                            <Card Icon={<CartIcon $color={'rgba(0, 252, 97, 0.05)'}><DollarSign strokeWidth={1.4} size={28} color="rgb(0, 252, 97)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
+                                acc += data.profit
+                                return acc
+                            }, 0).toFixed(2)} title={'Lucro Total'} />
+                            <Card Icon={<CartIcon $color={'rgba(247, 0, 255, 0.05)'}><Store strokeWidth={1.4} size={28} color="rgb(197, 0, 223)" /></CartIcon>} data={sales?.reduce((acc,data)=>acc+= data.units,0)} title={'Produtos vendidos'} />
+                            <Card Icon={<CartIcon $color={'rgba(0, 119, 255, 0.05)'}><ShoppingBag strokeWidth={1.4} size={28} color="rgb(0, 104, 223)" /></CartIcon>} data={Object.keys(MostCategory)[0]} title={'Categoria  Mais Vendida'} />
+                            <Card Icon={<CartIcon $color={'rgba(0, 253, 84, 0.05)'}><ShoppingBasket strokeWidth={1.4} size={28} color="rgb(0, 190, 63)" /></CartIcon>} data={Object.keys(MostSale)[0]} title={'Produto Mais Vendido'} />
 
 
-            </CardsContainer>
-            }
+                        </CardsContainer>
 
-            <div style={{display:"flex",alignItems:"center",gap:'4px'}}>
-            <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500", alignSelf: "start" }}>Histórico de Vendas</h3>
-            <ChevronDown style={{cursor:"pointer",transform: isHistoriOpen?'rotate(180deg)':null}} color="rgb(129, 129, 129)" onClick={()=>isHistoriOpen?setisHistoriOpen(false):setisHistoriOpen(true)}>da</ChevronDown>
-            </div>
-            <History style={{ width: "100%", borderBottom: '1px solid lightgray' }}>
-                <p style={{ color: "gray" }}>Produto</p>
-                <p style={{ textAlign: "center", color: "gray" }}>Itens</p>
-                <p style={{ textAlign: "center", color: "gray" }}>Total(R$)</p>
-                <p style={{ textAlign: "center", color: "gray" }}>Data</p>
-            </History>
-            <HistoryContainer drop={isHistoriOpen}>
-                {sales.map(e =>
-                    <History key={e.id}>
-                        <p style={{ color: e.name ? null : 'red' }}>{e.name || 'Excluído'}</p>
-                        <p style={{ textAlign: "center", color: "gray" }}>{e.units}</p>
-                        <p style={{ textAlign: "center" }}>{e.price}</p>
-                        <p style={{ textAlign: "center" }}>{e.date}</p>
-                    </History>)}
-            </HistoryContainer>
-        </Container>
+                        <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Gráficos</h3>
+                        <ChartsContainer>
+                            <BarComponent color={"#ffc400"} title={'Categorias Vendidas'}
+                                data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas }))}
+                            />
+                            <BarComponent color={"#7c02ee"} title={'Venda de produtos'}
+                                data={Object.entries(MostSale).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas }))}
+                            />
+                            <LinearComponent color={"#0260ee"} title={'Relação (Hora/Nº de Vendas)'} 
+                                data={Object.entries(salesTimes).map(([produto, vendas]) => ({ Produto: Number(produto), Vendas: vendas }))}/>
+                        </ChartsContainer>
+
+
+                    </>
+                }
+
+                <div style={{ display: "flex", alignItems: "center", gap: '4px' }}>
+                    <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500", alignSelf: "start" }}>Histórico de Vendas</h3>
+                    <ChevronDown style={{ cursor: "pointer", transform: isHistoriOpen ? 'rotate(180deg)' : null }} color="rgb(129, 129, 129)" onClick={() => isHistoriOpen ? setisHistoriOpen(false) : setisHistoriOpen(true)}>da</ChevronDown>
+                </div>
+                <History style={{ width: "100%", borderBottom: '1px solid lightgray' }}>
+                    <p style={{ color: "gray" }}>Produto</p>
+                    <p style={{ textAlign: "center", color: "gray" }}>Itens</p>
+                    <p style={{ textAlign: "center", color: "gray" }}>Total</p>
+                    <p style={{ textAlign: "center", color: "gray" }}>Data</p>
+                </History>
+                <HistoryContainer drop={isHistoriOpen}>
+                    {sales.map(e =>
+                        <History key={e.id}>
+                            <p style={{ color: e.name ? null : 'red' }}>{e.name || 'Excluído'}</p>
+                            <p style={{ textAlign: "center", color: "gray" }}>{e.units}</p>
+                            <p style={{ textAlign: "center" ,color:"green"}}>{'R$ '+e.price}</p>
+                            <p style={{ textAlign: "center" }}>{e.date}</p>
+                        </History>)}
+                </HistoryContainer>
+            </Container>
         </>
 
     )
