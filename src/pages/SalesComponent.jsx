@@ -199,6 +199,10 @@ const SalesComponent = () => {
                             <p style={{ color: "gray" }}>{DetailTicketData.products.length}</p>
                         </div>
                         <div style={{ display: 'flex', gap: "10px" }}>
+                            <p>Valor Total :  </p>
+                            <p style={{ color: "gray" }}>R$ {DetailTicketData.products.reduce((acc,data)=>{return acc+=data.price},0)}</p>
+                        </div>
+                        <div style={{ display: 'flex', gap: "10px" }}>
                             <p>Data de venda:  </p>
                             <p style={{ color: "gray" }}>{DetailTicketData.created_at}</p>
                         </div>
