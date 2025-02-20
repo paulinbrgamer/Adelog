@@ -100,7 +100,7 @@ export default function SellScreen() {
   const handleFinalize = async () => {
     setisFinished(true)
     let errorCart = []
-    const ticket = { store_id: User.store_id, saller: User.id }
+    const ticket = { store_id: User.store_id, saller: User.id ,created_at:new Date()}
     const { data: ticketData, error: errorTicket } = await supabase.from('tickets').insert(ticket).select('id').single()
     if (errorTicket) {
       console.log('Error sale : ', errorTicket)

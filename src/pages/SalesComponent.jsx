@@ -64,11 +64,12 @@ const SalesComponent = () => {
     const { User } = useAuth()
     const { storeData, categorys } = useApp()
     const [sales, setSales] = useState([])
+    const [tickets, settickets] = useState([])
     const [filter, setFilter] = useState('day')
     const [MostSale, setMostSale] = useState([])
     const [MostCategory, setMostCategory] = useState([])
     const [isHistoriOpen, setisHistoriOpen] = useState(false)
-    const [salesTimes,setsalesTimes] = useState([])
+    const [salesTimes, setsalesTimes] = useState([])
     const FilterSalles = () => {
         const todayFilter = () => {
             const today = new Date();
@@ -108,21 +109,40 @@ const SalesComponent = () => {
         }
 
     }
+
+    
     const fetchSales = async () => {
         if (User) {
-            const { data, error } = await supabase.from('sales').select("*").eq(User.permission == 'adm' ? 'store_id' : 'user_id', User.permission == 'adm' ? User.store_id : User.id).gte('date', FilterSalles())
+            let { data, error } = await supabase.from('tickets').select("*").eq(User.permission == 'adm' ? 'store_id' : 'user_id', User.permission == 'adm' ? User.store_id : User.id).gte('created_at', FilterSalles())
             if (error) {
                 console.log('Error : ', error)
-            } else {
-                const SortedDate = data.sort((a, b) => new Date(b.date) - new Date(a.date))
-                setSales(SortedDate.map(item => {
-                    const date = new Date(item.date).toLocaleString('pt-br')
-                    const nameItem = storeData.filter((product) => item.id_product == product.id)
-                    item['name'] = nameItem[0]?.name
-                    item.date = date
-                    return item
-                }))
             }
+            else {
+                data = await Promise.all( data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at) ).map( async(ticket) => {
+                    const { data: Allsales, error: SalesError } = await supabase.from('sales').select('*').eq('ticket', ticket.id)
+                    if (SalesError) {
+                        console.log('Error : ', SalesError)
+                    }
+                    else {
+                        ticket['products'] = Allsales.map(e => {
+                            const name = storeData.filter(s => s.id === e.id_product)[0]
+                            e['name'] = name?.name
+                            return e
+                        })
+                        ticket['created_at'] = new Date(ticket.created_at).toLocaleString('pt-Br')
+                        return ticket
+                    }
+                }))
+                setSales(data.reduce((acc,sale)=>{
+                    acc.push(...sale.products)
+                    return acc
+                },[]))
+                settickets(data)
+                
+
+            }
+
+
         }
     }
     useEffect(() => {
@@ -135,7 +155,7 @@ const SalesComponent = () => {
             const idSale = storeData.filter(e => e.id == data.id_product)[0]
             if (idSale) {
                 const nameP = categorys.filter(e => e.id === idSale.category)[0]
-                if(nameP){
+                if (nameP) {
                     acc[nameP.name] = (acc[nameP.name] || 0) + data.units
                 }
             }
@@ -149,13 +169,13 @@ const SalesComponent = () => {
             acc[data[0]] = data[1]
             return acc
         }, {}))
-        setsalesTimes(sales?.reduce((acc, data) => {
-            let [dataPart, horaPart] = data.date.split(", ");
+        setsalesTimes(tickets?.reduce((acc, data) => {
+            let [dataPart, horaPart] = data.created_at.split(", ");
             const [hora, min, seg] = horaPart.split(":").map(Number);
-            acc[hora] = (acc[hora] || 0) + data.units
+            acc[hora] = (acc[hora] || 0) + 1
             return acc
         }, {}))
-        
+
     }, [sales])
 
     useEffect(() => {
@@ -187,7 +207,7 @@ const SalesComponent = () => {
                                 acc += data.profit
                                 return acc
                             }, 0).toFixed(2)} title={'Lucro Total'} />
-                            <Card Icon={<CartIcon $color={'rgba(247, 0, 255, 0.05)'}><Store strokeWidth={1.4} size={28} color="rgb(197, 0, 223)" /></CartIcon>} data={sales?.reduce((acc,data)=>acc+= data.units,0)} title={'Produtos vendidos'} />
+                            <Card Icon={<CartIcon $color={'rgba(247, 0, 255, 0.05)'}><Store strokeWidth={1.4} size={28} color="rgb(197, 0, 223)" /></CartIcon>} data={sales?.reduce((acc, data) => acc += data.units, 0)} title={'Produtos vendidos'} />
                             <Card Icon={<CartIcon $color={'rgba(0, 119, 255, 0.05)'}><ShoppingBag strokeWidth={1.4} size={28} color="rgb(0, 104, 223)" /></CartIcon>} data={Object.keys(MostCategory)[0]} title={'Categoria  Mais Vendida'} />
                             <Card Icon={<CartIcon $color={'rgba(0, 253, 84, 0.05)'}><ShoppingBasket strokeWidth={1.4} size={28} color="rgb(0, 190, 63)" /></CartIcon>} data={Object.keys(MostSale)[0]} title={'Produto Mais Vendido'} />
 
@@ -197,36 +217,37 @@ const SalesComponent = () => {
                         <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Gráficos</h3>
                         <ChartsContainer>
                             <BarComponent color={"#ffc400"} title={'10 Categorias mais vendidas'}
-                                data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e,id)=>id<10&&e)}
+                                data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
                             />
                             <BarComponent color={"#7c02ee"} title={'10 Produtos mais vendidos'}
-                                data={Object.entries(MostSale).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e,id)=>id<10&&e)}
+                                data={Object.entries(MostSale).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
                             />
-                            <LinearComponent color={"#0260ee"} title={'Relação (Hora/nº de Vendas)'} 
-                                data={Object.entries(salesTimes).map(([produto, vendas]) => ({ Produto: Number(produto), Vendas: vendas }))}/>
+                            <LinearComponent color={"#0260ee"} title={'Relação (Hora/nº de Vendas)'}
+                                data={Object.entries(salesTimes).map(([produto, vendas]) => ({ Produto: Number(produto), Vendas: vendas }))} />
                         </ChartsContainer>
 
 
                     </>
-                }
+                
+                    }
 
                 <div style={{ display: "flex", alignItems: "center", gap: '4px' }}>
                     <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500", alignSelf: "start" }}>Histórico de Vendas</h3>
                     <ChevronDown style={{ cursor: "pointer", transform: isHistoriOpen ? 'rotate(180deg)' : null }} color="rgb(129, 129, 129)" onClick={() => isHistoriOpen ? setisHistoriOpen(false) : setisHistoriOpen(true)}>da</ChevronDown>
                 </div>
                 <History style={{ width: "100%", borderBottom: '1px solid lightgray' }}>
-                    <p style={{ color: "gray" }}>Produto</p>
-                    <p style={{ textAlign: "center", color: "gray" }}>Itens</p>
-                    <p style={{ textAlign: "center", color: "gray" }}>Total</p>
+                    <p style={{ color: "gray" }}>Ticket</p>
+                    <p style={{ textAlign: "center", color: "gray" }}></p>
+                    <p style={{ textAlign: "center", color: "gray" }}>Produtos</p>
                     <p style={{ textAlign: "center", color: "gray" }}>Data</p>
                 </History>
                 <HistoryContainer drop={isHistoriOpen}>
-                    {sales.map(e =>
+                    {tickets.map(e =>
                         <History key={e.id}>
-                            <p style={{ color: e.name ? null : 'red' }}>{e.name || 'Excluído'}</p>
-                            <p style={{ textAlign: "center", color: "gray" }}>{e.units}</p>
-                            <p style={{ textAlign: "center" ,color:"green"}}>{'R$ '+e.price}</p>
-                            <p style={{ textAlign: "center" }}>{e.date}</p>
+                            <p >{e.id}</p>
+                            <p ></p>
+                            <p style={{ textAlign: "center", color: "gray" }}>{e.products.length}</p>
+                            <p style={{ textAlign: "center"}}>{e.created_at}</p>
                         </History>)}
                 </HistoryContainer>
             </Container>
