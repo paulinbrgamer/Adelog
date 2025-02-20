@@ -10,6 +10,7 @@ import CartIcon from '../components/styled/CartIcon'
 import BarComponent from "../components/BarComponent";
 import LinearComponent from "../components/LinearComponent";
 import ModalComponent from "../components/ModalComponent";
+import { Loading, ContainerL } from '../components/styled/Loading'
 const GlobalStyle = createGlobalStyle`
   ::-webkit-scrollbar {
     width: 0px;
@@ -72,6 +73,7 @@ const SalesComponent = () => {
     const [isDetailTicketOpen, setisDetailTicketOpen] = useState(false)
     const [DetailTicketData, setDetailTicketData] = useState({})
     const [salesTimes, setsalesTimes] = useState([])
+    const [isFeching, setisFeching] = useState(false)
     const FilterSalles = () => {
         const todayFilter = () => {
             const today = new Date();
@@ -115,6 +117,7 @@ const SalesComponent = () => {
 
     const fetchSales = async () => {
         if (User) {
+            setisFeching(true)
             let { data, error } = await supabase.from('tickets').select("*").eq(User.permission == 'adm' ? 'store_id' : 'user_id', User.permission == 'adm' ? User.store_id : User.id).gte('created_at', FilterSalles())
             if (error) {
                 console.log('Error : ', error)
@@ -142,6 +145,7 @@ const SalesComponent = () => {
                     return acc
                 }, []))
                 settickets(data)
+                setisFeching(false)
             }
         }
     }
@@ -200,7 +204,7 @@ const SalesComponent = () => {
                         </div>
                         <div style={{ display: 'flex', gap: "10px" }}>
                             <p>Valor Total :  </p>
-                            <p style={{ color: "gray" }}>R$ {DetailTicketData.products.reduce((acc,data)=>{return acc+=data.price},0)}</p>
+                            <p style={{ color: "gray" }}>R$ {DetailTicketData.products.reduce((acc, data) => { return acc += data.price }, 0)}</p>
                         </div>
                         <div style={{ display: 'flex', gap: "10px" }}>
                             <p>Data de venda:  </p>
@@ -245,32 +249,43 @@ const SalesComponent = () => {
                 {User?.permission === 'adm' &&
                     <>
                         <CardsContainer>
-                            <Card Icon={<CartIcon $color={'rgba(252, 122, 0, 0.05)'}><ChartCandlestick strokeWidth={1.4} size={28} color="rgb(252, 122, 0)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
-                                acc += data.price
-                                return acc
-                            }, 0).toFixed(2)} title={'Receita Total'} />
-                            <Card Icon={<CartIcon $color={'rgba(0, 252, 97, 0.05)'}><DollarSign strokeWidth={1.4} size={28} color="rgb(0, 252, 97)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
-                                acc += data.profit
-                                return acc
-                            }, 0).toFixed(2)} title={'Lucro Total'} />
-                            <Card Icon={<CartIcon $color={'rgba(247, 0, 255, 0.05)'}><Store strokeWidth={1.4} size={28} color="rgb(197, 0, 223)" /></CartIcon>} data={sales?.reduce((acc, data) => acc += data.units, 0)} title={'Unidades Vendidas'} />
-                            <Card Icon={<CartIcon $color={'rgba(0, 119, 255, 0.05)'}><ShoppingBag strokeWidth={1.4} size={28} color="rgb(0, 104, 223)" /></CartIcon>} data={Object.keys(MostCategory)[0]} title={'Categoria  Mais Vendida'} />
-                            <Card Icon={<CartIcon $color={'rgba(0, 253, 84, 0.05)'}><ShoppingBasket strokeWidth={1.4} size={28} color="rgb(0, 190, 63)" /></CartIcon>} data={Object.keys(MostSale)[0]} title={'Produto Mais Vendido'} />
+                            {isFeching ?
+                                <Loading style={{ margin: 'auto' }}>
+                                    <ContainerL ></ContainerL>
+                                </Loading> :
+                                <>
+                                    <Card Icon={<CartIcon $color={'rgba(252, 122, 0, 0.05)'}><ChartCandlestick strokeWidth={1.4} size={28} color="rgb(252, 122, 0)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
+                                        acc += data.price
+                                        return acc
+                                    }, 0).toFixed(2)} title={'Receita Total'} />
+                                    <Card Icon={<CartIcon $color={'rgba(0, 252, 97, 0.05)'}><DollarSign strokeWidth={1.4} size={28} color="rgb(0, 252, 97)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
+                                        acc += data.profit
+                                        return acc
+                                    }, 0).toFixed(2)} title={'Lucro Total'} />
+                                    <Card Icon={<CartIcon $color={'rgba(247, 0, 255, 0.05)'}><Store strokeWidth={1.4} size={28} color="rgb(197, 0, 223)" /></CartIcon>} data={sales?.reduce((acc, data) => acc += data.units, 0)} title={'Unidades Vendidas'} />
+                                    <Card Icon={<CartIcon $color={'rgba(0, 119, 255, 0.05)'}><ShoppingBag strokeWidth={1.4} size={28} color="rgb(0, 104, 223)" /></CartIcon>} data={Object.keys(MostCategory)[0]} title={'Categoria  Mais Vendida'} />
+                                    <Card Icon={<CartIcon $color={'rgba(0, 253, 84, 0.05)'}><ShoppingBasket strokeWidth={1.4} size={28} color="rgb(0, 190, 63)" /></CartIcon>} data={Object.keys(MostSale)[0]} title={'Produto Mais Vendido'} />
+                                </>}
 
 
                         </CardsContainer>
 
                         <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Gráficos</h3>
-                        <ChartsContainer>
-                            <BarComponent color={"#ffc400"} title={'10 Categorias mais vendidas'}
-                                data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
-                            />
-                            <BarComponent color={"#7c02ee"} title={'10 Produtos mais vendidos'}
-                                data={Object.entries(MostSale).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
-                            />
-                            <LinearComponent color={"#0260ee"} title={'Relação (Hora/nº de Vendas)'}
-                                data={Object.entries(salesTimes).map(([produto, vendas]) => ({ Produto: Number(produto), Vendas: vendas }))} />
-                        </ChartsContainer>
+                        {isFeching ?
+                            <Loading style={{ margin: 'auto' }}>
+                                <ContainerL ></ContainerL>
+                            </Loading> : <>
+                                <ChartsContainer >
+                                    <BarComponent color={"#ffc400"} title={'10 Categorias mais vendidas'}
+                                        data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
+                                    />
+                                    <BarComponent color={"#7c02ee"} title={'10 Produtos mais vendidos'}
+                                        data={Object.entries(MostSale).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
+                                    />
+                                    <LinearComponent color={"#0260ee"} title={'Relação (Hora/nº de Vendas)'}
+                                        data={Object.entries(salesTimes).map(([produto, vendas]) => ({ Produto: Number(produto), Vendas: vendas }))} />
+                                </ChartsContainer>
+                            </>}
 
 
                     </>
@@ -289,13 +304,19 @@ const SalesComponent = () => {
 
                 </History>
                 <HistoryContainer drop={isHistoriOpen}>
-                    {tickets.map(e =>
-                        <History key={e.id}>
-                            <p >{e.id}</p>
-                            <p style={{ textAlign: "center", color: "gray" }}>{e.products.length}</p>
-                            <p style={{ textAlign: "center" }}>{e.created_at}</p>
-                            <Search size={20} style={{ margin: "auto", cursor: "pointer" }} color="gray" onClick={() => { setDetailTicketData(e); setisDetailTicketOpen(true) }} />
-                        </History>)}
+                    {isFeching ?
+                        <Loading style={{ margin: 'auto' }}>
+                            <ContainerL ></ContainerL>
+                        </Loading> : <>
+                            {tickets.map(e =>
+                                <History key={e.id}>
+                                    <p >{e.id}</p>
+                                    <p style={{ textAlign: "center", color: "gray" }}>{e.products.length}</p>
+                                    <p style={{ textAlign: "center" }}>{e.created_at}</p>
+                                    <Search size={20} style={{ margin: "auto", cursor: "pointer" }} color="gray" onClick={() => { setDetailTicketData(e); setisDetailTicketOpen(true) }} />
+                                </History>)}
+                        </>}
+
                 </HistoryContainer>
             </Container>
         </>
