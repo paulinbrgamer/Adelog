@@ -78,7 +78,7 @@ export default function SellScreen() {
   const [ShowReader, setshowReader] = useState(false)
   const [productSelected, setproductSelected] = useState(null)
   const [modalAddUnits, setmodalAddUnits] = useState(false)
-  const [ModalAddCart,setModalAddCart] = useState(false)
+  const [ModalAddCart, setModalAddCart] = useState(false)
   const [Units, setUnits] = useState(null)
   const { User } = useAuth()
   const [exchange, setExchange] = useState(0)
@@ -100,34 +100,44 @@ export default function SellScreen() {
   const handleFinalize = async () => {
     setisFinished(true)
     let errorCart = []
-    Cart.forEach(async (item) => {
-      const { error } = await supabase.rpc('decrement_stock', { product_id: item.id, quantity: item.units })
-      if (error) {
-        errorCart.push(item)
-        setisFinished(false)
-        seterrorMensage('Erro, Venda não registrada')
-        showToast(setToastError)
-      }
-      else {
-        const { id, name, category, line_code,brute_price, ...rest } = item
-        const date = new Date()
+    const ticket = { store_id: User.store_id, saller: User.id }
+    const { data: ticketData, error: errorTicket } = await supabase.from('tickets').insert(ticket).select('id').single()
+    if (errorTicket) {
+      console.log('Error sale : ', errorTicket)
+      setisFinished(false)
+      seterrorMensage('Erro, Venda não registrada')
+      showToast(setToastError)
+    }
+    else {
+      Cart.forEach(async (item) => {
+        const { error } = await supabase.rpc('decrement_stock', { product_id: item.id, quantity: item.units })
+        if (error) {
+          errorCart.push(item)
+          setisFinished(false)
+          seterrorMensage('Erro, Venda não registrada')
+          showToast(setToastError)
+        }
+        else {
+          const { id, name, category, line_code, brute_price, store_id,user_id, ...rest } = item
 
-        const sale = { ...rest, id_product: id, user_id: User.id, store_id: User.store_id,profit:rest.price-brute_price, date: date.toISOString() }
-        const { error: saleError } = await supabase.from('sales').insert([sale])
-        if (saleError) {
-          console.log('Error sale : ', saleError)
+          const sale = { ...rest, id_product: id,ticket: ticketData.id, profit: rest.price - brute_price }
+          const { error: saleError } = await supabase.from('sales').insert([sale])
+          if (saleError) {
+            console.log('Error sale : ', saleError)
+          }
+
+
+
+          setTimeout(() => {
+            setisFinished(false)
+            setaproveMensage('Venda Registrada')
+            showToast(setToastAproved)
+
+          }, 800);
 
         }
-
-        setTimeout(() => {
-          setisFinished(false)
-          setaproveMensage('Venda Registrada')
-          showToast(setToastAproved)
-
-        }, 800);
-
-      }
-    });
+      });
+    }
     setCart(errorCart)
   }
   const handleBarcodeDetected = (barcode) => {
@@ -156,27 +166,27 @@ export default function SellScreen() {
   return (
     <Container style={styleMainContainer} >
       {ModalAddCart &&
-      <ModalComponent>
-        {ShowReader ?
         <ModalComponent>
-          <BarScanner onDetected={handleBarcodeDetected} />
-          <SecondaryButtom onClick={() => setshowReader(false)} style={{marginLeft:"auto"}}>
-            <p>Cancelar</p>
-          </SecondaryButtom>
-        </ModalComponent> : null
-       }
-       <div style={{display:"flex",flexDirection:"column"}} >
-       <X color='gray' size={20} style={{cursor:"pointer",alignSelf:"end"}} onClick={() => setModalAddCart(false)} >
-            <p >Cancelar</p>
-        </X>
-        <InputText type={'number'} onChange={(e) => handleBarcodeDetected(e.target.value)} label={'Código de barras'} pholder={'Digite o código de barras'} >
-        <ScanBarcode color='gray' style={{cursor:"pointer",alignSelf:'center',padding:'8px'}} onClick={() => setshowReader(true)}/>
-        </InputText>
+          {ShowReader ?
+            <ModalComponent>
+              <BarScanner onDetected={handleBarcodeDetected} />
+              <SecondaryButtom onClick={() => setshowReader(false)} style={{ marginLeft: "auto" }}>
+                <p>Cancelar</p>
+              </SecondaryButtom>
+            </ModalComponent> : null
+          }
+          <div style={{ display: "flex", flexDirection: "column" }} >
+            <X color='gray' size={20} style={{ cursor: "pointer", alignSelf: "end" }} onClick={() => setModalAddCart(false)} >
+              <p >Cancelar</p>
+            </X>
+            <InputText type={'number'} onChange={(e) => handleBarcodeDetected(e.target.value)} label={'Código de barras'} pholder={'Digite o código de barras'} >
+              <ScanBarcode color='gray' style={{ cursor: "pointer", alignSelf: 'center', padding: '8px' }} onClick={() => setshowReader(true)} />
+            </InputText>
 
-       </div>
-      </ModalComponent>
+          </div>
+        </ModalComponent>
       }
-      
+
       {isFinished ?
         <ModalComponent>
           <ContainerL>
@@ -190,8 +200,8 @@ export default function SellScreen() {
         <ModalComponent>
           <Title>Unidades de {productSelected.name}:</Title>
           <ShoppingCart />
-          <UnitsComponent data={productSelected} set={setUnits} finalize={handleFinalizeUnits}/>
-          <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'end', padding: "4px",gap:"12px" }}>
+          <UnitsComponent data={productSelected} set={setUnits} finalize={handleFinalizeUnits} />
+          <div style={{ display: 'flex', flexDirection: "row", width: '90%', alignContent: 'center', justifyContent: 'end', padding: "4px", gap: "12px" }}>
             <SecondaryButtom onClick={() => setmodalAddUnits(false)} >
               <p>Cancelar</p>
             </SecondaryButtom>
@@ -199,16 +209,16 @@ export default function SellScreen() {
               <p style={{ fontSize: "11pt" }}>Finalizar</p>
             </MainButtom>
           </div>
-        </ModalComponent> :null
+        </ModalComponent> : null
       }
-      <Container style={{ backgroundColor: "transparent", flexDirection: "row", alignItems: "center" ,padding: "20px 0px"}}>
-        <h2 style={{ color: 'rgb(31 ,41, 55)', alignSelf: "start",fontWeight:"500" }}>Carrinho de Produtos</h2>
-        <MainButtom onClick={()=>setModalAddCart(true)} style={{ marginLeft: '36px' }} >
-        <Plus size={20} color="white"/>
+      <Container style={{ backgroundColor: "transparent", flexDirection: "row", alignItems: "center", padding: "20px 0px" }}>
+        <h2 style={{ color: 'rgb(31 ,41, 55)', alignSelf: "start", fontWeight: "500" }}>Carrinho de Produtos</h2>
+        <MainButtom onClick={() => setModalAddCart(true)} style={{ marginLeft: '36px' }} >
+          <Plus size={20} color="white" />
           <p>Adicionar ao carrinho</p>
         </MainButtom>
       </Container>
-      
+
       <HeaderProducts>
         <p style={{ color: "gray" }}>Produto</p>
         <p style={{ textAlign: "center", color: "gray" }}>Unidades</p>
@@ -228,15 +238,15 @@ export default function SellScreen() {
             <Title style={{ color: "gray", fontSize: "12pt" }}>Total: R$ {Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)}</Title>
             <Title style={{ color: "gray", fontSize: "12pt" }}>Troco : R$ {(exchange - Cart.reduce((acc, obj) => acc += obj.price, 0).toFixed(2)).toFixed(2)}</Title>
 
-            <SecondaryButtom  onClick={() => setCart([])}>
+            <SecondaryButtom onClick={() => setCart([])}>
               <p >Cancelar</p>
             </SecondaryButtom>
 
             <MainButtom onClick={() => handleFinalize()} >
-              <p style={{fontSize:'12pt'}} >Finalizar</p>
+              <p style={{ fontSize: '12pt' }} >Finalizar</p>
             </MainButtom>
           </GridOptions>
-        </ContainerInfoCart> 
+        </ContainerInfoCart>
         : null
       }
     </Container>
