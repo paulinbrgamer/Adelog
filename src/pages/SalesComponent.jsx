@@ -3,13 +3,13 @@ import { useAuth } from "../auth/Authprovider"
 import { supabase } from "../services/cliente"
 import { useApp } from "./AppProvider"
 import { Select, Option } from "../components/SelectComponent";
-import { CalendarDays, ChartCandlestick, ChevronDown, DollarSign, ShoppingBag, ShoppingBasket, Store } from "lucide-react"
+import { CalendarDays, ChartCandlestick, ChevronDown, DollarSign, Search, ShoppingBag, ShoppingBasket, Store, X } from "lucide-react"
 import styled, { createGlobalStyle } from "styled-components"
 import Card from "../components/Card"
 import CartIcon from '../components/styled/CartIcon'
 import BarComponent from "../components/BarComponent";
-import ScatterComponent from "../components/LinearComponent";
 import LinearComponent from "../components/LinearComponent";
+import ModalComponent from "../components/ModalComponent";
 const GlobalStyle = createGlobalStyle`
   ::-webkit-scrollbar {
     width: 0px;
@@ -69,6 +69,8 @@ const SalesComponent = () => {
     const [MostSale, setMostSale] = useState([])
     const [MostCategory, setMostCategory] = useState([])
     const [isHistoriOpen, setisHistoriOpen] = useState(false)
+    const [isDetailTicketOpen, setisDetailTicketOpen] = useState(false)
+    const [DetailTicketData, setDetailTicketData] = useState({})
     const [salesTimes, setsalesTimes] = useState([])
     const FilterSalles = () => {
         const todayFilter = () => {
@@ -110,7 +112,7 @@ const SalesComponent = () => {
 
     }
 
-    
+
     const fetchSales = async () => {
         if (User) {
             let { data, error } = await supabase.from('tickets').select("*").eq(User.permission == 'adm' ? 'store_id' : 'user_id', User.permission == 'adm' ? User.store_id : User.id).gte('created_at', FilterSalles())
@@ -118,7 +120,8 @@ const SalesComponent = () => {
                 console.log('Error : ', error)
             }
             else {
-                data = await Promise.all( data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at) ).map( async(ticket) => {
+                data = await Promise.all(data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map(async (ticket) => {
+                    const { data: nameSaller, error: SallerError } = await supabase.from('users').select('*').eq('id', ticket.saller).single()
                     const { data: Allsales, error: SalesError } = await supabase.from('sales').select('*').eq('ticket', ticket.id)
                     if (SalesError) {
                         console.log('Error : ', SalesError)
@@ -130,19 +133,16 @@ const SalesComponent = () => {
                             return e
                         })
                         ticket['created_at'] = new Date(ticket.created_at).toLocaleString('pt-Br')
+                        ticket['saller'] = nameSaller.name
                         return ticket
                     }
                 }))
-                setSales(data.reduce((acc,sale)=>{
+                setSales(data.reduce((acc, sale) => {
                     acc.push(...sale.products)
                     return acc
-                },[]))
+                }, []))
                 settickets(data)
-                
-
             }
-
-
         }
     }
     useEffect(() => {
@@ -185,6 +185,48 @@ const SalesComponent = () => {
     return (
         <>
             <GlobalStyle />
+            {isDetailTicketOpen &&
+                <ModalComponent style={{ width: 'clamp(100px,90%,600px)', height: '80dvh' }}>
+                    <X onClick={() => setisDetailTicketOpen(false)} color="gray" size={20} style={{ cursor: 'pointer', marginLeft: "auto" }} />
+                    <header style={{ display: "flex", justifyContent: "center", width: "100%" }}><p >Detalhes do Ticket</p> </header>
+                    <div style={{ display: 'flex', flexDirection: "column", alignContent: "start", width: "100%", border: "1px solid lightgray", padding: "20px", boxSizing: "border-box", borderRadius: "4px", gap: "10px" }}>
+                        <div style={{ display: 'flex', gap: "10px" }}>
+                            <p>ID :  </p>
+                            <p style={{ color: "gray" }}>{DetailTicketData.id}</p>
+                        </div>
+                        <div style={{ display: 'flex', gap: "10px" }}>
+                            <p>Produtos :  </p>
+                            <p style={{ color: "gray" }}>{DetailTicketData.products.length}</p>
+                        </div>
+                        <div style={{ display: 'flex', gap: "10px" }}>
+                            <p>Data de venda:  </p>
+                            <p style={{ color: "gray" }}>{DetailTicketData.created_at}</p>
+                        </div>
+                        <div style={{ display: 'flex', gap: "10px" }}>
+                            <p>Vendedor:  </p>
+                            <p style={{ color: "gray" }}>{DetailTicketData.saller}</p>
+                        </div>
+                    </div>
+                    <header style={{ display: "flex", justifyContent: "center", width: "100%" }}><p>Produtos</p> </header>
+                    <div style={{ display: 'flex', flexDirection: "column", alignContent: "start", width: "100%", flexGrow: "1", overflow: "scroll", border: "1px solid lightgray", boxSizing: "border-box", borderRadius: "4px", gap: "10px" }}>
+                        <History style={{ width: "100%", borderBottom: '1px solid lightgray' }}>
+                            <p style={{ color: "gray" }}>Produto</p>
+                            <p style={{ textAlign: "center", color: "gray" }}></p>
+                            <p style={{ textAlign: "center", color: "gray" }}>Itens</p>
+                            <p style={{ textAlign: "center", color: "gray" }}>Valor(R$)</p>
+                        </History>
+
+                        <div>
+                            {DetailTicketData.products.map(e =>
+                                <History key={e.id}>
+                                    <p style={{ color: "gray" }}>{e.name}</p>
+                                    <p style={{ textAlign: "center", color: "gray" }}></p>
+                                    <p style={{ textAlign: "center", color: "gray" }}>{e.units}</p>
+                                    <p style={{ textAlign: "center", color: "gray" }}>{e.price}</p>
+                                </History>)}
+                        </div>
+                    </div>
+                </ModalComponent>}
             <Container  >
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
                     <h2 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Análise de Vendas</h2>
@@ -228,8 +270,8 @@ const SalesComponent = () => {
 
 
                     </>
-                
-                    }
+
+                }
 
                 <div style={{ display: "flex", alignItems: "center", gap: '4px' }}>
                     <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500", alignSelf: "start" }}>Histórico de Vendas</h3>
@@ -237,17 +279,18 @@ const SalesComponent = () => {
                 </div>
                 <History style={{ width: "100%", borderBottom: '1px solid lightgray' }}>
                     <p style={{ color: "gray" }}>Ticket</p>
-                    <p style={{ textAlign: "center", color: "gray" }}></p>
                     <p style={{ textAlign: "center", color: "gray" }}>Produtos</p>
                     <p style={{ textAlign: "center", color: "gray" }}>Data</p>
+                    <p style={{ textAlign: "center", color: "gray" }}>Ações</p>
+
                 </History>
                 <HistoryContainer drop={isHistoriOpen}>
                     {tickets.map(e =>
                         <History key={e.id}>
                             <p >{e.id}</p>
-                            <p ></p>
                             <p style={{ textAlign: "center", color: "gray" }}>{e.products.length}</p>
-                            <p style={{ textAlign: "center"}}>{e.created_at}</p>
+                            <p style={{ textAlign: "center" }}>{e.created_at}</p>
+                            <Search size={20} style={{ margin: "auto", cursor: "pointer" }} color="gray" onClick={() => { setDetailTicketData(e); setisDetailTicketOpen(true) }} />
                         </History>)}
                 </HistoryContainer>
             </Container>
