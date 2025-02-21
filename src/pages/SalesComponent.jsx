@@ -3,14 +3,18 @@ import { useAuth } from "../auth/Authprovider"
 import { supabase } from "../services/cliente"
 import { useApp } from "./AppProvider"
 import { Select, Option } from "../components/SelectComponent";
-import { CalendarDays, ChartCandlestick, ChevronDown, DollarSign, Search, ShoppingBag, ShoppingBasket, Store, X } from "lucide-react"
+import { CalendarDays, ChartCandlestick, ChevronDown, DollarSign, Search, ShoppingBag, ShoppingBasket, Store, Ticket, X } from "lucide-react"
 import styled, { createGlobalStyle } from "styled-components"
 import Card from "../components/Card"
 import CartIcon from '../components/styled/CartIcon'
 import BarComponent from "../components/BarComponent";
 import LinearComponent from "../components/LinearComponent";
 import ModalComponent from "../components/ModalComponent";
-import { Loading, ContainerL } from '../components/styled/Loading'
+const parseDate = (dateString) => {
+    const [datePart, timePart] = dateString.split(", ");
+    const [day, month, year] = datePart.split("/");
+    return new Date(`${year}-${month}-${day}T${timePart}`);
+};
 const GlobalStyle = createGlobalStyle`
   ::-webkit-scrollbar {
     width: 0px;
@@ -78,6 +82,7 @@ const SalesComponent = () => {
         const todayFilter = () => {
             const today = new Date();
             const todatmidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
+
             return todatmidnight.toISOString();
         }
         const monthFilter = () => {
@@ -113,16 +118,25 @@ const SalesComponent = () => {
         }
 
     }
-
-
     const fetchSales = async () => {
         if (User) {
             setisFeching(true)
-            let { data, error } = await supabase.from('tickets').select("*").eq(User.permission == 'adm' ? 'store_id' : 'user_id', User.permission == 'adm' ? User.store_id : User.id).gte('created_at', FilterSalles())
+            const ticketsId = tickets.map(item => item.id)
+
+            let { data, error } = await supabase.from('tickets').select("*").eq(User.permission == 'adm' ? 'store_id' : 'user_id', User.permission == 'adm' ? User.store_id : User.id).gte('created_at', FilterSalles()).not('id', 'in', `(${ticketsId.join(',')})`)
             if (error) {
                 console.log('Error : ', error)
             }
             else {
+                if(data.length<1){
+                    const newState = tickets.filter(e => parseDate(e.created_at) >= new Date(FilterSalles()))
+                settickets(newState)
+                setSales(newState.reduce((acc, sale) => {
+                    acc.push(...sale.products)
+                    return acc
+                }, []))
+                }
+
                 data = await Promise.all(data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map(async (ticket) => {
                     const { data: nameSaller, error: SallerError } = await supabase.from('users').select('*').eq('id', ticket.saller).single()
                     const { data: Allsales, error: SalesError } = await supabase.from('sales').select('*').eq('ticket', ticket.id)
@@ -132,7 +146,7 @@ const SalesComponent = () => {
                     else {
                         ticket['products'] = Allsales.map(e => {
                             const name = storeData.filter(s => s.id === e.id_product)[0]
-                            e['name'] = name?.name
+                            e['name'] = name.name || 'Loading'
                             return e
                         })
                         ticket['created_at'] = new Date(ticket.created_at).toLocaleString('pt-Br')
@@ -140,15 +154,17 @@ const SalesComponent = () => {
                         return ticket
                     }
                 }))
-                setSales(data.reduce((acc, sale) => {
+                setSales(prev => [...prev, ...data.reduce((acc, sale) => {
                     acc.push(...sale.products)
                     return acc
-                }, []))
-                settickets(data)
+                }, [])])
+                settickets(prev => [...data,...prev ])
                 setisFeching(false)
             }
         }
     }
+
+
     useEffect(() => {
         //Verificar qual é o produto que mais vende
         const Mapcount = sales?.reduce((acc, data) => {
@@ -257,10 +273,11 @@ const SalesComponent = () => {
                             <Card Icon={<CartIcon $color={'rgba(0, 252, 97, 0.05)'}><DollarSign strokeWidth={1.4} size={28} color="rgb(0, 252, 97)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
                                 acc += data.profit
                                 return acc
-                            }, 0).toFixed(2)} title={'Lucro Total'} Feching={isFeching}/>
-                            <Card Icon={<CartIcon $color={'rgba(247, 0, 255, 0.05)'}><Store strokeWidth={1.4} size={28} color="rgb(197, 0, 223)" /></CartIcon>} data={sales?.reduce((acc, data) => acc += data.units, 0)} title={'Unidades Vendidas'}Feching={isFeching} />
+                            }, 0).toFixed(2)} title={'Lucro Total'} Feching={isFeching} />
+                            <Card Icon={<CartIcon $color={'rgba(247, 0, 255, 0.05)'}><Store strokeWidth={1.4} size={28} color="rgb(197, 0, 223)" /></CartIcon>} data={sales?.reduce((acc, data) => acc += data.units, 0)} title={'Unidades Vendidas'} Feching={isFeching} />
+                            <Card Icon={<CartIcon $color={'rgba(223, 100, 0, 0.05)'}><Ticket strokeWidth={1.4} size={28} color="rgb(245, 110, 0)" /></CartIcon>} data={tickets.length} title={'Tickets'} Feching={isFeching} />
                             <Card Icon={<CartIcon $color={'rgba(0, 119, 255, 0.05)'}><ShoppingBag strokeWidth={1.4} size={28} color="rgb(0, 104, 223)" /></CartIcon>} data={Object.keys(MostCategory)[0]} title={'Categoria  Mais Vendida'} Feching={isFeching} />
-                            <Card Icon={<CartIcon $color={'rgba(0, 253, 84, 0.05)'}><ShoppingBasket strokeWidth={1.4} size={28} color="rgb(0, 190, 63)" /></CartIcon>} data={Object.keys(MostSale)[0]} title={'Produto Mais Vendido'} Feching={isFeching}/>
+                            <Card Icon={<CartIcon $color={'rgba(0, 253, 84, 0.05)'}><ShoppingBasket strokeWidth={1.4} size={28} color="rgb(0, 190, 63)" /></CartIcon>} data={Object.keys(MostSale)[0]} title={'Produto Mais Vendido'} Feching={isFeching} />
 
 
                         </CardsContainer>
