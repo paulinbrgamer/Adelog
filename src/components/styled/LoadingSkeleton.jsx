@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const  LoadingSkeleton = styled.div`
-    height: 16px;
+    height: 20px;
     border-radius: 2px;
     background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
     background-size: 200% 100%;

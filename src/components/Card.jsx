@@ -19,7 +19,7 @@ function Card({title,data,Icon,Feching}) {
     <Cardstyle>
         {Icon}
         <p style={{color:"gray",fontSize:"11pt",fontWeight:"600"}}>{title}</p>
-        {Feching?<Skeleton style={{width:'100px'}}/>:<h3 style={{fontWeight:'500'}}>{data}</h3>}
+        {Feching?<Skeleton />:<h3 style={{fontWeight:'500'}}>{data}</h3>}
         </Cardstyle>
   )
 }
