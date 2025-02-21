@@ -120,10 +120,10 @@ const SalesComponent = () => {
 
     }
     useEffect(() => {
-      console.log(tickets);
-      
+        console.log(tickets);
+
     }, [tickets])
-    
+
     const fetchSales = async () => {
         if (User) {
             setisFeching(true)
@@ -134,7 +134,7 @@ const SalesComponent = () => {
                 console.log('Error : ', error)
             }
             else {
-                    const newState = tickets.filter(e => parseDate(e.created_at) >= new Date(FilterSalles()))
+                const newState = tickets.filter(e => parseDate(e.created_at) >= new Date(FilterSalles()))
                 settickets(newState)
                 setSales(newState.reduce((acc, sale) => {
                     acc.push(...sale.products)
@@ -149,7 +149,7 @@ const SalesComponent = () => {
                     else {
                         ticket['products'] = Allsales.map(e => {
                             const name = storeData.filter(s => s.id === e.id_product)[0]
-                            e['name'] = name.name 
+                            e['name'] = name.name
                             return e
                         })
                         ticket['created_at'] = new Date(ticket.created_at).toLocaleString('pt-Br')
@@ -160,7 +160,7 @@ const SalesComponent = () => {
                     acc.push(...sale.products)
                     return acc
                 }, [])])
-                settickets(prev => [...data,...prev ])
+                settickets(prev => [...data, ...prev])
                 setisFeching(false)
             }
         }
@@ -252,7 +252,8 @@ const SalesComponent = () => {
                                 </History>)}
                         </div>
                     </div>
-                </ModalComponent>}
+                </ModalComponent>
+            }
             <Container  >
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
                     <h2 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Análise de Vendas</h2>
@@ -284,24 +285,24 @@ const SalesComponent = () => {
 
                         </CardsContainer>
                         <div style={{ display: "flex", alignItems: "center", gap: '4px' }}>
-                        <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Análise de Gráficos</h3>
-                        <ChevronDown style={{ cursor: "pointer", transform: ChartsDrop ? 'rotate(180deg)' : null }} color="rgb(129, 129, 129)" onClick={() => ChartsDrop ? setChartsDrop(false) : setChartsDrop(true)}></ChevronDown>
+                            <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Análise de Gráficos</h3>
+                            <ChevronDown style={{ cursor: "pointer", transform: ChartsDrop ? 'rotate(180deg)' : null }} color="rgb(129, 129, 129)" onClick={() => ChartsDrop ? setChartsDrop(false) : setChartsDrop(true)}></ChevronDown>
                         </div>
                         <HistoryContainer drop={ChartsDrop}>
-                                    
-                        <ChartsContainer >
-                            <BarComponent color={"#ffc400"} title={'10 Categorias mais vendidas'}
-                                data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
-                                Feching={isFeching}
-                            />
-                            <BarComponent color={"#7c02ee"} title={'10 Produtos mais vendidos'}
-                                data={Object.entries(MostSale).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
-                                Feching={isFeching}
-                            />
-                            <LinearComponent color={"#0260ee"} title={'Relação (Hora/nº de Vendas)'}
-                                data={Object.entries(salesTimes).map(([produto, vendas]) => ({ Produto: Number(produto), Vendas: vendas }))} Feching={isFeching}/>
 
-                        </ChartsContainer>
+                            <ChartsContainer >
+                                <BarComponent color={"#ffc400"} title={'10 Categorias mais vendidas'}
+                                    data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
+                                    Feching={isFeching}
+                                />
+                                <BarComponent color={"#7c02ee"} title={'10 Produtos mais vendidos'}
+                                    data={Object.entries(MostSale).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
+                                    Feching={isFeching}
+                                />
+                                <LinearComponent color={"#0260ee"} title={'Relação (Hora/nº de Vendas)'}
+                                    data={Object.entries(salesTimes).map(([produto, vendas]) => ({ Produto: Number(produto), Vendas: vendas }))} Feching={isFeching} />
+
+                            </ChartsContainer>
                         </HistoryContainer>
 
                     </>
@@ -322,18 +323,19 @@ const SalesComponent = () => {
                 <HistoryContainer drop={isHistoriOpen}>
 
                     {tickets.map(e =>
-                        <History key={e.id+'h'}>
+                        <History key={e.id + 'h'}>
                             <p >{e.id}</p>
                             <p style={{ textAlign: "center", color: "gray" }}>{e.products.length}</p>
                             <p style={{ textAlign: "center" }}>{e.created_at}</p>
-                            <Search size={20} style={{ margin: "auto", cursor: "pointer" }} color="gray" onClick={async() => {
-                                const { data: nameSaller, error: SallerError } = await supabase.from('users').select('*').eq('id', e.saller).single()
-                                if(nameSaller){
+                            <Search size={20} style={{ margin: "auto", cursor: "pointer" }} color="gray" onClick={async () => {
+                                if (typeof(e.saller) == 'number') {
+                                    const { data: nameSaller, error: SallerError } = await supabase.from('users').select('*').eq('id', e.saller).single()
                                     e.saller = nameSaller.name
-                                     setDetailTicketData(e)
-                                     setisDetailTicketOpen(true) }
                                 }
-                                } />
+                                setDetailTicketData(e)
+                                setisDetailTicketOpen(true)
+                            }
+                            } />
                         </History>)}
 
                 </HistoryContainer>
