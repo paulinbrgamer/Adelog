@@ -78,6 +78,7 @@ const SalesComponent = () => {
     const [DetailTicketData, setDetailTicketData] = useState({})
     const [salesTimes, setsalesTimes] = useState([])
     const [isFeching, setisFeching] = useState(false)
+    const [ChartsDrop, setChartsDrop] = useState(true)
     const FilterSalles = () => {
         const todayFilter = () => {
             const today = new Date();
@@ -281,9 +282,12 @@ const SalesComponent = () => {
 
 
                         </CardsContainer>
-
-                        <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Gráficos</h3>
-
+                        <div style={{ display: "flex", alignItems: "center", gap: '4px' }}>
+                        <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Análise de Gráficos</h3>
+                        <ChevronDown style={{ cursor: "pointer", transform: ChartsDrop ? 'rotate(180deg)' : null }} color="rgb(129, 129, 129)" onClick={() => ChartsDrop ? setChartsDrop(false) : setChartsDrop(true)}></ChevronDown>
+                        </div>
+                        <HistoryContainer drop={ChartsDrop}>
+                                    
                         <ChartsContainer >
                             <BarComponent color={"#ffc400"} title={'10 Categorias mais vendidas'}
                                 data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
@@ -297,7 +301,7 @@ const SalesComponent = () => {
                                 data={Object.entries(salesTimes).map(([produto, vendas]) => ({ Produto: Number(produto), Vendas: vendas }))} Feching={isFeching}/>
 
                         </ChartsContainer>
-
+                        </HistoryContainer>
 
                     </>
 
