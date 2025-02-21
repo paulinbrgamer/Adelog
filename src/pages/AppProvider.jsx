@@ -67,7 +67,7 @@ export const AppProvider = ({ children }) => {
 
             }
         ).subscribe()
-
+        
         return () => {
             supabase.removeChannel(subscription)
         }

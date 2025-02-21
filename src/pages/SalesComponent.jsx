@@ -119,27 +119,29 @@ const SalesComponent = () => {
         }
 
     }
+    useEffect(() => {
+      console.log(tickets);
+      
+    }, [tickets])
+    
     const fetchSales = async () => {
         if (User) {
             setisFeching(true)
             const ticketsId = tickets.map(item => item.id)
 
-            let { data, error } = await supabase.from('tickets').select("*").eq(User.permission == 'adm' ? 'store_id' : 'user_id', User.permission == 'adm' ? User.store_id : User.id).gte('created_at', FilterSalles()).not('id', 'in', `(${ticketsId.join(',')})`)
+            let { data, error } = await supabase.from('tickets').select("*").eq(User.permission == 'adm' ? 'store_id' : 'saller', User.permission == 'adm' ? User.store_id : User.id).gte('created_at', FilterSalles()).not('id', 'in', `(${ticketsId.join(',')})`)
             if (error) {
                 console.log('Error : ', error)
             }
             else {
-                if(data.length<1){
                     const newState = tickets.filter(e => parseDate(e.created_at) >= new Date(FilterSalles()))
                 settickets(newState)
                 setSales(newState.reduce((acc, sale) => {
                     acc.push(...sale.products)
                     return acc
                 }, []))
-                }
 
                 data = await Promise.all(data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map(async (ticket) => {
-                    const { data: nameSaller, error: SallerError } = await supabase.from('users').select('*').eq('id', ticket.saller).single()
                     const { data: Allsales, error: SalesError } = await supabase.from('sales').select('*').eq('ticket', ticket.id)
                     if (SalesError) {
                         console.log('Error : ', SalesError)
@@ -147,11 +149,10 @@ const SalesComponent = () => {
                     else {
                         ticket['products'] = Allsales.map(e => {
                             const name = storeData.filter(s => s.id === e.id_product)[0]
-                            e['name'] = name.name || 'Loading'
+                            e['name'] = name.name 
                             return e
                         })
                         ticket['created_at'] = new Date(ticket.created_at).toLocaleString('pt-Br')
-                        ticket['saller'] = nameSaller.name
                         return ticket
                     }
                 }))
@@ -321,11 +322,18 @@ const SalesComponent = () => {
                 <HistoryContainer drop={isHistoriOpen}>
 
                     {tickets.map(e =>
-                        <History key={e.id}>
+                        <History key={e.id+'h'}>
                             <p >{e.id}</p>
                             <p style={{ textAlign: "center", color: "gray" }}>{e.products.length}</p>
                             <p style={{ textAlign: "center" }}>{e.created_at}</p>
-                            <Search size={20} style={{ margin: "auto", cursor: "pointer" }} color="gray" onClick={() => { setDetailTicketData(e); setisDetailTicketOpen(true) }} />
+                            <Search size={20} style={{ margin: "auto", cursor: "pointer" }} color="gray" onClick={async() => {
+                                const { data: nameSaller, error: SallerError } = await supabase.from('users').select('*').eq('id', e.saller).single()
+                                if(nameSaller){
+                                    e.saller = nameSaller.name
+                                     setDetailTicketData(e)
+                                     setisDetailTicketOpen(true) }
+                                }
+                                } />
                         </History>)}
 
                 </HistoryContainer>
