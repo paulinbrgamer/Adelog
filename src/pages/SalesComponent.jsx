@@ -287,12 +287,15 @@ const SalesComponent = () => {
                         <ChartsContainer >
                             <BarComponent color={"#ffc400"} title={'10 Categorias mais vendidas'}
                                 data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
+                                Feching={isFeching}
                             />
                             <BarComponent color={"#7c02ee"} title={'10 Produtos mais vendidos'}
                                 data={Object.entries(MostSale).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
+                                Feching={isFeching}
                             />
                             <LinearComponent color={"#0260ee"} title={'Relação (Hora/nº de Vendas)'}
-                                data={Object.entries(salesTimes).map(([produto, vendas]) => ({ Produto: Number(produto), Vendas: vendas }))} />
+                                data={Object.entries(salesTimes).map(([produto, vendas]) => ({ Produto: Number(produto), Vendas: vendas }))} Feching={isFeching}/>
+
                         </ChartsContainer>
 
 
