@@ -147,9 +147,16 @@ const SalesComponent = () => {
                         console.log('Error : ', SalesError)
                     }
                     else {
+                        
                         ticket['products'] = Allsales.map(e => {
                             const name = storeData.filter(s => s.id === e.id_product)[0]
-                            e['name'] = name.name
+                            if(name){
+                                e['name'] = name.name 
+
+                            }
+                            else{
+                                e['name'] ='Excluído'
+                            }
                             return e
                         })
                         ticket['created_at'] = new Date(ticket.created_at).toLocaleString('pt-Br')
@@ -160,7 +167,7 @@ const SalesComponent = () => {
                     acc.push(...sale.products)
                     return acc
                 }, [])])
-                settickets(prev => [...data, ...prev])
+                settickets(prev => [ ...prev,...data].sort((a,b)=>parseDate(b.created_at)-parseDate(a.created_at) ))
                 setisFeching(false)
             }
         }
@@ -201,7 +208,9 @@ const SalesComponent = () => {
     }, [sales])
 
     useEffect(() => {
-        fetchSales()
+        if(storeData.length>0){
+            fetchSales()
+        }
     }, [User, storeData, filter])
 
     return (
@@ -276,7 +285,6 @@ const SalesComponent = () => {
 
                 </History>
                 <HistoryContainer drop={isHistoriOpen}>
-
                     {tickets.map(e =>
                         <History key={e.id + 'h'}>
                             <p >{e.id}</p>
