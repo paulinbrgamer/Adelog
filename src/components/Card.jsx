@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import Skeleton from './styled/LoadingSkeleton'
 const Cardstyle = styled.div`
     display: grid;
     box-sizing: border-box;
@@ -12,13 +13,13 @@ const Cardstyle = styled.div`
     background-color: white;
     align-items: center;
 `
-function Card({title,data,Icon}) {
+function Card({title,data,Icon,Feching}) {
   return (
 
     <Cardstyle>
         {Icon}
         <p style={{color:"gray",fontSize:"11pt",fontWeight:"600"}}>{title}</p>
-        <h3 style={{fontWeight:'500'}}>{data}</h3>
+        {Feching?<Skeleton style={{width:'100px'}}/>:<h3 style={{fontWeight:'500'}}>{data}</h3>}
         </Cardstyle>
   )
 }

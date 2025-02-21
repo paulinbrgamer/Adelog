@@ -249,43 +249,34 @@ const SalesComponent = () => {
                 {User?.permission === 'adm' &&
                     <>
                         <CardsContainer>
-                            {isFeching ?
-                                <Loading style={{ margin: 'auto' }}>
-                                    <ContainerL ></ContainerL>
-                                </Loading> :
-                                <>
-                                    <Card Icon={<CartIcon $color={'rgba(252, 122, 0, 0.05)'}><ChartCandlestick strokeWidth={1.4} size={28} color="rgb(252, 122, 0)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
-                                        acc += data.price
-                                        return acc
-                                    }, 0).toFixed(2)} title={'Receita Total'} />
-                                    <Card Icon={<CartIcon $color={'rgba(0, 252, 97, 0.05)'}><DollarSign strokeWidth={1.4} size={28} color="rgb(0, 252, 97)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
-                                        acc += data.profit
-                                        return acc
-                                    }, 0).toFixed(2)} title={'Lucro Total'} />
-                                    <Card Icon={<CartIcon $color={'rgba(247, 0, 255, 0.05)'}><Store strokeWidth={1.4} size={28} color="rgb(197, 0, 223)" /></CartIcon>} data={sales?.reduce((acc, data) => acc += data.units, 0)} title={'Unidades Vendidas'} />
-                                    <Card Icon={<CartIcon $color={'rgba(0, 119, 255, 0.05)'}><ShoppingBag strokeWidth={1.4} size={28} color="rgb(0, 104, 223)" /></CartIcon>} data={Object.keys(MostCategory)[0]} title={'Categoria  Mais Vendida'} />
-                                    <Card Icon={<CartIcon $color={'rgba(0, 253, 84, 0.05)'}><ShoppingBasket strokeWidth={1.4} size={28} color="rgb(0, 190, 63)" /></CartIcon>} data={Object.keys(MostSale)[0]} title={'Produto Mais Vendido'} />
-                                </>}
+
+                            <Card Icon={<CartIcon $color={'rgba(252, 122, 0, 0.05)'}><ChartCandlestick strokeWidth={1.4} size={28} color="rgb(252, 122, 0)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
+                                acc += data.price
+                                return acc
+                            }, 0).toFixed(2)} title={'Receita Total'} Feching={isFeching} />
+                            <Card Icon={<CartIcon $color={'rgba(0, 252, 97, 0.05)'}><DollarSign strokeWidth={1.4} size={28} color="rgb(0, 252, 97)" /></CartIcon>} data={'R$ ' + sales.reduce((acc, data) => {
+                                acc += data.profit
+                                return acc
+                            }, 0).toFixed(2)} title={'Lucro Total'} Feching={isFeching}/>
+                            <Card Icon={<CartIcon $color={'rgba(247, 0, 255, 0.05)'}><Store strokeWidth={1.4} size={28} color="rgb(197, 0, 223)" /></CartIcon>} data={sales?.reduce((acc, data) => acc += data.units, 0)} title={'Unidades Vendidas'}Feching={isFeching} />
+                            <Card Icon={<CartIcon $color={'rgba(0, 119, 255, 0.05)'}><ShoppingBag strokeWidth={1.4} size={28} color="rgb(0, 104, 223)" /></CartIcon>} data={Object.keys(MostCategory)[0]} title={'Categoria  Mais Vendida'} Feching={isFeching} />
+                            <Card Icon={<CartIcon $color={'rgba(0, 253, 84, 0.05)'}><ShoppingBasket strokeWidth={1.4} size={28} color="rgb(0, 190, 63)" /></CartIcon>} data={Object.keys(MostSale)[0]} title={'Produto Mais Vendido'} Feching={isFeching}/>
 
 
                         </CardsContainer>
 
                         <h3 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Gráficos</h3>
-                        {isFeching ?
-                            <Loading style={{ margin: 'auto' }}>
-                                <ContainerL ></ContainerL>
-                            </Loading> : <>
-                                <ChartsContainer >
-                                    <BarComponent color={"#ffc400"} title={'10 Categorias mais vendidas'}
-                                        data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
-                                    />
-                                    <BarComponent color={"#7c02ee"} title={'10 Produtos mais vendidos'}
-                                        data={Object.entries(MostSale).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
-                                    />
-                                    <LinearComponent color={"#0260ee"} title={'Relação (Hora/nº de Vendas)'}
-                                        data={Object.entries(salesTimes).map(([produto, vendas]) => ({ Produto: Number(produto), Vendas: vendas }))} />
-                                </ChartsContainer>
-                            </>}
+
+                        <ChartsContainer >
+                            <BarComponent color={"#ffc400"} title={'10 Categorias mais vendidas'}
+                                data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
+                            />
+                            <BarComponent color={"#7c02ee"} title={'10 Produtos mais vendidos'}
+                                data={Object.entries(MostSale).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
+                            />
+                            <LinearComponent color={"#0260ee"} title={'Relação (Hora/nº de Vendas)'}
+                                data={Object.entries(salesTimes).map(([produto, vendas]) => ({ Produto: Number(produto), Vendas: vendas }))} />
+                        </ChartsContainer>
 
 
                     </>
@@ -304,18 +295,14 @@ const SalesComponent = () => {
 
                 </History>
                 <HistoryContainer drop={isHistoriOpen}>
-                    {isFeching ?
-                        <Loading style={{ margin: 'auto' }}>
-                            <ContainerL ></ContainerL>
-                        </Loading> : <>
-                            {tickets.map(e =>
-                                <History key={e.id}>
-                                    <p >{e.id}</p>
-                                    <p style={{ textAlign: "center", color: "gray" }}>{e.products.length}</p>
-                                    <p style={{ textAlign: "center" }}>{e.created_at}</p>
-                                    <Search size={20} style={{ margin: "auto", cursor: "pointer" }} color="gray" onClick={() => { setDetailTicketData(e); setisDetailTicketOpen(true) }} />
-                                </History>)}
-                        </>}
+
+                    {tickets.map(e =>
+                        <History key={e.id}>
+                            <p >{e.id}</p>
+                            <p style={{ textAlign: "center", color: "gray" }}>{e.products.length}</p>
+                            <p style={{ textAlign: "center" }}>{e.created_at}</p>
+                            <Search size={20} style={{ margin: "auto", cursor: "pointer" }} color="gray" onClick={() => { setDetailTicketData(e); setisDetailTicketOpen(true) }} />
+                        </History>)}
 
                 </HistoryContainer>
             </Container>
