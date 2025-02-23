@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CiLogin, CiUser } from "react-icons/ci";
 import { useAuth } from '../auth/Authprovider'
 import  Container  from '../components/styled/Container';
@@ -7,11 +7,20 @@ import InputText from '../components/InputText'
 import Toast from '../components/Toast';
 import logo from '../../public/icon.png'
 import { LoginPage } from '../components/styled/LoginPage';
+import { useNavigate } from 'react-router-dom';
 const customStyleContainer = { backgroundColor: 'white', maxWidth: '400px' ,'align-items': 'center',padding:'20px',gap:'10px',"box-shadow": 'rgba(14, 63, 126, 0.04) 0px 0px 0px 1px,rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px,rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px,rgba(42, 51, 70, 0.04) 0px 6px 6px -3px,rgba(14, 63, 126, 0.04) 0px 12px 12px -6px,rgba(14, 63, 126, 0.04) 0px 24px 24px -12px'}
 export default function Login() {
     const [acessKey, setacessKey] = useState('')
     const { login } = useAuth()
     const [toast, settoast] = useState(false)
+    const session = JSON.parse(localStorage.getItem('user'))
+    const navegate = useNavigate()
+    useEffect(() => {
+        if(session){
+            navegate('/home')
+        }
+    }, [])
+    
     const handleEnter = (e) => {
         if (e.key == 'Enter') {
             setacessKey(e.target.value)
