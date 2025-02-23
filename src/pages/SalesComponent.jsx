@@ -299,11 +299,11 @@ const SalesComponent = () => {
                         <HistoryContainer drop={ChartsDrop}>
 
                             <ChartsContainer >
-                                <BarComponent color={"#ffc400"} title={'10 Categorias mais vendidas'}
+                                <BarComponent color={"#1468a0"} title={'10 Categorias mais vendidas'}
                                     data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
                                     Feching={isFeching}
                                 />
-                                <BarComponent color={"#7c02ee"} title={'10 Produtos mais vendidos'}
+                                <BarComponent color={"#51237c"} title={'10 Produtos mais vendidos'}
                                     data={Object.entries(MostSale).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
                                     Feching={isFeching}
                                 />
