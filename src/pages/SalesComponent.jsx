@@ -222,6 +222,7 @@ const SalesComponent = () => {
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
                     <h2 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Análise de Vendas</h2>
                     <CalendarDays color="gray" style={{ marginLeft: 'auto', padding: "6px" }} />
+                    <input type="date" max={'today'}/>
                     <Select onChange={(e) => setFilter(e.target.value)} style={{ border: "none", color: "gray", textAlign: "center", backgroundColor: "white" }}>
                         <Option value="day">Dia</Option>
                         <Option value="week">Semana</Option>
