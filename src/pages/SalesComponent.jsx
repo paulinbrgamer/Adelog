@@ -300,11 +300,11 @@ const SalesComponent = () => {
 
                             <ChartsContainer >
                                 <BarComponent color={"#1468a0"} title={'10 Categorias mais vendidas'}
-                                    data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
+                                    data={Object.entries(MostCategory).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas }))}
                                     Feching={isFeching}
                                 />
                                 <BarComponent color={"#51237c"} title={'10 Produtos mais vendidos'}
-                                    data={Object.entries(MostSale).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas })).filter((e, id) => id < 10 && e)}
+                                    data={Object.entries(MostSale).map(([produto, vendas]) => ({ Produto: produto, Vendas: vendas }))}
                                     Feching={isFeching}
                                 />
                                 <LinearComponent color={"#0260ee"} title={'Relação (Hora/nº de Vendas)'}
