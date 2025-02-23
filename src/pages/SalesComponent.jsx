@@ -10,6 +10,7 @@ import CartIcon from '../components/styled/CartIcon'
 import BarComponent from "../components/BarComponent";
 import LinearComponent from "../components/LinearComponent";
 import DetailTicket from '../components/DetailTicket'
+import DatePicker from "../components/DatePicker";
 const parseDate = (dateString) => {
     const [datePart, timePart] = dateString.split(", ");
     const [day, month, year] = datePart.split("/");
@@ -79,6 +80,7 @@ const SalesComponent = () => {
     const [salesTimes, setsalesTimes] = useState([])
     const [isFeching, setisFeching] = useState(false)
     const [ChartsDrop, setChartsDrop] = useState(true)
+    const [pickerDate, setpickerDate] = useState('')
     const FilterSalles = () => {
         const todayFilter = () => {
             const today = new Date();
@@ -114,6 +116,8 @@ const SalesComponent = () => {
                 return monthFilter()
             case 'year':
                 return yearFilter()
+            case 'picker':
+                return pickerDate
             default:
                 break;
         }
@@ -127,44 +131,59 @@ const SalesComponent = () => {
     const fetchSales = async () => {
         if (!User) return;
         setisFeching(true);
-    
+
         // IDs já carregados para evitar duplicação
         const existingTickets = new Set(tickets.map(item => item.id));
-    
+
         const filterField = User.permission === 'adm' ? 'store_id' : 'saller';
         const filterValue = User.permission === 'adm' ? User.store_id : User.id;
-    
-        let { data: newTickets, error } = await supabase
+
+        // Se for 'picker', ajusta a busca para pegar os tickets daquele dia
+        let query = supabase
             .from('tickets')
             .select('*')
-            .eq(filterField, filterValue)
-            .gte('created_at', FilterSalles())
-            .not('id', 'in', `(${Array.from(existingTickets).join(',')})`);
-    
+            .eq(filterField, filterValue);
+
+        if (filter === 'picker') {
+            query = query
+                .gte('created_at', FilterSalles() + 'T00:00:00.000Z')
+                .lt('created_at', FilterSalles() + 'T23:59:59.000Z');
+        } else {
+            query = query
+                .gte('created_at', FilterSalles())
+                .not('id', 'in', `(${Array.from(existingTickets).join(',')})`);
+        }
+
+        let { data: newTickets, error } = await query;
+
         if (error) {
             console.log('Error fetching tickets:', error);
             setisFeching(false);
             return;
         }
-    
-        // Remove tickets antigos antes de adicionar os novos
-        const updatedTickets = tickets.filter(e => parseDate(e.created_at) >= new Date(FilterSalles()));
-    
+
+        // Sempre atualiza a lista de tickets filtrando corretamente os existentes
+        const updatedTickets = tickets.filter(e =>
+            filter === 'picker'
+                ? parseDate(e.created_at) == new Date(FilterSalles())
+                : parseDate(e.created_at) >= new Date(FilterSalles())
+        );
+
+        // Se houver novos tickets, busca as vendas
         if (newTickets.length > 0) {
             const ticketIds = newTickets.map(ticket => ticket.id);
-    
-            // Busca todas as vendas de uma vez só, em vez de múltiplas requisições
+
             let { data: allSales, error: salesError } = await supabase
                 .from('sales')
                 .select('*')
                 .in('ticket', ticketIds);
-    
+
             if (salesError) {
                 console.log('Error fetching sales:', salesError);
                 setisFeching(false);
                 return;
             }
-    
+
             // Organiza vendas por ticket
             const salesByTicket = new Map();
             allSales.forEach(sale => {
@@ -176,26 +195,29 @@ const SalesComponent = () => {
                     name: storeData.find(s => s.id === sale.id_product)?.name || 'Excluído'
                 });
             });
-    
+
             // Adiciona vendas aos tickets
-            newTickets.forEach(ticket => {
-                ticket.products = salesByTicket.get(ticket.id) || [];
-                ticket.created_at = new Date(ticket.created_at).toLocaleString('pt-BR');
-            });
-    
-            // Atualiza os states de tickets e sales
-            settickets([...updatedTickets, ...newTickets].sort((a, b) => parseDate(b.created_at) - parseDate(a.created_at)));
-            setSales([...updatedTickets.flatMap(ticket => ticket.products), ...newTickets.flatMap(ticket => ticket.products)]);
+            newTickets = newTickets.map(ticket => ({
+                ...ticket,
+                products: salesByTicket.get(ticket.id) || [],
+                created_at: new Date(ticket.created_at).toLocaleString('pt-BR')
+            }));
+
+            // Atualiza os states corretamente
+            settickets(
+                [...updatedTickets, ...newTickets].sort((a, b) => parseDate(b.created_at) - parseDate(a.created_at))
+            );
+            setSales(
+                [...updatedTickets.flatMap(ticket => ticket.products), ...newTickets.flatMap(ticket => ticket.products)]
+            );
         } else {
+            // Caso não tenha novos tickets, ainda assim atualiza o state
             settickets(updatedTickets);
             setSales(updatedTickets.flatMap(ticket => ticket.products));
         }
-    
+
         setisFeching(false);
     };
-    
-
-
     useEffect(() => {
         //Verificar qual é o produto que mais vende
         const Mapcount = sales?.reduce((acc, data) => {
@@ -230,21 +252,20 @@ const SalesComponent = () => {
     }, [sales])
 
     useEffect(() => {
-        if(storeData.length>0){
+        if (storeData.length > 0) {
             fetchSales()
         }
-    }, [User, storeData, filter])
+    }, [User, storeData, filter, pickerDate])
 
     return (
         <>
             <GlobalStyle />
-            <DetailTicket setisDetailTicketOpen={setisDetailTicketOpen} isDetailTicketOpen={isDetailTicketOpen} DetailTicketData={DetailTicketData}/>
-            
+            <DetailTicket setisDetailTicketOpen={setisDetailTicketOpen} isDetailTicketOpen={isDetailTicketOpen} DetailTicketData={DetailTicketData} />
+
             <Container  >
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
                     <h2 style={{ color: 'rgb(31 ,41, 55)', padding: "20px 0px", fontWeight: "500" }}>Análise de Vendas</h2>
-                    <CalendarDays color="gray" style={{ marginLeft: 'auto', padding: "6px" }} />
-                    <input type="date" max={'today'}/>
+                    <DatePicker style={{ marginLeft: 'auto', padding: "6px" }} setpickerDate={setpickerDate} setFilter={setFilter} />
                     <Select onChange={(e) => setFilter(e.target.value)} style={{ border: "none", color: "gray", textAlign: "center", backgroundColor: "white" }}>
                         <Option value="day">Dia</Option>
                         <Option value="week">Semana</Option>
@@ -314,7 +335,7 @@ const SalesComponent = () => {
                             <p style={{ textAlign: "center", color: "gray" }}>{e.products.length}</p>
                             <p style={{ textAlign: "center" }}>{e.created_at}</p>
                             <Search size={20} style={{ margin: "auto", cursor: "pointer" }} color="gray" onClick={async () => {
-                                if (typeof(e.saller) == 'number') {
+                                if (typeof (e.saller) == 'number') {
                                     const { data: nameSaller, error: SallerError } = await supabase.from('users').select('*').eq('id', e.saller).single()
                                     e.saller = nameSaller.name
                                 }
