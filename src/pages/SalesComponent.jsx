@@ -125,53 +125,75 @@ const SalesComponent = () => {
     }, [tickets])
 
     const fetchSales = async () => {
-        if (User) {
-            setisFeching(true)
-            const ticketsId = tickets.map(item => item.id)
-
-            let { data, error } = await supabase.from('tickets').select("*").eq(User.permission == 'adm' ? 'store_id' : 'saller', User.permission == 'adm' ? User.store_id : User.id).gte('created_at', FilterSalles()).not('id', 'in', `(${ticketsId.join(',')})`)
-            if (error) {
-                console.log('Error : ', error)
-            }
-            else {
-                const newState = tickets.filter(e => parseDate(e.created_at) >= new Date(FilterSalles()))
-                settickets(newState)
-                setSales(newState.reduce((acc, sale) => {
-                    acc.push(...sale.products)
-                    return acc
-                }, []))
-
-                data = await Promise.all(data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).map(async (ticket) => {
-                    const { data: Allsales, error: SalesError } = await supabase.from('sales').select('*').eq('ticket', ticket.id)
-                    if (SalesError) {
-                        console.log('Error : ', SalesError)
-                    }
-                    else {
-                        
-                        ticket['products'] = Allsales.map(e => {
-                            const name = storeData.filter(s => s.id === e.id_product)[0]
-                            if(name){
-                                e['name'] = name.name 
-
-                            }
-                            else{
-                                e['name'] ='Excluído'
-                            }
-                            return e
-                        })
-                        ticket['created_at'] = new Date(ticket.created_at).toLocaleString('pt-Br')
-                        return ticket
-                    }
-                }))
-                setSales(prev => [...prev, ...data.reduce((acc, sale) => {
-                    acc.push(...sale.products)
-                    return acc
-                }, [])])
-                settickets(prev => [ ...prev,...data].sort((a,b)=>parseDate(b.created_at)-parseDate(a.created_at) ))
-                setisFeching(false)
-            }
+        if (!User) return;
+        setisFeching(true);
+    
+        // IDs já carregados para evitar duplicação
+        const existingTickets = new Set(tickets.map(item => item.id));
+    
+        const filterField = User.permission === 'adm' ? 'store_id' : 'saller';
+        const filterValue = User.permission === 'adm' ? User.store_id : User.id;
+    
+        let { data: newTickets, error } = await supabase
+            .from('tickets')
+            .select('*')
+            .eq(filterField, filterValue)
+            .gte('created_at', FilterSalles())
+            .not('id', 'in', `(${Array.from(existingTickets).join(',')})`);
+    
+        if (error) {
+            console.log('Error fetching tickets:', error);
+            setisFeching(false);
+            return;
         }
-    }
+    
+        // Remove tickets antigos antes de adicionar os novos
+        const updatedTickets = tickets.filter(e => parseDate(e.created_at) >= new Date(FilterSalles()));
+    
+        if (newTickets.length > 0) {
+            const ticketIds = newTickets.map(ticket => ticket.id);
+    
+            // Busca todas as vendas de uma vez só, em vez de múltiplas requisições
+            let { data: allSales, error: salesError } = await supabase
+                .from('sales')
+                .select('*')
+                .in('ticket', ticketIds);
+    
+            if (salesError) {
+                console.log('Error fetching sales:', salesError);
+                setisFeching(false);
+                return;
+            }
+    
+            // Organiza vendas por ticket
+            const salesByTicket = new Map();
+            allSales.forEach(sale => {
+                if (!salesByTicket.has(sale.ticket)) {
+                    salesByTicket.set(sale.ticket, []);
+                }
+                salesByTicket.get(sale.ticket).push({
+                    ...sale,
+                    name: storeData.find(s => s.id === sale.id_product)?.name || 'Excluído'
+                });
+            });
+    
+            // Adiciona vendas aos tickets
+            newTickets.forEach(ticket => {
+                ticket.products = salesByTicket.get(ticket.id) || [];
+                ticket.created_at = new Date(ticket.created_at).toLocaleString('pt-BR');
+            });
+    
+            // Atualiza os states de tickets e sales
+            settickets([...updatedTickets, ...newTickets].sort((a, b) => parseDate(b.created_at) - parseDate(a.created_at)));
+            setSales([...updatedTickets.flatMap(ticket => ticket.products), ...newTickets.flatMap(ticket => ticket.products)]);
+        } else {
+            settickets(updatedTickets);
+            setSales(updatedTickets.flatMap(ticket => ticket.products));
+        }
+    
+        setisFeching(false);
+    };
+    
 
 
     useEffect(() => {
