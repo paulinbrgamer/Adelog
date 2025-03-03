@@ -82,6 +82,11 @@ export default function SellScreen() {
   const [Units, setUnits] = useState(null)
   const { User } = useAuth()
   const [exchange, setExchange] = useState(0)
+  useEffect(() => {
+    console.log(Cart);
+    
+  }, [Cart])
+  
   const showToast = (setToastVisible) => {
     setToastVisible(true);
     setTimeout(() => setToastVisible(false), 1500); // Exibe por 3 segundos
@@ -155,7 +160,7 @@ export default function SellScreen() {
   const handleFinalizeUnits = () => {
     if (Units > 0) {
       let newState = Cart?.filter((Obj) => Obj.id != productSelected.id)
-      newState.push({ ...productSelected, units: Units, price: Number(Units * productSelected.price) })
+      newState.push({ ...productSelected, units: Units, price: Number(Units * productSelected.price),brute_price:Number(Units * productSelected.brute_price) })
       setCart(newState)
       setmodalAddUnits(false)
       setproductSelected(null)
